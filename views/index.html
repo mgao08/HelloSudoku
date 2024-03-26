@@ -13,6 +13,7 @@
    <!-- Font Awesome Icon CDN -->
    <script src="https://kit.fontawesome.com/d4ee962a28.js" crossorigin="anonymous"></script>
 
+   <link rel="icon" href="img/favicon.svg">
    <title>Hello! Sudoku!</title>
 </head>
 
@@ -89,8 +90,25 @@
 
       <!-- Sections -->
       <div class="col-lg-10 col-md-12 p-0 d-flex flex-column" id="contentBox">
-         <section class="flex-grow-1" id="dashBoard">
-            
+
+         <section class="flex-grow-1 d-flex flex-column align-items-center" id="dashBoard">
+            <div class="d-flex flex-column align-items-center" id="avatar">
+               <div id="avatarBorder">    <!-- the outer border of avatar (visual effects only) -->
+                  <img src="img/sample-avatar.svg" class="rounded-circle border border-success" width="200" height="200">
+               </div>
+               <span class="fs-2 text-center">Welcome home, <span class="username">${username}</span>!</span>
+            </div>
+
+            <div class="row text-center w-100">
+               <div class="col-12 d-flex flex-row">
+                  <hr class="w-100">
+                  <span class="px-3 text-secondary text-nowrap lh-lg">Display My Game Activity</span>
+                  <hr class="w-100">
+               </div>
+               <div class="col-12">
+                  <i class="fa-solid fa-chevron-down text-secondary"></i>
+               </div>
+            </div>
          </section>
 
          <section class="flex-grow-1" id="gamePane"></section>
@@ -99,7 +117,7 @@
 
          <section class="flex-grow-1" id="admin"></section>
 
-         <footer class="text-center mb-1 z-1">
+         <footer class="text-center m-1 z-1">
             <!-- TODO: use JS to setup width for footer while activating sections -->
             <hr>
             <kbd class="bg-secondary">&copy;Copyright 2024. CPSC 2600 - Group #</kbd>
