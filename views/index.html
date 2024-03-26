@@ -21,7 +21,7 @@
 <div class="container-fluid p-0" id="outer-most">
 
    <!-- Dark green banner on top (visible only under large screen size) -->
-   <div class="row bg-success text-white text-center py-2 h6" id="top-banner">
+   <div class="row text-white text-center py-2 h6 mb-0" id="top-banner">
       <div class="col-2">
          ${username}
       </div>
@@ -33,55 +33,65 @@
 
    <!-------------------------------------------------------------------------->
 
-   <!-- Navbar -->
-   <nav class="navbar navbar-expand-lg navbar-light bg-light p-3">
-      <span class="navbar-brand">
-         <!-- TODO: Switch navbar brand when switching between sections -->
-         <i class="fa-solid fa-gauge-high"></i>&nbsp;
-         My Dashboard
-      </span>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navList"
-         aria-controls="navList" aria-expanded="false" aria-label="Toggle navigation">
-         <span class="navbar-toggler-icon"></span>
-      </button>
-   
-      <div class="collapse navbar-collapse" id="navList">
-         <button type="button" class="btn-close" data-bs-toggle="collapse" data-bs-target="#navList" aria-controls="navList" aria-label="Close Navigation"></button>
-         <ul class="navbar-nav mr-auto align-items-center">
-            <li class="nav-item active">
-               <a class="nav-link" href="#dashboard">
-                  <i class="fa-solid fa-gauge-high">&emsp;</i>My Dashboard
-               </a>
-            </li>
+   <!-- Main Content -->
+   <div class="row">
+      <!-- Navbar -->
+      <div class="col-lg-2 col-md-12 pe-0">
+         <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <span class="navbar-brand">
+               <!-- TODO: Switch navbar brand when switching between sections -->
+               <i class="fa-solid fa-gauge-high"></i>&nbsp;
+               My Dashboard
+            </span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navList"
+               aria-controls="navList" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="navbar-toggler-icon"></span>
+            </button>
+         
+            <div class="collapse navbar-collapse" id="navList">
+               <button type="button" class="btn-close" data-bs-toggle="collapse" data-bs-target="#navList" aria-controls="navList" aria-label="Close Navigation"></button>
+               <ul class="navbar-nav mr-auto align-items-center">
+                  <li class="nav-item active">
+                     <a class="nav-link" href="#dashboard">
+                        My Dashboard&emsp;<i class="fa-solid fa-gauge-high"></i>
+                     </a>
+                  </li>
 
-            <li class="nav-item">
-               <a class="nav-link" href="#daily">
-                  <i class="fa-solid fa-calendar-day">&emsp;</i>Daily Does Sudoku
-               </a>
-            </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="#daily">
+                        Daily Does Sudoku&emsp;<i class="fa-solid fa-calendar-day"></i>
+                     </a>
+                  </li>
 
-            <li class="nav-item">
-               <a class="nav-link" href="#select">
-                  <i class="fa-solid fa-grip">&emsp;</i>Select Level
-               </a>
-            </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="#select">
+                        Select Level&emsp;<i class="fa-solid fa-grip"></i>
+                     </a>
+                  </li>
 
-            <li class="nav-item">
-               <a class="nav-link" href="#about">
-                  <i class="fa-solid fa-circle-info">&emsp;</i>About Us
-               </a>
-            </li>
-            <li class="nav-item h-25 d-flex">
-               <button class="btn btn-lg btn-outline-danger mt-auto">
-                  <i class="fa-solid fa-power-off">&emsp;</i>Log Out
-               </button>
-            </li>
-            <li class="nav-item">
-               <a class="btn btn-link">Admin Panel</a>
-            </li>
-         </ul>
+                  <li class="nav-item">
+                     <a class="nav-link" href="#about">
+                        About Us&emsp;<i class="fa-solid fa-circle-info"></i>
+                     </a>
+                  </li>
+                  <li class="nav-item h-25 w-100 d-flex">
+                     <button class="btn btn-outline-danger mt-auto mx-auto" id="logout">
+                        <i class="fa-solid fa-power-off">&emsp;</i>Log Out
+                     </button>
+                  </li>
+                  <li class="nav-item w-100 text-center">
+                     <a class="btn btn-link" id="admin">Admin Panel</a>
+                  </li>
+               </ul>
+            </div>
+         </nav>
       </div>
-   </nav>
+
+      <!-- Sections -->
+      <div class="col-lg-10 col-md-12 ps-0" id="contentBox">
+
+      </div>
+   </div>
 
    <!-------------------------------------------------------------------------->
 

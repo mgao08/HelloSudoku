@@ -1,7 +1,7 @@
 :root {
    --success-link: #0F5132;
    --success-background: #D1E7DD;
-   --success-highlight: #198754;
+   --success-highlight: #157347;
    --success-border: #BADBCC;
 }
 
@@ -12,9 +12,11 @@ body {
 
 #top-banner {
    display: none;
+   background-color: var(--success-highlight);
 }
 
 nav {
+   padding: 1em;
    border-bottom: 2px solid var(--bs-success);
 }
 
@@ -42,12 +44,20 @@ nav {
 
 }
 
-#navList ul a {
+#navList a {
    color: var(--success-link);
 }
 
-#navList ul li:hover {
+#navList li:hover a {
    text-decoration: underline;
+}
+
+#logout {
+   width: 170px;
+}
+
+#contentBox {
+   background-color: var(--bs-white);
 }
 
 
@@ -56,4 +66,61 @@ nav {
    #top-banner {
       display: flex;
    }
+
+   .navbar-brand,
+   .navbar-toggler,
+   #navList .btn-close {
+      display: none;
+   }
+
+   nav, .navbar {
+      padding: 0;
+   }
+
+   #navList {
+      position: relative;
+      width: 100%;
+
+      padding-left: 0;
+      padding-right: 0;
+   }
+
+   #navList ul {
+      width: 100%;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 20px;
+   }
+
+   #navList li {
+      box-sizing: border-box;
+      display: block;
+      width: 100%;
+      padding: 5px 7%;
+      text-align: end;
+   }
+
+   #navList a {
+      color: var(--bs-secondary);
+      font-size: smaller;
+   }
+
+   #logout {
+      justify-content: center;
+   }
+
+   .nav-item.active {
+      background-color: var(--success-background);
+      border-left: solid 3.5px var(--success-highlight);
+   }
+
+   .nav-item.active a {
+      color: var(--success-link) !important;
+      font-weight: bold;
+   }
+
+   #contentBox {
+      background-color: var(--bs-light);
+   }
+
 }
