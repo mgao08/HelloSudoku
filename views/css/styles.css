@@ -113,6 +113,8 @@ body {
 }
 
 footer {
+   width: 90%;
+   margin: auto;
    font-size: small;
 }
 
@@ -193,11 +195,6 @@ footer {
    #avatar {
       height: auto;
       margin-bottom: 1em;
-   }
-
-   footer {
-      width: 90%;
-      margin: auto;
    }
 
 }
