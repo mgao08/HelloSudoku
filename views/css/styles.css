@@ -1,0 +1,163 @@
+:root {
+   --success-link: #0F5132;
+   --success-background: #D1E7DD;
+   --success-highlight: #157347;
+   --success-border: #BADBCC;
+}
+
+/** Mobile first */
+body {
+   font-size: medium;
+   font-weight: 200;    /** Lighter font weight */
+}
+
+#top-banner {
+   display: none;
+   background-color: var(--success-highlight);
+}
+
+.navbar {
+   padding: 1em;
+   border-bottom: 2px solid var(--bs-success);
+}
+
+#navList {
+   position: fixed;
+   top: 0px;
+   left: 0px;
+   width: 100vw;
+   height: 100vh;
+
+   padding: 12vh;
+   background-color: var(--bs-white);
+}
+
+#navList .btn-close {
+   position: absolute;
+   top: 20px;
+   right: 20px;
+}
+
+#navList ul {
+   height: 100%;
+   align-items: center;
+   justify-content: space-evenly;
+   gap: 4.5rem;
+
+}
+
+#navList a {
+   color: var(--success-link);
+}
+
+#navList li:hover a {
+   text-decoration: underline;
+}
+
+#logout {
+   width: 170px;
+}
+
+#contentBox {
+   background-color: var(--bs-white);
+}
+
+/** Dashboard settings */
+#dashBoard {
+   padding: 3em 1em;
+}
+
+#avatar {
+   width: 50vw;
+   min-width: 200px;
+   height: 60vh;
+   justify-content: center;
+   gap: 30px;
+}
+
+#avatarBorder {
+   border: 4px solid var(--success-border);
+   border-radius: 50%;
+
+   box-sizing: content-box;
+   width: 200px;
+   height: auto;
+
+   box-shadow: 1px 1px 5px gray;
+}
+
+
+/** Large screen size */
+@media screen and (min-width: 1200px){
+   body {
+      font-size: large;
+   }
+
+   #top-banner {
+      display: flex;
+   }
+
+   .navbar-brand,
+   .navbar-toggler,
+   #navList .btn-close {
+      display: none;
+   }
+
+   nav, .navbar {
+      padding: 0;
+   }
+
+   #navList {
+      position: relative;
+      width: 100%;
+
+      padding-left: 0;
+      padding-right: 0;
+   }
+
+   #navList ul {
+      width: 100%;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 1.2rem;
+   }
+
+   #navList li {
+      box-sizing: border-box;
+      display: block;
+      width: 100%;
+      padding: 5px 7%;
+      text-align: end;
+   }
+
+   #navList a {
+      color: var(--bs-secondary);
+      font-size: smaller;
+   }
+
+   #logout {
+      justify-content: center;
+   }
+
+   .nav-item.active {
+      background-color: var(--success-background);
+      border-left: solid 3.5px var(--success-highlight);
+   }
+
+   .nav-item.active a {
+      color: var(--success-link) !important;
+      font-weight: bold;
+   }
+
+   #contentBox {
+      background-color: var(--bs-light);
+   }
+
+}
+
+/** xxl screen size */
+@media screen and (min-width: 1500px) {
+   body {
+      font-size: x-large;
+   }
+}
