@@ -92,6 +92,7 @@
       <div class="col-lg-10 col-md-12 p-0 d-flex flex-column" id="contentBox">
 
          <section class="flex-grow-1 d-flex flex-column align-items-center" id="dashBoard">
+            <!-- Avatar -->
             <div class="d-flex flex-column align-items-center" id="avatar">
                <div id="avatarBorder">    <!-- the outer border of avatar (visual effects only) -->
                   <img src="img/sample-avatar.svg" class="rounded-circle border border-success" width="200" height="200">
@@ -99,16 +100,36 @@
                <span class="fs-2 text-center">Welcome home, <span class="username">${username}</span>!</span>
             </div>
 
+            <!-- Divider -->
             <div class="row text-center w-100">
                <div class="col-12 d-flex flex-row">
                   <hr class="w-100">
-                  <span class="px-3 text-secondary text-nowrap lh-lg">Display My Game Activity</span>
+                  <span class="px-3 text-secondary text-nowrap lh-lg" style="font-size: small">Display My Game Activity</span>
                   <hr class="w-100">
                </div>
                <div class="col-12">
                   <i class="fa-solid fa-chevron-down text-secondary"></i>
                </div>
             </div>
+
+            <!-- User Information -->
+            <div class="d-flex flex-column text-center gap-3 my-5">
+               <p>You have been our member since <span class="highlight-text" id="registerDate">March 17th, 2024</span></p>
+               <p>Achieved the highest score of <span class="highlight-text" id="highestScore">123456</span></p>
+               <p>Conquered <span class="highlight-text" id="levelsPassed">21</span> Sudoku puzzles, <span class="highlight-text" id="levelsPastWeek">3</span> from the past week</p>
+               <p>Spent <span class="highlight-text" id="avgTime">32 minutes</span> in average on each puzzle</p>
+            </div>
+
+            <!-- Suggestions -->
+            <div class="d-flex flex-column mt-auto text-center" id="suggestions">
+               <span>Getting bored? Start solving puzzles!</span>
+               <div class="d-flex flex-row">
+                  <a href="#daily">Daily Sudoku Puzzle</a>
+                  &ensp;Or&ensp;
+                  <a href="#selectLevel">Select A Level</a>
+               </div>
+            </div>
+
          </section>
 
          <section class="flex-grow-1" id="gamePane"></section>
@@ -117,7 +138,7 @@
 
          <section class="flex-grow-1" id="admin"></section>
 
-         <footer class="text-center m-1 z-1">
+         <footer class="text-center z-1">
             <!-- TODO: use JS to setup width for footer while activating sections -->
             <hr>
             <kbd class="bg-secondary">&copy;Copyright 2024. CPSC 2600 - Group #</kbd>

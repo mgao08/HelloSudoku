@@ -13,6 +13,7 @@ body {
 
 #top-banner {
    display: none;
+   height: 35px;
    background-color: var(--success-highlight);
 }
 
@@ -26,7 +27,7 @@ body {
    top: 0px;
    left: 0px;
    width: 100vw;
-   height: 100vh;
+   height: calc(100vh - 35px);   /** minus height of top-banner */
 
    padding: 12vh;
    background-color: var(--bs-white);
@@ -60,19 +61,23 @@ body {
 
 #contentBox {
    background-color: var(--bs-white);
+   height: calc(100vh - 35px);   /** minus height of top-banner */
+   overflow: scroll;
 }
 
 /** Dashboard settings */
 #dashBoard {
-   padding: 3em 1em;
+   padding: 0;
 }
 
 #avatar {
    width: 50vw;
    min-width: 200px;
-   height: 60vh;
+   height: 45vh;
    justify-content: center;
    gap: 30px;
+
+   margin-top: 10vh;
 }
 
 #avatarBorder {
@@ -84,6 +89,31 @@ body {
    height: auto;
 
    box-shadow: 1px 1px 5px gray;
+}
+
+.highlight-text {
+   padding: 3px 8px;
+   background-color: var(--success-background);
+   color: var(--success-link);
+   border-radius: 5px;
+   font-weight: bold;
+}
+
+#dashBoard p {
+   font-weight: normal;
+}
+
+#suggestions {
+   font-size: x-small;
+}
+
+#suggestions a {
+   color: var(--success-link);
+   font-style: italic;
+}
+
+footer {
+   font-size: small;
 }
 
 
@@ -105,6 +135,7 @@ body {
 
    nav, .navbar {
       padding: 0;
+      border-bottom: none;
    }
 
    #navList {
@@ -151,6 +182,22 @@ body {
 
    #contentBox {
       background-color: var(--bs-light);
+   }
+
+   /** Dashboard settings */
+   #dashBoard {
+      max-width: 800px;
+      margin: auto;
+   }
+
+   #avatar {
+      height: auto;
+      margin-bottom: 1em;
+   }
+
+   footer {
+      width: 90%;
+      margin: auto;
    }
 
 }
