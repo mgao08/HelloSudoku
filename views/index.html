@@ -88,16 +88,22 @@
       </div>
 
       <!-- Sections -->
-      <div class="col-lg-10 col-md-12 ps-0" id="contentBox">
-         <section id="dashBoard"></section>
+      <div class="col-lg-10 col-md-12 ps-0 d-flex flex-column" id="contentBox">
+         <section class="flex-grow-1" id="dashBoard">
+            
+         </section>
 
-         <section id="gamePane"></section>
+         <section class="flex-grow-1" id="gamePane"></section>
 
-         <section id="selectLevel"></section>
+         <section class="flex-grow-1" id="selectLevel"></section>
 
-         <section id="admin"></section>
+         <section class="flex-grow-1" id="admin"></section>
 
-         <footer></footer>
+         <footer class="text-center mb-1">
+            <!-- TODO: use JS to setup width for footer while activating sections -->
+            <hr>
+            <kbd class="bg-secondary">&copy;Copyright 2024. CPSC 2600 - Group #</kbd>
+         </footer>
 
       </div>
    </div>
