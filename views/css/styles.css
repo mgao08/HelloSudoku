@@ -1,0 +1,25 @@
+/** Mobile first */
+body {
+   font-weight: 200;    /** Lighter font weight */
+}
+
+.outer-most {
+   padding: 0;
+   margin: 0;
+}
+
+#top-banner {
+   display: none;
+}
+
+nav {
+   border-bottom: 2px solid var(--bs-success);
+}
+
+
+/** Large screen size */
+@media screen and (min-width: 1280px){
+   #top-banner {
+      display: flex;
+   }
+}

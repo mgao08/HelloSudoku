@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+   <link rel="stylesheet" href="css/bootstrap.min.css">
+   <link rel="stylesheet" href="css/styles.css">
+
+   <script src="js/bootstrap.bundle.min.js" defer></script>
+   <script src="js/script.js" defer></script>
+
+   <!-- Font Awesome Icon CDN -->
+   <script src="https://kit.fontawesome.com/d4ee962a28.js" crossorigin="anonymous"></script>
+
+   <title>Hello! Sudoku!</title>
+</head>
+
+<body>
+
+<div class="container-fluid" id="outer-most">
+
+   <!-- Dark green banner on top (visible only under large screen size) -->
+   <div class="row bg-success text-white text-center py-2 h6" id="top-banner">
+      <div class="col-2">
+         ${username}
+      </div>
+      <div class="col-10">
+         <i class="fa-solid fa-otter"></i>&nbsp;
+         Hello! Sudoku!
+      </div>
+   </div>
+
+   <!-------------------------------------------------------------------------->
+
+   <!-- Navbar -->
+   <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <span class="navbar-brand">
+         <!-- TODO: Switch navbar brand when switching between sections -->
+         <i class="fa-solid fa-gauge-high"></i>&nbsp;
+         My Dashboard
+      </span>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+         aria-controls="navList" aria-expanded="false" aria-label="Toggle navigation">
+         <span class="navbar-toggler-icon"></span>
+      </button>
+   
+      <div class="collapse navbar-collapse" id="navList">
+         <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+               <a class="nav-link" href="#dashboard">
+                  <i class="fa-solid fa-gauge-high"></i>&emsp;My Dashboard
+               </a>
+            </li>
+
+            <li class="nav-item">
+               <a class="nav-link" href="#daily">
+                  <i class="fa-solid fa-calendar-day"></i>&emsp;Daily Does Sudoku
+               </a>
+            </li>
+
+            <li class="nav-item">
+               <a class="nav-link" href="#select">
+                  <i class="fa-solid fa-grip"></i>&emsp;Select Level
+               </a>
+            </li>
+
+            <li class="nav-item">
+               <a class="nav-link" href="#about">
+                  <i class="fa-solid fa-circle-info"></i>&emsp;About Us
+               </a>
+            </li>
+         </ul>
+
+         <div class="d-flex flex-column">
+            <button class="btn btn-lg btn-outline-danger">
+               <i class="fa-solid fa-power-off"></i>&emsp;Log Out
+            </button>
+            <button class="btn btn-link">Admin Panel</button>
+         </div>
+      </div>
+   </nav>
+
+   <!-------------------------------------------------------------------------->
+
+   <!-- Main Contents -->
+
+
+</div>
+
+</body>
+
+</html>
