@@ -16,7 +16,7 @@ body {
    background-color: var(--success-highlight);
 }
 
-nav {
+.navbar {
    padding: 1em;
    border-bottom: 2px solid var(--bs-success);
 }
