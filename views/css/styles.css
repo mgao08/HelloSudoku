@@ -7,6 +7,7 @@
 
 /** Mobile first */
 body {
+   font-size: medium;
    font-weight: 200;    /** Lighter font weight */
 }
 
@@ -41,6 +42,7 @@ nav {
    height: 100%;
    align-items: center;
    justify-content: space-evenly;
+   gap: 4.5rem;
 
 }
 
@@ -62,7 +64,11 @@ nav {
 
 
 /** Large screen size */
-@media screen and (min-width: 1280px){
+@media screen and (min-width: 1200px){
+   body {
+      font-size: large;
+   }
+
    #top-banner {
       display: flex;
    }
@@ -89,7 +95,7 @@ nav {
       width: 100%;
       flex-direction: column;
       justify-content: flex-start;
-      gap: 20px;
+      gap: 1.2rem;
    }
 
    #navList li {
@@ -123,4 +129,11 @@ nav {
       background-color: var(--bs-light);
    }
 
+}
+
+/** xxl screen size */
+@media screen and (min-width: 1500px) {
+   body {
+      font-size: x-large;
+   }
 }
