@@ -1,11 +1,13 @@
+:root {
+   --success-link: #0F5132;
+   --success-background: #D1E7DD;
+   --success-highlight: #198754;
+   --success-border: #BADBCC;
+}
+
 /** Mobile first */
 body {
    font-weight: 200;    /** Lighter font weight */
-}
-
-.outer-most {
-   padding: 0;
-   margin: 0;
 }
 
 #top-banner {
@@ -14,6 +16,38 @@ body {
 
 nav {
    border-bottom: 2px solid var(--bs-success);
+}
+
+#navList {
+   position: fixed;
+   top: 0px;
+   left: 0px;
+   width: 100vw;
+   height: 100vh;
+
+   padding: 12vh;
+   background-color: var(--bs-white);
+}
+
+#navList .btn-close {
+   position: absolute;
+   top: 20px;
+   right: 20px;
+}
+
+#navList ul {
+   height: 100%;
+   align-items: center;
+   justify-content: space-evenly;
+
+}
+
+#navList ul a {
+   color: var(--success-link);
+}
+
+#navList ul li:hover {
+   text-decoration: underline;
 }
 
 

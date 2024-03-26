@@ -18,7 +18,7 @@
 
 <body>
 
-<div class="container-fluid" id="outer-most">
+<div class="container-fluid p-0" id="outer-most">
 
    <!-- Dark green banner on top (visible only under large screen size) -->
    <div class="row bg-success text-white text-center py-2 h6" id="top-banner">
@@ -34,50 +34,52 @@
    <!-------------------------------------------------------------------------->
 
    <!-- Navbar -->
-   <nav class="navbar navbar-expand-lg navbar-light bg-light">
+   <nav class="navbar navbar-expand-lg navbar-light bg-light p-3">
       <span class="navbar-brand">
          <!-- TODO: Switch navbar brand when switching between sections -->
          <i class="fa-solid fa-gauge-high"></i>&nbsp;
          My Dashboard
       </span>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navList"
          aria-controls="navList" aria-expanded="false" aria-label="Toggle navigation">
          <span class="navbar-toggler-icon"></span>
       </button>
    
       <div class="collapse navbar-collapse" id="navList">
-         <ul class="navbar-nav mr-auto">
+         <button type="button" class="btn-close" data-bs-toggle="collapse" data-bs-target="#navList" aria-controls="navList" aria-label="Close Navigation"></button>
+         <ul class="navbar-nav mr-auto align-items-center">
             <li class="nav-item active">
                <a class="nav-link" href="#dashboard">
-                  <i class="fa-solid fa-gauge-high"></i>&emsp;My Dashboard
+                  <i class="fa-solid fa-gauge-high">&emsp;</i>My Dashboard
                </a>
             </li>
 
             <li class="nav-item">
                <a class="nav-link" href="#daily">
-                  <i class="fa-solid fa-calendar-day"></i>&emsp;Daily Does Sudoku
+                  <i class="fa-solid fa-calendar-day">&emsp;</i>Daily Does Sudoku
                </a>
             </li>
 
             <li class="nav-item">
                <a class="nav-link" href="#select">
-                  <i class="fa-solid fa-grip"></i>&emsp;Select Level
+                  <i class="fa-solid fa-grip">&emsp;</i>Select Level
                </a>
             </li>
 
             <li class="nav-item">
                <a class="nav-link" href="#about">
-                  <i class="fa-solid fa-circle-info"></i>&emsp;About Us
+                  <i class="fa-solid fa-circle-info">&emsp;</i>About Us
                </a>
             </li>
+            <li class="nav-item h-25 d-flex">
+               <button class="btn btn-lg btn-outline-danger mt-auto">
+                  <i class="fa-solid fa-power-off">&emsp;</i>Log Out
+               </button>
+            </li>
+            <li class="nav-item">
+               <a class="btn btn-link">Admin Panel</a>
+            </li>
          </ul>
-
-         <div class="d-flex flex-column">
-            <button class="btn btn-lg btn-outline-danger">
-               <i class="fa-solid fa-power-off"></i>&emsp;Log Out
-            </button>
-            <button class="btn btn-link">Admin Panel</button>
-         </div>
       </div>
    </nav>
 
