@@ -159,7 +159,7 @@
          <h6 class="text-secondary fw-light">Welcome back! Ready for another puzzle?</h6>
       </div>
 
-      <form action="post" id="loginForm">
+      <form method="get" id="loginForm">
 
          <div class="d-flex flex-column text-start gap-1">
             <label for="username" class="mt-2 fw-normal">Username</label>
@@ -186,7 +186,37 @@
       
    </section>
 
-   <section id="register"></section>
+
+   <section class="d-flex flex-column justify-content-center gap-4 text-center" id="register">
+      <div class="d-flex flex-column gap-1" id="registerTitle">
+         <i class="fa-solid fa-otter"></i>
+         <h1>Create New Account</h1>
+         <h6 class="text-secondary fw-light">Join us for free Sudoku Puzzles!</h6>
+      </div>
+      
+      <form method="post" id="registerForm">
+      
+         <div class="d-flex flex-column text-start gap-1">
+            <label class="mt-2 fw-normal">Username&nbsp;<span class="text-danger">*</span></label>
+            <input type="text" name="register-username" class="border border-dark-subtle rounded" placeholder="Enter your username">
+            <label class="mt-2 fw-normal">Password&nbsp;<span class="text-danger">*</span></label>
+            <input type="password" name="register-password" class="border border-dark-subtle rounded"
+               placeholder="Enter your password">
+            <label class="mt-2 fw-normal">Repeat Password&nbsp;<span class="text-danger">*</span></label>
+            <input type="password" name="register-repeat" class="border border-dark-subtle rounded" placeholder="Repeat your password">
+            
+            <span class="text-danger" id="registerErr">${error msg}</span>
+         </div>
+      
+         <div class="row gy-3 mt-4">
+            <div class="col-12">
+               <button class="btn btn-success w-100">Get Started</button>
+            </div>
+         </div>
+      </form>
+      
+      <span>Already have an account?&emsp;<a href="#login">Log in</a></span>
+   </section>
 
    <section id="settingUp"></section>
 

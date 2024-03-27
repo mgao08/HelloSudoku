@@ -119,7 +119,7 @@ footer {
 }
 
 /** Login & Register */
-#login {
+#login, #register {
    position: fixed;
    top: 0;
    width: 100vw;
@@ -130,12 +130,13 @@ footer {
    padding: 10vh 1em;
 }
 
-#login form {
+#loginForm, #registerForm {
+   width: 100%;
    max-width: 500px;
    margin: 0 auto;
 }
 
-#loginTitle i {
+#loginTitle i, #registerTitle i {
    font-size: 60px;
    color: var(--success-link);
    margin-bottom: 30px;
@@ -150,9 +151,10 @@ input[type='password'] {
    color: var(--bs-dark-subtle);    /** same color as the border */
 }
 
-#login a {
+#login a, #register a {
    color: var(--success-link);
 }
+
 
 /** Large screen size */
 @media screen and (min-width: 1200px){

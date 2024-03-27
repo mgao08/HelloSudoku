@@ -13,8 +13,10 @@ window.onload = () => {
          /** Used setAttribute cuz need to overwrite important */
    });
 
-   let login  = document.getElementById("login");
-   login.setAttribute('style', 'display: flex !important');
+   let login = document.getElementById("login");
+   // login.setAttribute('style', 'display: flex !important');
+   let register = document.getElementById("register");
+   register.setAttribute('style', 'display: flex !important');
 };
 
 })();
