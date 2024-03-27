@@ -118,6 +118,38 @@ footer {
    font-size: small;
 }
 
+/** Login & Register */
+#login {
+   position: fixed;
+   top: 0;
+   width: 100vw;
+   height: 100vh;
+   background-color: var(--bs-white);
+   z-index: 3;
+
+   padding: 10vh 1em;
+}
+
+#login form {
+   max-width: 500px;
+   margin: 0 auto;
+}
+
+#loginTitle i {
+   font-size: 60px;
+   color: var(--success-link);
+   margin-bottom: 30px;
+}
+
+input[type='text'],
+input[type='password'] {
+   height: 40px;
+   padding-left: 10px;
+}
+
+#login a {
+   color: var(--success-link);
+}
 
 /** Large screen size */
 @media screen and (min-width: 1200px){
