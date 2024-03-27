@@ -156,16 +156,16 @@
       <div class="d-flex flex-column gap-1" id="loginTitle">
          <i class="fa-solid fa-otter"></i>
          <h1>Login To Hello! Sudoku!</h1>
-         <h6 class="text-secondary">Welcome back! Ready for another puzzle?</h6>
+         <h6 class="text-secondary fw-light">Welcome back! Ready for another puzzle?</h6>
       </div>
 
       <form action="post" id="loginForm">
 
          <div class="d-flex flex-column text-start gap-1">
-            <label for="username">Username</label>
-            <input type="text" name="username" class="border border-subtle rounded" placeholder="Enter your username">
-            <label for="password">Password</label>
-            <input type="password" name="password" class="border border-subtle rounded" placeholder="Enter your password">
+            <label for="username" class="mt-2 fw-normal">Username</label>
+            <input type="text" name="username" class="border border-dark-subtle rounded" placeholder="Enter your username">
+            <label for="password" class="mt-2 fw-normal">Password</label>
+            <input type="password" name="password" class="border border-dark-subtle rounded" placeholder="Enter your password">
             <span class="text-danger" id="loginErr">${error msg}</span>
          </div>
 

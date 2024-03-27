@@ -145,6 +145,9 @@ input[type='text'],
 input[type='password'] {
    height: 40px;
    padding-left: 10px;
+
+   font-weight: light;
+   color: var(--bs-dark-subtle);    /** same color as the border */
 }
 
 #login a {
