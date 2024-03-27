@@ -1,8 +1,20 @@
 // IIFE
 (() => {
 
+// general use modal toggler
 
-
+// collection of setup statements that needs to be run onload
+const setup = () => {
+   // prevent form button from submitting onclick
+   let modalTrigger = document.querySelector('#registerBtn');
+   modalTrigger.onclick = (evt) => {
+      evt.preventDefault();
+   };
+   let registerBtn = document.querySelector('#continueRegister');
+   registerBtn.onclick = () => {
+      console.log("Continue with register process");
+   }
+}
 
 
 window.onload = () => {
@@ -17,6 +29,8 @@ window.onload = () => {
    // login.setAttribute('style', 'display: flex !important');
    let register = document.getElementById("register");
    register.setAttribute('style', 'display: flex !important');
+
+   setup();
 };
 
 })();
