@@ -79,19 +79,19 @@
                <button type="button" class="btn-close" data-bs-toggle="collapse" data-bs-target="#navList" aria-controls="navList" aria-label="Close Navigation"></button>
                <ul class="navbar-nav mr-auto align-items-center">
                   <li class="nav-item active">
-                     <a class="nav-link" href="#dashboard">
+                     <a class="nav-link sectionLink" href="#dashboard">
                         My Dashboard&emsp;<i class="fa-solid fa-gauge-high"></i>
                      </a>
                   </li>
 
                   <li class="nav-item">
-                     <a class="nav-link" href="#daily">
+                     <a class="nav-link sectionLink" href="#daily">
                         Daily Does Sudoku&emsp;<i class="fa-solid fa-calendar-day"></i>
                      </a>
                   </li>
 
                   <li class="nav-item">
-                     <a class="nav-link" href="#select">
+                     <a class="nav-link sectionLink" href="#select">
                         Select Level&emsp;<i class="fa-solid fa-grip"></i>
                      </a>
                   </li>
@@ -102,12 +102,12 @@
                      </a>
                   </li>
                   <li class="nav-item w-100 d-flex flex-grow-1">
-                     <button class="btn btn-outline-danger mt-auto mx-auto" id="logout">
+                     <button class="btn btn-outline-danger mt-auto mx-auto sectionLink" id="logout">
                         <i class="fa-solid fa-power-off">&emsp;</i>Log Out
                      </button>
                   </li>
                   <li class="nav-item w-100 text-center">
-                     <a class="btn btn-link" id="admin">Admin Panel</a>
+                     <a class="nav-link sectionLink text-decoration-underline">Admin Panel</a>
                   </li>
                </ul>
             </div>
@@ -150,19 +150,19 @@
             <div class="d-flex flex-column mt-auto text-center" id="suggestions">
                <span>Getting bored? Start solving puzzles!</span>
                <div class="d-flex flex-row">
-                  <a href="#daily">Daily Sudoku Puzzle</a>
+                  <a class="sectionLink">Daily Sudoku Puzzle</a>
                   &ensp;Or&ensp;
-                  <a href="#selectLevel">Select A Level</a>
+                  <a class="sectionLink">Select A Level</a>
                </div>
             </div>
 
          </section>
 
-         <section class="flex-grow-1" id="gamePane"></section>
+         <section class="flex-grow-1" id="gamePane">gamePane</section>
 
-         <section class="flex-grow-1" id="selectLevel"></section>
+         <section class="flex-grow-1" id="selectLevel">selectLevel</section>
 
-         <section class="flex-grow-1" id="admin"></section>
+         <section class="flex-grow-1" id="admin">admin</section>
 
          <footer class="text-center z-1">
             <!-- TODO: use JS to setup width for footer while activating sections -->
@@ -208,7 +208,7 @@
          </div>
       </form>
 
-      <span>Don't have an account?&emsp;<a href="#register">Register Now</a></span>
+      <span>Don't have an account?&emsp;<a class="sectionLink">Register Now</a></span>
       
    </section>
 
@@ -243,7 +243,7 @@
          </div>
       </form>
       
-      <span>Already have an account?&emsp;<a href="#login">Log in</a></span>
+      <span>Already have an account?&emsp;<a class="sectionLink">Log in</a></span>
 
       <!-- Terms & Policy Modal
       <div class="modal fade" id="policy" tabindex="-1" data-backdrop="false">
