@@ -1,6 +1,15 @@
 // IIFE
 (() => {
 
+// setup active nav link visual effects
+const setActiveNavlink = (name) => {
+   let navlinks = document.querySelectorAll('.nav-link');
+   navlinks.forEach(link => {
+      link.innerText.toLowerCase().includes(name) ?
+         link.parentNode.classList.add('active') : link.parentNode.classList.remove('active');
+   });
+};
+
 // switch section function
 const toSection = (text) => {
    let sections = document.querySelectorAll('section');
@@ -11,15 +20,24 @@ const toSection = (text) => {
 
    let dest = text.toLowerCase();
    if (dest.includes("dashboard")) {
-      dest = "dashBoard";  /** corresponding id */
+      dest = "dashboard";  /** corresponding id */
+      setActiveNavlink('dashboard');
+
    } else if (dest.includes("daily")) {
       dest = "gamePane";
+      setActiveNavlink('daily');
+
    } else if (dest.includes("select")) {
       dest = "selectLevel";
+      setActiveNavlink('select');
+
    } else if (dest.includes("register")) {
       dest = "register";
+
    } else if (dest.includes("admin")) {
       dest = "admin";
+      setActiveNavlink('admin');
+
    } else {
       dest = "login";
    }
