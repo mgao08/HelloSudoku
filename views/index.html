@@ -20,6 +20,32 @@
 <body>
 
 <div class="container-fluid p-0" id="outer-most">
+   <!-- Modals need to be at top otherwise might cause error -->
+
+   <!-- Terms & Policy Modal -->
+   <div class="modal fade" id="policy" tabindex="-1" data-backdrop="false">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title">Terms & Policy</h5>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               <p>Our Terms & Policy contents will goes here</p>
+               <ul>
+                  <li>Item 1</li>
+                  <li>Item 2</li>
+                  <li>Item 3</li>
+               </ul>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+               <button type="button" class="btn btn-success" id="continueRegister" data-bs-dismiss="modal">Continue</button>
+            </div>
+         </div>
+      </div>
+   </div>
+
 
    <!-- Dark green banner on top (visible only under large screen size) -->
    <div class="row text-white text-center py-2 h6 mb-0" id="top-banner">
@@ -53,19 +79,19 @@
                <button type="button" class="btn-close" data-bs-toggle="collapse" data-bs-target="#navList" aria-controls="navList" aria-label="Close Navigation"></button>
                <ul class="navbar-nav mr-auto align-items-center">
                   <li class="nav-item active">
-                     <a class="nav-link" href="#dashboard">
+                     <a class="nav-link sectionLink" href="#dashboard">
                         My Dashboard&emsp;<i class="fa-solid fa-gauge-high"></i>
                      </a>
                   </li>
 
                   <li class="nav-item">
-                     <a class="nav-link" href="#daily">
-                        Daily Does Sudoku&emsp;<i class="fa-solid fa-calendar-day"></i>
+                     <a class="nav-link sectionLink" href="#daily">
+                        Daily Sudoku&emsp;<i class="fa-solid fa-calendar-day"></i>
                      </a>
                   </li>
 
                   <li class="nav-item">
-                     <a class="nav-link" href="#select">
+                     <a class="nav-link sectionLink" href="#select">
                         Select Level&emsp;<i class="fa-solid fa-grip"></i>
                      </a>
                   </li>
@@ -76,12 +102,12 @@
                      </a>
                   </li>
                   <li class="nav-item w-100 d-flex flex-grow-1">
-                     <button class="btn btn-outline-danger mt-auto mx-auto" id="logout">
+                     <button class="btn btn-outline-danger mt-auto mx-auto sectionLink" id="logout">
                         <i class="fa-solid fa-power-off">&emsp;</i>Log Out
                      </button>
                   </li>
                   <li class="nav-item w-100 text-center">
-                     <a class="btn btn-link" id="admin">Admin Panel</a>
+                     <a class="nav-link sectionLink text-decoration-underline">Admin Panel</a>
                   </li>
                </ul>
             </div>
@@ -91,7 +117,7 @@
       <!-- Sections -->
       <div class="col-lg-10 col-md-12 p-0 d-flex flex-column" id="contentBox">
 
-         <section class="flex-grow-1 d-flex flex-column align-items-center" id="dashBoard">
+         <section class="flex-grow-1 d-flex flex-column align-items-center" id="dashboard">
             <!-- Avatar -->
             <div class="d-flex flex-column align-items-center" id="avatar">
                <div id="avatarBorder">    <!-- the outer border of avatar (visual effects only) -->
@@ -124,22 +150,21 @@
             <div class="d-flex flex-column mt-auto text-center" id="suggestions">
                <span>Getting bored? Start solving puzzles!</span>
                <div class="d-flex flex-row">
-                  <a href="#daily">Daily Sudoku Puzzle</a>
+                  <a class="sectionLink">Daily Sudoku Puzzle</a>
                   &ensp;Or&ensp;
-                  <a href="#selectLevel">Select A Level</a>
+                  <a class="sectionLink">Select A Level</a>
                </div>
             </div>
 
          </section>
 
-         <section class="flex-grow-1" id="gamePane"></section>
+         <section class="flex-grow-1" id="gamePane">gamePane</section>
 
-         <section class="flex-grow-1" id="selectLevel"></section>
+         <section class="flex-grow-1" id="selectLevel">selectLevel</section>
 
-         <section class="flex-grow-1" id="admin"></section>
+         <section class="flex-grow-1" id="admin">admin</section>
 
          <footer class="text-center z-1">
-            <!-- TODO: use JS to setup width for footer while activating sections -->
             <hr>
             <kbd class="bg-secondary">&copy;Copyright 2024. CPSC 2600 - Group #</kbd>
          </footer>
@@ -150,11 +175,123 @@
    <!-------------------------------------------------------------------------->
 
    <!-- Full screen sections -->
-   <section id="entry"></section>
+   <section class="d-flex flex-column gap-5 text-center" id="entry">
+      <div class="d-flex flex-column gap-3" id="entryTitle">
+         <i class="fa-solid fa-otter"></i>
+         <h1>Hello! Sudoku!</h1>
+      </div>
 
-   <section id="login"></section>
+      <p class="text-secondary">
+         A free Sudoku web application which allows you to enjoy Sudoku puzzle anywhere, anytime.
+      </p>
 
-   <section id="register"></section>
+      <div class="d-flex flex-column flex-grow-1 justify-content-center gap-3">
+         <button class="btn btn-lg btn-success sectionLink">
+            <i class="fa-solid fa-paper-plane"></i>
+            &ensp;Register Now
+         </button>
+         <span class="text-secondary">Already have an account?&ensp;
+            <a class="sectionLink text-success">Log in</a>
+         </span>
+      </div>
+
+      <footer class="text-center z-1">
+         <hr>
+         <kbd class="bg-secondary">&copy;Copyright 2024. CPSC 2600 - Group #</kbd>
+      </footer>
+   </section>
+
+   <section class="d-flex flex-column justify-content-center gap-4 text-center" id="login">
+      <div class="d-flex flex-column gap-1" id="loginTitle">
+         <i class="fa-solid fa-otter"></i>
+         <h1>Login To Hello! Sudoku!</h1>
+         <h6 class="text-secondary fw-light">Welcome back! Ready for another puzzle?</h6>
+      </div>
+
+      <form id="loginForm">
+
+         <div class="d-flex flex-column text-start gap-1">
+            <label for="username" class="mt-2 fw-normal">Username</label>
+            <input type="text" name="username" class="border border-dark-subtle rounded" placeholder="Enter your username">
+            <label for="password" class="mt-2 fw-normal">Password</label>
+            <input type="password" name="password" class="border border-dark-subtle rounded" placeholder="Enter your password">
+            <span class="text-danger" id="loginErr">${error msg}</span>
+         </div>
+
+         <div class="row gy-3 mt-4">
+            <div class="col-6 text-start">
+               <input type="checkbox">&ensp;Remember Me
+            </div>
+            <div class="col-6 text-end">
+               <a href="#">Forgot Password</a>
+            </div>
+            <div class="col-12">
+               <button class="btn btn-success w-100" id="loginBtn">Sign in</button>
+            </div>
+         </div>
+      </form>
+
+      <span>Don't have an account?&emsp;<a class="sectionLink">Register Now</a></span>
+      
+   </section>
+
+
+   <section class="d-flex flex-column justify-content-center gap-4 text-center" id="register">
+      <div class="d-flex flex-column gap-1" id="registerTitle">
+         <i class="fa-solid fa-otter"></i>
+         <h1>Create New Account</h1>
+         <h6 class="text-secondary fw-light">Join us for free Sudoku Puzzles!</h6>
+      </div>
+      
+      <form id="registerForm">
+      
+         <div class="d-flex flex-column text-start gap-1">
+            <label class="mt-2 fw-normal">Username&nbsp;<span class="text-danger">*</span></label>
+            <input type="text" name="register-username" class="border border-dark-subtle rounded" placeholder="Enter your username">
+            <label class="mt-2 fw-normal">Password&nbsp;<span class="text-danger">*</span></label>
+            <input type="password" name="register-password" class="border border-dark-subtle rounded"
+               placeholder="Enter your password">
+            <label class="mt-2 fw-normal">Repeat Password&nbsp;<span class="text-danger">*</span></label>
+            <input type="password" name="register-repeat" class="border border-dark-subtle rounded" placeholder="Repeat your password">
+            
+            <span class="text-danger" id="registerErr">${error msg}</span>
+         </div>
+      
+         <div class="row gy-3 mt-4">
+            <div class="col-12">
+               <button class="btn btn-success w-100" id="registerBtn" data-bs-toggle="modal" data-bs-target="#policy">
+                  Get Started
+               </button>
+            </div>
+         </div>
+      </form>
+      
+      <span>Already have an account?&emsp;<a class="sectionLink">Log in</a></span>
+
+      <!-- Terms & Policy Modal
+      <div class="modal fade" id="policy" tabindex="-1" data-backdrop="false">
+         <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title">Terms & Policy</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body">
+                  <p>Our Terms & Policy contents will goes here</p>
+                  <ul>
+                     <li>Item 1</li>
+                     <li>Item 2</li>
+                     <li>Item 3</li>
+                  </ul>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-success">Continue</button>
+               </div>
+            </div>
+         </div>
+      </div> -->
+   </section>
 
    <section id="settingUp"></section>
 

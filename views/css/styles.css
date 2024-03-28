@@ -27,7 +27,7 @@ body {
    top: 0px;
    left: 0px;
    width: 100vw;
-   height: calc(100vh - 35px);   /** minus height of top-banner */
+   height: 100vh;
 
    padding: 12vh;
    background-color: var(--bs-white);
@@ -55,6 +55,11 @@ body {
    text-decoration: underline;
 }
 
+a:hover {
+   /** to fix some random cursor display issue */
+   cursor: pointer;
+}
+
 #logout {
    width: 170px;
 }
@@ -66,7 +71,7 @@ body {
 }
 
 /** Dashboard settings */
-#dashBoard {
+#dashboard {
    padding: 0;
 }
 
@@ -99,7 +104,7 @@ body {
    font-weight: bold;
 }
 
-#dashBoard p {
+#dashboard p {
    font-weight: normal;
 }
 
@@ -114,10 +119,76 @@ body {
 
 footer {
    width: 90%;
-   margin: auto;
+   margin: 0 auto 1em auto;
    font-size: small;
 }
 
+/** Login & Register */
+#login, #register {
+   position: fixed;
+   top: 0;
+   width: 100vw;
+   height: 100vh;
+   background-color: var(--bs-white);
+   z-index: 3;
+
+   padding: 10vh 1em;
+}
+
+#loginForm, #registerForm {
+   width: 100%;
+   max-width: 500px;
+   margin: 0 auto;
+}
+
+#loginTitle i, #registerTitle i {
+   font-size: 60px;
+   color: var(--success-link);
+   margin-bottom: 30px;
+}
+
+input[type='text'],
+input[type='password'] {
+   height: 40px;
+   padding-left: 10px;
+
+   font-weight: light;
+   color: var(--bs-dark-subtle);    /** same color as the border */
+}
+
+#login a, #register a {
+   color: var(--success-link);
+}
+
+/** Entry page */
+#entry {
+   position: fixed;
+   width: 100vw;
+   height: 100vh;
+   top: 0;
+   left: 0;
+   z-index: 2;
+
+   background-color: var(--bs-white);
+   padding-top: 22vh;
+}
+
+#entryTitle {
+   color: var(--success-link);
+}
+
+#entryTitle i {
+   font-size: 80px;
+}
+
+#entry div, #entry p {
+   max-width: 375px;
+   margin: 0 auto;
+}
+
+#entry span {
+   font-size: small;
+}
 
 /** Large screen size */
 @media screen and (min-width: 1200px){
@@ -143,6 +214,7 @@ footer {
    #navList {
       position: relative;
       width: 100%;
+      height: calc(100vh - 35px);   /** minus height of top-banner */
 
       padding-left: 0;
       padding-right: 0;
@@ -187,7 +259,7 @@ footer {
    }
 
    /** Dashboard settings */
-   #dashBoard {
+   #dashboard {
       max-width: 800px;
       margin: auto;
    }
