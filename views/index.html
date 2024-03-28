@@ -165,7 +165,6 @@
          <section class="flex-grow-1" id="admin">admin</section>
 
          <footer class="text-center z-1">
-            <!-- TODO: use JS to setup width for footer while activating sections -->
             <hr>
             <kbd class="bg-secondary">&copy;Copyright 2024. CPSC 2600 - Group #</kbd>
          </footer>
@@ -176,7 +175,31 @@
    <!-------------------------------------------------------------------------->
 
    <!-- Full screen sections -->
-   <section id="entry"></section>
+   <section class="d-flex flex-column gap-5 text-center" id="entry">
+      <div class="d-flex flex-column gap-3" id="entryTitle">
+         <i class="fa-solid fa-otter"></i>
+         <h1>Hello! Sudoku!</h1>
+      </div>
+
+      <p class="text-secondary">
+         A free Sudoku web application which allows you to enjoy Sudoku puzzle anywhere, anytime.
+      </p>
+
+      <div class="d-flex flex-column flex-grow-1 justify-content-center gap-3">
+         <button class="btn btn-lg btn-success sectionLink">
+            <i class="fa-solid fa-paper-plane"></i>
+            &ensp;Register Now
+         </button>
+         <span class="text-secondary">Already have an account?&ensp;
+            <a class="sectionLink text-success">Log in</a>
+         </span>
+      </div>
+
+      <footer class="text-center z-1">
+         <hr>
+         <kbd class="bg-secondary">&copy;Copyright 2024. CPSC 2600 - Group #</kbd>
+      </footer>
+   </section>
 
    <section class="d-flex flex-column justify-content-center gap-4 text-center" id="login">
       <div class="d-flex flex-column gap-1" id="loginTitle">

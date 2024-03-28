@@ -119,7 +119,7 @@ a:hover {
 
 footer {
    width: 90%;
-   margin: auto;
+   margin: 0 auto 1em auto;
    font-size: small;
 }
 
@@ -160,6 +160,35 @@ input[type='password'] {
    color: var(--success-link);
 }
 
+/** Entry page */
+#entry {
+   position: fixed;
+   width: 100vw;
+   height: 100vh;
+   top: 0;
+   left: 0;
+   z-index: 2;
+
+   background-color: var(--bs-white);
+   padding-top: 22vh;
+}
+
+#entryTitle {
+   color: var(--success-link);
+}
+
+#entryTitle i {
+   font-size: 80px;
+}
+
+#entry div, #entry p {
+   max-width: 375px;
+   margin: 0 auto;
+}
+
+#entry span {
+   font-size: small;
+}
 
 /** Large screen size */
 @media screen and (min-width: 1200px){

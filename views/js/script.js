@@ -38,6 +38,9 @@ const toSection = (text) => {
       dest = "admin";
       setActiveNavlink('admin');
 
+   } else if (dest.includes("entry") || dest.includes("log out")) {
+      dest = "entry";
+
    } else {
       dest = "login";
    }
@@ -100,7 +103,7 @@ const setup = () => {
 window.onload = () => {
 
    setup();
-   toSection('login');
+   toSection('entry');
 };
 
 })();
