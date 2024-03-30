@@ -149,7 +149,7 @@ footer {
 
 input[type='text'],
 input[type='password'] {
-   height: 40px;
+   height: 2.3em;
    padding-left: 10px;
 
    font-weight: light;
@@ -303,5 +303,9 @@ input[type='password'] {
 @media screen and (min-width: 1500px) {
    body {
       font-size: x-large;
+   }
+
+   #admin {
+      max-width: 600px;
    }
 }
