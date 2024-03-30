@@ -190,6 +190,29 @@ input[type='password'] {
    font-size: small;
 }
 
+/** Admin Panel */
+#admin {
+   width: 90vw;
+   margin: auto;
+   align-items: center;
+   justify-content: center;
+}
+
+#searchBar {
+   width: 100%;
+}
+
+#searchBar input {
+   width: 100%;
+}
+
+#toggleResult {
+   margin-top: 20vh;
+
+}
+
+
+
 /** Large screen size */
 @media screen and (min-width: 1200px){
    body {
@@ -267,6 +290,11 @@ input[type='password'] {
    #avatar {
       height: auto;
       margin-bottom: 1em;
+   }
+
+   /** Admin Panel */
+   #admin {
+      max-width: 400px;
    }
 
 }

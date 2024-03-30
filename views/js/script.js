@@ -54,7 +54,7 @@ const toSection = (text) => {
 };
 
 
-// login function
+// TODO: login function
 const loginWith = (dummy) => {
    // Append login functions here
 
@@ -63,7 +63,7 @@ const loginWith = (dummy) => {
 }
 
 
-// register function
+// TODO: register function
 const registerWith = (dummy) => {
    // Append login functions here
 
@@ -93,13 +93,28 @@ const setup = () => {
    registerBtn.onclick = (evt) => {
       evt.preventDefault();
       registerWith('dummy data');
-   }
+   };
 
    let loginBtn = document.querySelector('#loginBtn');
    loginBtn.onclick = (evt) => {
       evt.preventDefault();
       loginWith('dummy data');
    };
+
+   // Toggle admin search result display & button transform
+   let resultToggle = document.querySelector('#toggleResult');
+   resultToggle.onclick = () => {
+      let status = resultToggle.ariaExpanded;
+      /** aria-expanded value is string, NOT boolean */
+      if (status == "true") {
+         resultToggle.style.cssText = 'background-color: var(--bs-white); color: var(--bs-success); margin-top: 0;';
+         resultToggle.innerText = "Hide Result";
+
+      } else if (status == "false") {
+         resultToggle.style.cssText = 'background-color: var(--bs-success); color: var(--bs-white); margin-top: 20vh;';
+         resultToggle.innerText = "Display Result";
+      }
+   }
 };
 
 
