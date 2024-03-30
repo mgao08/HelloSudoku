@@ -19,6 +19,7 @@ const toSection = (text) => {
    });
 
    let dest = text.toLowerCase();
+   console.log(dest);
    if (dest.includes("dashboard")) {
       dest = "dashboard";  /** corresponding id */
       setActiveNavlink('dashboard');
@@ -53,7 +54,7 @@ const toSection = (text) => {
 };
 
 
-// login function
+// TODO: login function
 const loginWith = (dummy) => {
    // Append login functions here
 
@@ -62,12 +63,31 @@ const loginWith = (dummy) => {
 }
 
 
-// register function
+// TODO: register function
 const registerWith = (dummy) => {
    // Append login functions here
 
 
    loginWith('auto login with new username & password');
+}
+
+// TODO: admin functions
+const adminControl = (cmd) => {
+   switch (cmd) {
+      case 'role':
+         alert('Change role of users and update database');
+         break;
+
+      case 'export':
+         alert('Export user data as json(or whatever) format');
+         break;
+
+      case 'delete':
+         alert('Delete user from database & logout');
+         break;
+
+      default:;
+   }
 }
 
 
@@ -89,14 +109,39 @@ const setup = () => {
 
    // login & register event handlers
    let registerBtn = document.querySelector('#continueRegister');
-   registerBtn.onclick = () => {
+   registerBtn.onclick = (evt) => {
+      evt.preventDefault();
       registerWith('dummy data');
-   }
+   };
 
    let loginBtn = document.querySelector('#loginBtn');
-   loginBtn.onclick = () => {
+   loginBtn.onclick = (evt) => {
+      evt.preventDefault();
       loginWith('dummy data');
    };
+
+   // Toggle admin search result display & button transform
+   let resultToggle = document.querySelector('#toggleResult');
+   resultToggle.onclick = () => {
+      let status = resultToggle.ariaExpanded;
+      /** aria-expanded value is string, NOT boolean */
+      if (status == "true") {
+         resultToggle.style.cssText = 'background-color: var(--bs-white); color: var(--bs-success); margin-top: 0;';
+         resultToggle.innerText = "Hide Result";
+
+      } else if (status == "false") {
+         resultToggle.style.cssText = 'background-color: var(--bs-success); color: var(--bs-white); margin-top: 20vh;';
+         resultToggle.innerText = "Display Result";
+      }
+   }
+
+   // Event Listeners for admin user control buttons
+   let changeRole = document.getElementById('changeRole');
+   changeRole.onclick = () => {adminControl('role')};
+   let exportData = document.getElementById('exportData');
+   exportData.onclick = () => {adminControl('export')};
+   let deleteUser = document.getElementById('deleteUser');
+   deleteUser.onclick = () => {adminControl('delete')};
 };
 
 

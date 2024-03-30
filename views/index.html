@@ -162,7 +162,46 @@
 
          <section class="flex-grow-1" id="selectLevel">selectLevel</section>
 
-         <section class="flex-grow-1" id="admin">admin</section>
+         <section class="flex-grow-1 d-flex flex-column gap-4" id="admin">
+            <div class="d-flex flex-column align-items-center gap-3" id="searchBar">
+               <label class="h3" for="searchUsername"><i class="fa-solid fa-magnifying-glass"></i>&ensp;Search For User</label>
+               <input type="text" name="searchUsername" class="border border-dark-subtle rounded" placeholder="Enter username">
+            </div>
+
+            <div class="collapse" id="searchResult">
+               <!-- collapse wrapper to prevent jumpy collapse animation -->
+               <div class="card">
+                  <div class="card-header h4">${username}</div>
+               
+                  <div class="card-body">
+                     <div class="card-title fw-bold">
+                        Role: Member<br>
+                        Last logged in: March 19th, 2024
+                     </div>
+               
+                     <div class="card-text fs-small">
+                        Registered since: March 19th, 2024<br>
+                        Highest score: 123456<br>
+                        Levels passed: 88<br>
+                        Levels passed past week: 13<br>
+                        Average time each puzzle: 1:28:37
+                     </div>
+                  </div>
+               
+                  <div class="card-footer">
+                     <div class="d-flex flex-row gap-2">
+                        <button class="btn btn-warning btn-md flex-fill" id="changeRole">Change Role</button>
+                        <button class="btn btn-primary btn-sm flex-fill" id="exportData">Export Data</button>
+                        <button class="btn btn-danger btn-sm flex-fill" id="deleteUser">Delete User</button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            <button class="btn btn-success btn-lg" id="toggleResult" data-bs-toggle="collapse" data-bs-target="#searchResult" aria-expanded="false" aria-controls="searchResult">
+               Display Result
+            </button>
+         </section>
 
          <footer class="text-center z-1">
             <hr>
@@ -308,4 +347,5 @@
 </div>   <!-- End outer-most container -->
 
 </body>
+
 </html>
