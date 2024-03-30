@@ -170,7 +170,7 @@
 
             <div class="collapse" id="searchResult">
                <!-- collapse wrapper to prevent jumpy collapse animation -->
-               <div class="card w-100">
+               <div class="card">
                   <div class="card-header h4">${username}</div>
                
                   <div class="card-body">
@@ -190,9 +190,9 @@
                
                   <div class="card-footer">
                      <div class="d-flex flex-row gap-2">
-                        <button class="btn btn-warning btn-md flex-fill">Change Role</button>
-                        <button class="btn btn-primary btn-sm flex-fill">Export Data</button>
-                        <button class="btn btn-danger btn-sm flex-fill">Delete User</button>
+                        <button class="btn btn-warning btn-md flex-fill" id="changeRole">Change Role</button>
+                        <button class="btn btn-primary btn-sm flex-fill" id="exportData">Export Data</button>
+                        <button class="btn btn-danger btn-sm flex-fill" id="deleteUser">Delete User</button>
                      </div>
                   </div>
                </div>
@@ -347,20 +347,5 @@
 </div>   <!-- End outer-most container -->
 
 </body>
-
-<!-- Testing purpose only (Delete after testing) -->
-<script>
-
-   setTimeout(() => {
-      let sections = document.querySelectorAll('section');
-      sections.forEach(section => {
-         section.setAttribute('style', 'display: none !important');
-      });
-
-      let admin = document.querySelector('#admin');
-      admin.setAttribute('style', 'display: flex !important');
-   }, 5e2);
-
-</script>
 
 </html>

@@ -71,6 +71,25 @@ const registerWith = (dummy) => {
    loginWith('auto login with new username & password');
 }
 
+// TODO: admin functions
+const adminControl = (cmd) => {
+   switch (cmd) {
+      case 'role':
+         alert('Change role of users and update database');
+         break;
+
+      case 'export':
+         alert('Export user data as json(or whatever) format');
+         break;
+
+      case 'delete':
+         alert('Delete user from database & logout');
+         break;
+
+      default:;
+   }
+}
+
 
 // collection of setup statements that needs to be run onload
 const setup = () => {
@@ -115,6 +134,14 @@ const setup = () => {
          resultToggle.innerText = "Display Result";
       }
    }
+
+   // Event Listeners for admin user control buttons
+   let changeRole = document.getElementById('changeRole');
+   changeRole.onclick = () => {adminControl('role')};
+   let exportData = document.getElementById('exportData');
+   exportData.onclick = () => {adminControl('export')};
+   let deleteUser = document.getElementById('deleteUser');
+   deleteUser.onclick = () => {adminControl('delete')};
 };
 
 
