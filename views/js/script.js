@@ -19,6 +19,7 @@ const toSection = (text) => {
    });
 
    let dest = text.toLowerCase();
+   console.log(dest);
    if (dest.includes("dashboard")) {
       dest = "dashboard";  /** corresponding id */
       setActiveNavlink('dashboard');
@@ -89,12 +90,14 @@ const setup = () => {
 
    // login & register event handlers
    let registerBtn = document.querySelector('#continueRegister');
-   registerBtn.onclick = () => {
+   registerBtn.onclick = (evt) => {
+      evt.preventDefault();
       registerWith('dummy data');
    }
 
    let loginBtn = document.querySelector('#loginBtn');
-   loginBtn.onclick = () => {
+   loginBtn.onclick = (evt) => {
+      evt.preventDefault();
       loginWith('dummy data');
    };
 };
