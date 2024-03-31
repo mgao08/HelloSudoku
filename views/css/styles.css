@@ -273,6 +273,25 @@ input[type='password'] {
    font-size: small;
 }
 
+/** Covers & Masks */
+#settingUp {
+   position: fixed;
+   width: 100vw;
+   height: calc(100vh - 35px);
+   top: 35px;
+   left: 0;
+
+   background-color: var(--bs-white);
+   color: var(--bs-success-text-emphasis);
+
+   z-index: 3;
+}
+
+#settingUp i {
+   font-size: 60px;
+   margin-bottom: 40px;
+}
+
 
 
 /** Large screen size */
