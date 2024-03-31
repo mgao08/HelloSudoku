@@ -215,6 +215,84 @@ input[type='password'] {
 
 }
 
+/** Select Level settings */
+#selectLevel {
+   width: 90vw;
+   margin: auto;
+   justify-content: center;
+   align-items: center;
+}
+
+.levelsGrid {
+   padding: 8% 15% 12% 15%;   /** To prevent overlapping with carousel controllers */
+   border-bottom: 1px solid lightgray;
+}
+
+.levelsGrid a {
+   display: inline-block;
+   height: 100%;
+   aspect-ratio: 1.1 / 1;  /** width:height ratio */
+   padding: 0.7rem;
+   border-radius: 3px;
+}
+
+.levelsGrid a:hover {
+   text-decoration: underline !important;
+   font-weight: 500;
+   box-shadow: 1px 1px 2px lightgray;
+}
+
+#easyGrid {
+   border-top: 2px solid var(--bs-success-border-subtle);
+}
+
+#easyGrid a:hover {
+   color: var(--bs-success-text-emphasis);
+   background-color: var(--success-background);
+}
+
+#mediumGrid {
+   border-top: 2px solid var(--bs-warning-border-subtle);
+}
+
+#mediumGrid a:hover {
+   color: var(--bs-warning-text-emphasis);
+   background-color: var(--bs-warning-bg-subtle);
+}
+
+#hardGrid {
+   border-top: 2px solid var(--bs-danger-border-subtle);
+}
+
+#hardGrid a:hover {
+   color: var(--bs-danger-text-emphasis);
+   background-color: var(--bs-danger-border-subtle);
+}
+
+#selectLevel > span {
+   font-size: small;
+}
+
+/** Covers & Masks */
+#settingUp {
+   display: none !important;
+   position: fixed;
+   width: 100vw;
+   height: calc(100vh - 35px);
+   top: 74px;
+   left: 0;
+
+   background-color: var(--bs-white);
+   color: var(--bs-success-text-emphasis);
+
+   z-index: 3;
+}
+
+#settingUp i {
+   font-size: 60px;
+   margin-bottom: 40px;
+}
+
 
 
 /** Large screen size */
@@ -301,6 +379,16 @@ input[type='password'] {
       max-width: 400px;
    }
 
+   /** Select Level */
+   #selectLevel {
+      max-width: 500px;
+   }
+
+   /** Masks */
+   #settingUp {
+      top: 35px;
+   }
+
 }
 
 /** xxl screen size */
@@ -311,5 +399,16 @@ input[type='password'] {
 
    #admin {
       max-width: 600px;
+   }
+
+   /** Select Level */
+   #selectLevel {
+      max-width: 1000px;
+      font-size: larger;
+   }
+
+   /** Masks */
+   #settingUp {
+      font-size: xx-large;
    }
 }
