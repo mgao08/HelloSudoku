@@ -160,7 +160,48 @@
 
          <section class="flex-grow-1" id="gamePane">gamePane</section>
 
-         <section class="flex-grow-1" id="selectLevel">selectLevel</section>
+         <section class="flex-grow-1 d-flex flex-column gap-4 justify-content-center" id="selectLevel">
+            <div class="carousel carousel-dark slide w-100 text-center" id="levelsCarousel" >
+               <div class="carousel-indicators">
+                  <button type="button" data-bs-target="#levelsCarousel" data-bs-slide-to="0" class="active"
+                     aria-current="true" aria-label="Difficulty: Easy"></button>
+                  <button type="button" data-bs-target="#levelsCarousel" data-bs-slide-to="1"
+                     aria-label="Difficulty: Medium"></button>
+                  <button type="button" data-bs-target="#levelsCarousel" data-bs-slide-to="2"
+                     aria-label="Difficulty: Hard"></button>
+               </div>
+               <div class="carousel-inner">
+                  <div class="carousel-item active">
+                     <h2 class="text-success mb-4"><i class="fa-solid fa-puzzle-piece"></i>&nbsp;Easy</h2>
+                     <div class="row bg-white levelsGrid" id="easyGrid">
+                        <!-- grid inserted by JS-->
+                     </div>
+                  </div>
+                  <div class="carousel-item">
+                     <h2 class="text-warning mb-4"><i class="fa-solid fa-puzzle-piece"></i>&nbsp;Medium</h2>
+                     <div class="row bg-white levelsGrid" id="mediumGrid">
+                        <!-- grid inserted by JS-->
+                     </div>
+                  </div>
+                  <div class="carousel-item">
+                     <h2 class="text-danger mb-4"><i class="fa-solid fa-puzzle-piece"></i>&nbsp;Hard</h2>
+                     <div class="row bg-white levelsGrid" id="hardGrid">
+                        <!-- grid inserted by JS-->
+                     </div>
+                  </div>
+               </div>
+               <button class="carousel-control-prev" type="button" data-bs-target="#levelsCarousel" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+               </button>
+               <button class="carousel-control-next" type="button" data-bs-target="#levelsCarousel" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+               </button>
+            </div>
+
+            <span class="text-secondary">Can't decide? Try <a class="text-success sectionLink">Daily Sudoku Puzzle</a></span>
+         </section>
 
          <section class="flex-grow-1 d-flex flex-column gap-4" id="admin">
             <div class="d-flex flex-column align-items-center gap-3" id="searchBar">

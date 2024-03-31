@@ -19,7 +19,6 @@ const toSection = (text) => {
    });
 
    let dest = text.toLowerCase();
-   console.log(dest);
    if (dest.includes("dashboard")) {
       dest = "dashboard";  /** corresponding id */
       setActiveNavlink('dashboard');
@@ -91,6 +90,47 @@ const adminControl = (cmd) => {
 }
 
 
+// TODO: connect game id with grid cells
+const fillGrid = () => {
+   const ROW_NUM = 5, COL_NUM = 5; /** 5x5 grid */
+   let levelsGrid = document.querySelectorAll('.levelsGrid');
+   levelsGrid.forEach(grid => {
+      for (let r = ROW_NUM; r >= 0; r--) {
+         let row = document.createElement('div');
+         row.classList.add('col-12', 'row', 'm-auto', 'p-0');
+
+         for (let c = COL_NUM; c > 0; c--) {
+            let levelNum = r * ROW_NUM + c;
+            let col = document.createElement('div');
+            col.classList.add('col', 'p-0');
+            let lvlLink = document.createElement('a');
+            lvlLink.innerHTML = `&nbsp;${levelNum}&nbsp;`;
+
+            // TODO: redirecting features goes here
+            lvlLink.onclick = () => {
+               let difficulty = grid.id.toLowerCase();
+               if (difficulty.includes('easy')) {
+                  difficulty = 1;
+               } else if (difficulty.includes('medium')) {
+                  difficulty = 2;
+               } else if (difficulty.includes('hard')) {
+                  difficulty = 3;
+               }
+
+               alert(`Go To Level ${difficulty} - ${levelNum}`);
+            };
+
+            col.append(lvlLink);
+            row.prepend(col);
+         }
+
+         grid.prepend(row);
+      }
+
+   });
+}
+
+
 // collection of setup statements that needs to be run onload
 const setup = () => {
    // setup event listeners for links for section switch
@@ -142,6 +182,9 @@ const setup = () => {
    exportData.onclick = () => {adminControl('export')};
    let deleteUser = document.getElementById('deleteUser');
    deleteUser.onclick = () => {adminControl('delete')};
+
+   // Fill the select levels grids
+   fillGrid();
 };
 
 
