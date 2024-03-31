@@ -117,7 +117,13 @@ const fillGrid = () => {
                   difficulty = 3;
                }
 
-               alert(`Go To Level ${difficulty} - ${levelNum}`);
+               let loading = document.getElementById('settingUp');
+               loading.setAttribute('style', 'display: flex !important;');
+               setTimeout(() => {
+                  loading.setAttribute('style', 'display: none !important;');
+               }, 2e3);
+
+               console.log(`Go To Level ${difficulty} - ${levelNum}`);
             };
 
             col.append(lvlLink);

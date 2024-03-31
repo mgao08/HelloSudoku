@@ -275,10 +275,11 @@ input[type='password'] {
 
 /** Covers & Masks */
 #settingUp {
+   display: none !important;
    position: fixed;
    width: 100vw;
    height: calc(100vh - 35px);
-   top: 35px;
+   top: 74px;
    left: 0;
 
    background-color: var(--bs-white);
@@ -383,6 +384,11 @@ input[type='password'] {
       max-width: 500px;
    }
 
+   /** Masks */
+   #settingUp {
+      top: 35px;
+   }
+
 }
 
 /** xxl screen size */
@@ -399,5 +405,10 @@ input[type='password'] {
    #selectLevel {
       max-width: 1000px;
       font-size: larger;
+   }
+
+   /** Masks */
+   #settingUp {
+      font-size: xx-large;
    }
 }
