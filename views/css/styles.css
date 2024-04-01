@@ -434,10 +434,12 @@ input[type='password'] {
 }
 
 #scoreTime-sm {
+   color: var(--bs-success-text-emphasis);
    display: flex !important;
 }
 
 #scoreTime-lg {
+   color: var(--bs-success-text-emphasis);
    display: none !important;
 }
 
@@ -646,5 +648,15 @@ input[type='password'] {
    /** Game Pane */
    #gamePane {
       max-width: 1400px;
+   }
+
+   #gamePaneGrid button {
+      font-size: x-large;
+   }
+
+   #numberPanel button {
+      max-width: 100px;
+      max-height: 100px;
+      font-size: larger;
    }
 }
