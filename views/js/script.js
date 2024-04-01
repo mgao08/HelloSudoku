@@ -155,11 +155,16 @@ const fillNumberPanel = () => {
          col.classList.add('col-4', 'p-0');
          col.innerHTML = `<button class="btn">${r * COL_NUM + c}</button>`;
          col.onclick = (evt) => {
-            let allNum = document.querySelectorAll('#numberPanel button');
-            allNum.forEach(num => {
-               num.classList.remove("active");
-            });
-            evt.target.classList.add("active");
+            if (evt.target.classList.contains("active")) {
+               evt.target.classList.remove("active");
+               
+            } else {
+               let allNum = document.querySelectorAll('#numberPanel button');
+               allNum.forEach(num => {
+                  num.classList.remove("active");
+               });
+               evt.target.classList.toggle("active");
+            }
          }
          
          row.append(col);
