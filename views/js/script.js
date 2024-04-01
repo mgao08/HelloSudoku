@@ -157,7 +157,7 @@ const fillNumberPanel = () => {
          col.onclick = (evt) => {
             if (evt.target.classList.contains("active")) {
                evt.target.classList.remove("active");
-               
+
             } else {
                let allNum = document.querySelectorAll('#numberPanel button');
                allNum.forEach(num => {
@@ -200,8 +200,13 @@ const fillGamePaneGrid = (gameId) => {
          col.classList.add('col', 'px-0', 'gamePaneCol');
          col.innerHTML = `<button class='btn'>${c+1}</button>`;   // TODO: replace with API data
          col.onclick = (evt) => {
-            setVisualActive(r, c);
-            evt.target.classList.add("active");
+            if (evt.target.classList.contains("active")) {
+               setVisualActive(-1, -1);   // clear all visual effects
+               evt.target.classList.remove("active");
+            } else {
+               setVisualActive(r, c);
+               evt.target.classList.add("active");
+            }
          }
          
          row.append(col);
