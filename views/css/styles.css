@@ -3,6 +3,7 @@
    --success-background: #D1E7DD;
    --success-highlight: #157347;
    --success-border: #BADBCC;
+   --sub-active: rgba(209, 231, 221, 0.3)
 }
 
 /** Mobile first */
@@ -293,6 +294,155 @@ input[type='password'] {
    margin-bottom: 40px;
 }
 
+/** Game pane settings */
+#gamePane {
+   flex-direction: column;
+   width: 90vw;
+   max-width: 600px;
+   margin: auto;
+   padding-top: 1.2em;
+
+   justify-content: space-evenly;
+}
+
+#gamePaneOuterBorder {
+   border: 3px solid var(--bs-success-bg-subtle);
+   border-radius: calc(var(--bs-border-radius) + 0.15rem);
+   box-shadow: 1px 1px 2px lightgray;
+}
+
+#gamePaneOuterBorder + div {
+   align-items: center;
+}
+
+#score, #time {
+   color: var(--bs-success-text-emphasis);
+}
+
+#gamePaneGrid {
+   aspect-ratio: 1 / 1;    /** Square 9x9 pane */
+}
+
+.gamePaneRow {
+   width: 100%;
+   height: 100%;
+
+   border-bottom: .5px solid var(--bs-secondary-border-subtle);
+}
+
+.gamePaneRow:nth-of-type(3n) {
+   border-color: var(--bs-secondary);
+}
+
+.gamePaneRow:last-of-type {
+   border-bottom: none;
+}
+
+.gamePaneCol {
+   border-right: .5px solid var(--bs-secondary-border-subtle);
+}
+
+.gamePaneCol:nth-of-type(3n) {
+   border-right: .5px solid var(--bs-secondary);
+}
+
+.gamePaneCol:last-of-type {
+   border-right: none;
+}
+
+#gamePaneGrid button {
+   width: 100%;
+   height: 100%;
+
+   border-radius: 0;
+   border-collapse: collapse;
+}
+
+#gamePaneGrid .active {
+   border: .5px solid var(--bs-success-border-subtle) !important;
+   background-color: var(--bs-success-bg-subtle) !important;
+   color: var(--success-link);
+   font-weight: 500;
+}
+
+#gamePaneGrid .subActive {
+   border-color: transparent;
+   background-color: var(--sub-active);
+}
+
+#stepInfo {
+   font-size: small;
+}
+
+#numberPanel {
+   width: 100%;
+   border-top: 1px solid var(--bs-secondary);
+}
+
+#numberPanel button {
+   width: 100%;
+   aspect-ratio: 1 / 1.3;
+   max-height: 80px;
+   color: var(--bs-secondary);
+   border-radius: 0;
+   font-size: large;
+}
+
+#numberPanel button:hover {
+   background-color: var(--sub-active);
+}
+
+#numberPanel button.active {
+   background-color: var(--bs-success-bg-subtle);
+   border: none;
+   border-top: 3px solid var(--bs-success);
+   color: var(--success-link);
+   font-weight: 500;
+   box-shadow: 1px 1px 2px lightgray;
+   transform: translateY(-1px);
+}
+
+#gameTools button {
+   width: 100%;
+   height: 2.7em;
+   color: var(--bs-secondary);
+}
+
+#penSwitch {
+   border-bottom: 1px solid var(--bs-secondary);
+   max-width: 350px;
+}
+
+#penSwitch button {
+   border-color: transparent;
+   border-radius: 0;
+   font-size: large;
+}
+
+#penSwitch button.active {
+   background-color: var(--bs-success-bg-subtle);
+   border: none;
+   border-bottom: 2px solid var(--bs-success);
+   color: var(--success-link);
+   font-weight: 500;
+   box-shadow: 1px 1px 2px lightgray;
+   transform: translateY(1px);
+}
+
+#revertLastStep i, #hint i {
+   font-size: 1.5em;
+}
+
+#scoreTime-sm {
+   color: var(--bs-success-text-emphasis);
+   display: flex !important;
+}
+
+#scoreTime-lg {
+   color: var(--bs-success-text-emphasis);
+   display: none !important;
+}
+
 
 
 /** Large screen size */
@@ -389,6 +539,89 @@ input[type='password'] {
       top: 35px;
    }
 
+   /** Game pane */
+   #gamePane {
+      flex-direction: row;
+      justify-content: space-evenly;
+      align-items: center;
+      width: 90%;
+      max-width: 1200px;
+   }
+
+   #gamePaneOuterBorder {
+      flex-grow: 1;
+      height: fit-content;
+   }
+
+   #gamePaneOuterBorder + div {
+      height: 100%;
+      justify-content: space-evenly;
+   }
+
+   #gamePaneOuterBorder .card-header {
+      display: none;
+   }
+
+   #gamePane > div {
+      max-width: 70vh;
+   }
+
+   #scoreTime-sm {
+      display: none !important;
+   }
+
+   #scoreTime-lg {
+      display: flex !important;
+   }
+
+   #numberPanel {
+      border: .9px solid var(--bs-success-border-subtle);
+      border-radius: 3px;
+      box-shadow: .7px .7px 1.5px lightgray, -0.7px -0.7px 1.5px lightgray;
+   }
+
+   #numberPanel {
+      width: min-content;
+   }
+
+   #numberPanel > div > div {
+      width: min-content;
+   }
+
+   #numberPanel button {
+      border: 1px solid var(--bs-secondary-border-subtle);
+      border-collapse: collapse;
+      aspect-ratio: 1 / 1;
+      width: 4em;
+   }
+
+   #numberPanel button.active {
+      border: 2px solid var(--bs-success);
+      box-shadow: none;
+      transform: none;
+   }
+
+   #numberPanel > div:first-of-type > div button {
+      border-top: none;
+   }
+
+   #numberPanel > div:last-of-type > div button {
+      border-bottom: none;
+   }
+
+   #numberPanel > div > div:first-of-type button {
+      border-left: none;
+   }
+   
+   #numberPanel > div > div:last-of-type button {
+      border-right: none;
+   }
+
+   #gameTools {
+      row-gap: 1em;
+   }
+
+
 }
 
 /** xxl screen size */
@@ -410,5 +643,20 @@ input[type='password'] {
    /** Masks */
    #settingUp {
       font-size: xx-large;
+   }
+
+   /** Game Pane */
+   #gamePane {
+      max-width: 1400px;
+   }
+
+   #gamePaneGrid button {
+      font-size: x-large;
+   }
+
+   #numberPanel button {
+      max-width: 100px;
+      max-height: 100px;
+      font-size: larger;
    }
 }

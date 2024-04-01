@@ -158,11 +158,55 @@
 
          </section>
 
-         <section class="flex-grow-1" id="gamePane">gamePane</section>
+         <!-- TODO: current -->
+         <section class="flex-grow-1 d-flex gap-4" id="gamePane">
+            <div class="d-flex flex-column text-center gap-2" id="scoreTime-sm">
+               <h5><i class="fa-solid fa-medal"></i>&ensp;Score: <span id="score">123456</span></h5>
+               <h6><i class="fa-regular fa-clock"></i>&ensp;Time: <span id="time">0:32:43</span></h6>
+            </div>   <!-- Will be hidden for lg screen size -->
+
+            <div class="order-lg-first" id="gamePaneOuterBorder">
+               <div class="card border-success">
+                  <div class="card-header bg-success-subtle text-center h6">Level <span id="gameLevel">3 - 1</span></div>
+                  <div class="card-body text-center d-flex flex-column align-items-center p-0" id="gamePaneGrid">
+                     <!-- 9x9 grid appended by JS -->
+                  </div>
+                  <div class="card-footer" id="stepInfo">
+                     <!-- Game operations fetched by JS will be appended here -->
+                     Switched to pencil.
+                  </div>
+               </div>
+            </div>
+
+            <div class="d-flex flex-column text-center gap-4">
+               <div class="d-flex flex-column text-center gap-2" id="scoreTime-lg">
+                  <h5><i class="fa-solid fa-medal"></i>&ensp;Score: <span id="score">123456</span></h5>
+                  <h6><i class="fa-regular fa-clock"></i>&ensp;Time: <span id="time">0:32:43</span></h6>
+               </div>
+
+               <div class="row justify-content-evenly" id="numberPanel">
+                  <!-- Numbers appended by JS -->
+               </div>
+
+               <div class="row align-items-end justify-content-between w-100" id="gameTools">
+                  <div class="col-2 col-lg-6">
+                     <button class="btn" id="revertLastStep"><i class="fa-solid fa-rotate-left"></i></button>
+                  </div>
+                  <div class="col-8 col-lg-12 order-lg-first d-flex flex-row justify-content-center p-0" id="penSwitch">
+                     <button class="btn active"><i class="fa-solid fa-pencil"></i>&ensp;Pencil</button>
+                     <button class="btn"><i class="fa-solid fa-pen-nib"></i>&ensp;Pen</button>
+                  </div>
+                  <div class="col-2 col-lg-6">
+                     <button class="btn" id="hint"><i class="fa-regular fa-lightbulb"></i></button>
+                  </div>
+               </div>
+            </div>
+            
+         </section>
 
          <section class="flex-grow-1 d-flex flex-column gap-4 justify-content-center" id="selectLevel">
             <div class="carousel carousel-dark slide w-100 text-center" id="levelsCarousel" >
-               <div class="carousel-indicators">
+               <div class="carousel-indicators z-1">
                   <button type="button" data-bs-target="#levelsCarousel" data-bs-slide-to="0" class="active"
                      aria-current="true" aria-label="Difficulty: Easy"></button>
                   <button type="button" data-bs-target="#levelsCarousel" data-bs-slide-to="1"
@@ -246,7 +290,7 @@
 
          <footer class="text-center z-1">
             <hr>
-            <kbd class="bg-secondary">&copy;Copyright 2024. CPSC 2600 - Group #</kbd>
+            <kbd class="bg-secondary">&copy;&nbsp;Copyright 2024. CPSC 2600 - Group #</kbd>
          </footer>
 
       </div>
@@ -392,5 +436,17 @@
 </div>   <!-- End outer-most container -->
 
 </body>
+
+<script> // TODO: Testing purpose only. Remove for normal step flow
+   setTimeout(() => {
+      let sections = document.querySelectorAll('section');
+      sections.forEach(section => {
+         section.setAttribute('style', 'display: none !important');
+      });
+      let gamePane = document.querySelector('#gamePane');
+      gamePane.setAttribute('style', 'display: flex !important');
+   }, 5e2);
+
+</script>
 
 </html>
