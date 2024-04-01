@@ -303,6 +303,12 @@ input[type='password'] {
    justify-content: center;
 }
 
+#gamePaneOuterBorder {
+   border: 3px solid var(--bs-success-bg-subtle);
+   border-radius: calc(var(--bs-border-radius) + 0.15rem);
+   box-shadow: 1px 1px 3px lightgray;
+}
+
 #gamePaneGrid {
    aspect-ratio: 1 / 1;    /** Square 9x9 pane */
 }
