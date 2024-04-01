@@ -298,6 +298,7 @@ input[type='password'] {
 #gamePane {
    flex-direction: column;
    width: 90vw;
+   max-width: 600px;
    margin: auto;
    padding-top: 1.2em;
 
