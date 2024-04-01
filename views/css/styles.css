@@ -642,4 +642,9 @@ input[type='password'] {
    #settingUp {
       font-size: xx-large;
    }
+
+   /** Game Pane */
+   #gamePane {
+      max-width: 1400px;
+   }
 }
