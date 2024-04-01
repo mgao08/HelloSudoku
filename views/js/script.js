@@ -171,15 +171,12 @@ const fillGamePaneGrid = (gameId) => {
       let row = document.createElement('div');
       row.classList.add('row', 'gamePaneRow');
 
-      for (let c = 1; c <= COL_NUM; c++) {
+      for (let c = 0; c < COL_NUM; c++) {
          let col = document.createElement('div');
          col.classList.add('col', 'px-0', 'gamePaneCol');
-         col.innerHTML = `<button class='btn'>${c}</button>`;   // TODO: replace with API data
+         col.innerHTML = `<button class='btn'>${c+1}</button>`;   // TODO: replace with API data
          col.onclick = (evt) => {
-            let allCol = document.querySelectorAll('.gamePaneCol');
-            allCol.forEach(Col => {
-               Col.childNodes[0].classList.remove("active");
-            });
+            setVisualActive(r, c);
             evt.target.classList.add("active");
          }
          
@@ -189,6 +186,24 @@ const fillGamePaneGrid = (gameId) => {
       dest.append(row);
    }
 }
+
+// Set visual effects for selected grid cell & row/column
+const setVisualActive = (rowNum, colNum) => {
+   let allCol = document.querySelectorAll('.gamePaneCol');
+   let counter = 0;
+   allCol.forEach(Col => {
+      Col.childNodes[0].classList.remove("active", "subActive");
+
+      let crntCol = counter % 9, crntRow = Math.floor(counter / 9);
+      let crntBlockCol = Math.floor(crntCol / 3), crntBlockRow = Math.floor(crntRow / 3);
+      
+      if ((crntCol == colNum) || (crntRow == rowNum) ||
+         ((crntBlockCol == Math.floor(colNum / 3)) && (crntBlockRow == Math.floor(rowNum / 3)))) {
+         Col.childNodes[0].classList.add("subActive");
+      }
+      counter++;
+   });
+};
 
 // Setup Game Bodar
 const setupGameboard = (gameId) => {

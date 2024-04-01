@@ -3,6 +3,7 @@
    --success-background: #D1E7DD;
    --success-highlight: #157347;
    --success-border: #BADBCC;
+   --sub-active: rgba(209, 231, 221, 0.3)
 }
 
 /** Mobile first */
@@ -342,15 +343,15 @@ input[type='password'] {
 }
 
 #gamePaneGrid .active {
-   border-color: transparent;
-   background-color: var(--success-border);
+   border: .5px solid var(--bs-success-border-subtle) !important;
+   background-color: var(--bs-success-bg-subtle) !important;
    color: var(--bs-success-text-emphasis);
    font-weight: 500;
 }
 
 #gamePaneGrid .subActive {
    border-color: transparent;
-   background-color: var(--success-background);
+   background-color: var(--sub-active);
 }
 
 #stepInfo {
