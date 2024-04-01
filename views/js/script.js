@@ -148,12 +148,19 @@ const fillNumberPanel = () => {
    let dest = document.querySelector('#numberPanel');
    for (let r = 0; r < ROW_NUM; r++) {
       let row = document.createElement('div');
-      row.classList.add('col-4', 'col-lg-12', 'row');
+      row.classList.add('col-4', 'col-lg-12', 'p-0', 'd-flex', 'flex-row');
 
       for (let c = 1; c <= COL_NUM; c++) {
          let col = document.createElement('div');
-         col.classList.add('col-4');
+         col.classList.add('col-4', 'p-0');
          col.innerHTML = `<button class="btn">${r * COL_NUM + c}</button>`;
+         col.onclick = (evt) => {
+            let allNum = document.querySelectorAll('#numberPanel button');
+            allNum.forEach(num => {
+               num.classList.remove("active");
+            });
+            evt.target.classList.add("active");
+         }
          
          row.append(col);
       }
@@ -161,6 +168,18 @@ const fillNumberPanel = () => {
       dest.append(row);
    }
 };
+
+// Handle the pen & pencil switch visual effect
+const penSwitch = () => {
+   let switches = document.querySelectorAll('#penSwitch button');
+   switches.forEach(btn => {
+      btn.onclick = (evt) => {
+         switches.forEach(btn => {btn.classList.remove("active")});
+         evt.target.classList.add("active");
+         updateStepInfo(`Switched to${evt.target.innerText.toLowerCase()}.`);
+      }
+   });
+}
 
 // Fill game panel 9x9 grid
 const fillGamePaneGrid = (gameId) => {
@@ -196,7 +215,7 @@ const setVisualActive = (rowNum, colNum) => {
 
       let crntCol = counter % 9, crntRow = Math.floor(counter / 9);
       let crntBlockCol = Math.floor(crntCol / 3), crntBlockRow = Math.floor(crntRow / 3);
-      
+
       if ((crntCol == colNum) || (crntRow == rowNum) ||
          ((crntBlockCol == Math.floor(colNum / 3)) && (crntBlockRow == Math.floor(rowNum / 3)))) {
          Col.childNodes[0].classList.add("subActive");
@@ -204,6 +223,12 @@ const setVisualActive = (rowNum, colNum) => {
       counter++;
    });
 };
+
+// Update the game pane card footer (info section)
+const updateStepInfo = (text) => {
+   let info = document.querySelector("#stepInfo");
+   info.innerText = text;
+}
 
 // Setup Game Bodar
 const setupGameboard = (gameId) => {
@@ -267,9 +292,16 @@ const setup = () => {
 
    // Fill the select levels grids
    fillGrid();
-   // Fill the number panel game tool
+   // Fill the number panel & pen switch game tool
    fillNumberPanel();
+   penSwitch();
 
+   // Event listeners for revert & hint
+   // TODO: replace by actual features
+   let revertLastStep = document.querySelector("#revertLastStep");
+   revertLastStep.onclick = () => {alert("Revert Last Step")};
+   let hint = document.querySelector("#hint");
+   hint.onclick = () => {alert("Get a hint")};
 };
 
 
