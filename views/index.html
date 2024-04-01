@@ -160,10 +160,10 @@
 
          <!-- TODO: current -->
          <section class="flex-grow-1 d-flex gap-4" id="gamePane">
-            <div class="d-flex flex-column text-center gap-2">
+            <div class="d-flex flex-column text-center gap-2" id="scoreTime-sm">
                <h5><i class="fa-solid fa-medal"></i>&ensp;Score: <span id="score">123456</span></h5>
                <h6><i class="fa-regular fa-clock"></i>&ensp;Time: <span id="time">0:32:43</span></h6>
-            </div>
+            </div>   <!-- Will be hidden for lg screen size -->
 
             <div class="order-lg-first" id="gamePaneOuterBorder">
                <div class="card border-success">
@@ -178,7 +178,12 @@
                </div>
             </div>
 
-            <div class="d-flex flex-column align-items-center text-center gap-4">
+            <div class="d-flex flex-column text-center gap-4">
+               <div class="d-flex flex-column text-center gap-2" id="scoreTime-lg">
+                  <h5><i class="fa-solid fa-medal"></i>&ensp;Score: <span id="score">123456</span></h5>
+                  <h6><i class="fa-regular fa-clock"></i>&ensp;Time: <span id="time">0:32:43</span></h6>
+               </div>
+
                <div class="row justify-content-evenly" id="numberPanel">
                   <!-- Numbers appended by JS -->
                </div>
