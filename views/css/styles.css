@@ -293,6 +293,70 @@ input[type='password'] {
    margin-bottom: 40px;
 }
 
+/** Game pane settings */
+#gamePane {
+   flex-direction: column;
+   width: 90vw;
+   margin: auto;
+
+   justify-content: center;
+}
+
+#gamePaneGrid {
+   aspect-ratio: 1 / 1;    /** Square 9x9 pane */
+}
+
+.gamePaneRow {
+   width: 100%;
+   height: 100%;
+
+   border-bottom: .5px solid var(--bs-secondary-border-subtle);
+}
+
+.gamePaneRow:nth-of-type(3n) {
+   border-color: var(--bs-secondary);
+}
+
+.gamePaneRow:last-of-type {
+   border-bottom: none;
+}
+
+.gamePaneCol {
+   border-right: .5px solid var(--bs-secondary-border-subtle);
+}
+
+.gamePaneCol:nth-of-type(3n) {
+   border-right: .5px solid var(--bs-secondary);
+}
+
+.gamePaneCol:last-of-type {
+   border-right: none;
+}
+
+#gamePaneGrid button {
+   width: 100%;
+   height: 100%;
+
+   border-radius: 0;
+   border-collapse: collapse;
+}
+
+#gamePaneGrid .active {
+   border-color: transparent;
+   background-color: var(--success-border);
+   color: var(--bs-success-text-emphasis);
+   font-weight: 500;
+}
+
+#gamePaneGrid .subActive {
+   border-color: transparent;
+   background-color: var(--success-background);
+}
+
+#stepInfo {
+   font-size: small;
+}
+
 
 
 /** Large screen size */
@@ -387,6 +451,11 @@ input[type='password'] {
    /** Masks */
    #settingUp {
       top: 35px;
+   }
+
+   /** Game pane */
+   #gamePane {
+      flex-direction: row;
    }
 
 }

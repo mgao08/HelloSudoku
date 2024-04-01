@@ -27,6 +27,10 @@ const toSection = (text) => {
       dest = "gamePane";
       setActiveNavlink('daily');
 
+   } else if (dest.includes("game")) {
+      dest = "gamePane";
+      setActiveNavlink('select');
+
    } else if (dest.includes("select")) {
       dest = "selectLevel";
       setActiveNavlink('select');
@@ -89,7 +93,7 @@ const adminControl = (cmd) => {
    }
 }
 
-
+// Fill the select level grid
 // TODO: connect game id with grid cells
 const fillGrid = () => {
    const ROW_NUM = 5, COL_NUM = 5; /** 5x5 grid */
@@ -105,6 +109,7 @@ const fillGrid = () => {
             col.classList.add('col', 'p-0');
             let lvlLink = document.createElement('a');
             lvlLink.innerHTML = `&nbsp;${levelNum}&nbsp;`;
+            // TODO: connect each lvlLink with a game id from API
 
             // TODO: redirecting features goes here
             lvlLink.onclick = () => {
@@ -124,6 +129,7 @@ const fillGrid = () => {
                }, 2e3);
 
                console.log(`Go To Level ${difficulty} - ${levelNum}`);
+               setupGameboard();
             };
 
             col.append(lvlLink);
@@ -134,6 +140,61 @@ const fillGrid = () => {
       }
 
    });
+}
+
+// Fill number 1-9 panel
+const fillNumberPanel = () => {
+   const ROW_NUM = 3, COL_NUM = 3;
+   let dest = document.querySelector('#numberPanel');
+   for (let r = 0; r < ROW_NUM; r++) {
+      let row = document.createElement('div');
+      row.classList.add('col-4', 'col-lg-12', 'row');
+
+      for (let c = 1; c <= COL_NUM; c++) {
+         let col = document.createElement('div');
+         col.classList.add('col-4');
+         col.innerHTML = `<button class="btn">${r * COL_NUM + c}</button>`;
+         
+         row.append(col);
+      }
+
+      dest.append(row);
+   }
+};
+
+// Fill game panel 9x9 grid
+const fillGamePaneGrid = (gameId) => {
+   const ROW_NUM = 9, COL_NUM = 9;
+   let dest = document.querySelector('#gamePaneGrid');
+
+   for (let r = 0; r < ROW_NUM; r++) {
+      let row = document.createElement('div');
+      row.classList.add('row', 'gamePaneRow');
+
+      for (let c = 1; c <= COL_NUM; c++) {
+         let col = document.createElement('div');
+         col.classList.add('col', 'px-0', 'gamePaneCol');
+         col.innerHTML = `<button class='btn'>${c}</button>`;   // TODO: replace with API data
+         col.onclick = (evt) => {
+            let allCol = document.querySelectorAll('.gamePaneCol');
+            allCol.forEach(Col => {
+               Col.childNodes[0].classList.remove("active");
+            });
+            evt.target.classList.add("active");
+         }
+         
+         row.append(col);
+      }
+
+      dest.append(row);
+   }
+}
+
+// Setup Game Bodar
+const setupGameboard = (gameId) => {
+   
+   toSection('gamePane');
+   fillGamePaneGrid(gameId);
 }
 
 
@@ -191,6 +252,9 @@ const setup = () => {
 
    // Fill the select levels grids
    fillGrid();
+   // Fill the number panel game tool
+   fillNumberPanel();
+
 };
 
 
