@@ -257,6 +257,12 @@ const startGame = (startBtn) => {
    // TODO: Start timer & score calculation
 }
 
+// Pause in-game features such as timer & score
+const gamePause = () => {
+   
+   // TODO: pause the timer & score calculations
+}
+
 
 // collection of setup statements that needs to be run onload
 const setup = () => {

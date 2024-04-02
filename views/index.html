@@ -158,7 +158,6 @@
 
          </section>
 
-         <!-- TODO: current -->
          <section class="flex-grow-1 d-flex gap-4" id="gamePane">
             <div class="d-flex flex-column text-center gap-2" id="scoreTime-sm">
                <h5><i class="fa-solid fa-medal"></i>&ensp;Score: <span id="score">123456</span></h5>
@@ -422,8 +421,15 @@
    <!-------------------------------------------------------------------------->
 
    <!-- Masks & Covers -->
-   <div id="paused">
-      <!-- warning modal also included here -->
+   <div class="collapse text-center z-4" id="paused">
+      <div class="d-flex flex-column justify-content-center gap-5" id="pauseToggleWrapper">
+         <!-- warning modal also included here -->
+         <i class="fa-solid fa-pause"></i>
+         <span class="h1">Your Game Has Paused</span>
+         <button class="btn btn-link" id="continue" data-bs-toggle="collapse" data-bs-target="#paused" aria-controls="paused" aria-expanded="false" aria-label="Continue Playing">
+            <i class="fa-regular fa-circle-play">&ensp;</i>Continue
+         </button>
+      </div>
    </div>
 
    <div id="won"></div>
