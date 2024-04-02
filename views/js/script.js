@@ -95,7 +95,7 @@ const adminControl = (cmd) => {
 
 // Fill the select level grid
 // TODO: connect game id with grid cells
-const fillGrid = () => {
+const fillLevelsGrid = () => {
    const ROW_NUM = 5, COL_NUM = 5; /** 5x5 grid */
    let levelsGrid = document.querySelectorAll('.levelsGrid');
    levelsGrid.forEach(grid => {
@@ -240,11 +240,21 @@ const updateStepInfo = (text) => {
    info.innerText = text;
 }
 
-// Setup Game Bodar
+// Setup Game Board
 const setupGameboard = (gameId) => {
    
    toSection('gamePane');
+   let startBtn = document.querySelector('#startGame');
+   startBtn.style.cssText = 'opacity: 1';
    fillGamePaneGrid(gameId);
+}
+
+// Start Game
+const startGame = (startBtn) => {
+
+   startBtn.style.cssText = 'opacity: 0;';
+
+   // TODO: Start timer & score calculation
 }
 
 
@@ -301,7 +311,7 @@ const setup = () => {
    deleteUser.onclick = () => {adminControl('delete')};
 
    // Fill the select levels grids
-   fillGrid();
+   fillLevelsGrid();
    // Fill the number panel & pen switch game tool
    fillNumberPanel();
    penSwitch();
@@ -312,6 +322,10 @@ const setup = () => {
    revertLastStep.onclick = () => {alert("Revert Last Step")};
    let hint = document.querySelector("#hint");
    hint.onclick = () => {alert("Get a hint")};
+
+   // Start Game button toggle itself
+   let startGameBtn = document.querySelector('#startGame');
+   startGameBtn.onclick = () => {startGame(startGameBtn)};
 };
 
 
