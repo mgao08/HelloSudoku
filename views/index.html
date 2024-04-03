@@ -46,6 +46,26 @@
       </div>
    </div>
 
+   <!-- Confirm redirecting modal -->
+   <div class="modal fade" id="confirmRedirect" tabindex="-1" data-backdrop="false">
+      <div class="modal-dialog modal-dialog-centered">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title">Warning</h5>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               <p>Are you sure you would like to leave this page? Your progress will not be saved!</p>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keep Playing</button>
+               <button type="button" class="btn btn-danger" id="leaveAnyways"
+                  data-bs-dismiss="modal">Leave Anyways</button>
+            </div>
+         </div>
+      </div>
+   </div>
+
 
    <!-- Dark green banner on top (visible only under large screen size) -->
    <div class="row text-white text-center py-2 h6 mb-0" id="top-banner">
@@ -168,7 +188,6 @@
                <div class="card border-success">
                   <div class="card-header bg-success-subtle text-center h6">Level <span id="gameLevel">3 - 1</span></div>
                   <div class="card-body text-center d-flex flex-column align-items-center p-0" id="gamePaneGrid">
-                     <!-- 9x9 grid appended by JS -->
                      
                      <button class="btn btn-link" id="startGame"><i class="fa-regular fa-circle-play">&ensp;</i>Click To Start</button>
                   </div>
@@ -393,29 +412,6 @@
       
       <span>Already have an account?&emsp;<a class="sectionLink">Log in</a></span>
 
-      <!-- Terms & Policy Modal
-      <div class="modal fade" id="policy" tabindex="-1" data-backdrop="false">
-         <div class="modal-dialog modal-dialog-scrollable">
-            <div class="modal-content">
-               <div class="modal-header">
-                  <h5 class="modal-title">Terms & Policy</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-               </div>
-               <div class="modal-body">
-                  <p>Our Terms & Policy contents will goes here</p>
-                  <ul>
-                     <li>Item 1</li>
-                     <li>Item 2</li>
-                     <li>Item 3</li>
-                  </ul>
-               </div>
-               <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                  <button type="button" class="btn btn-success">Continue</button>
-               </div>
-            </div>
-         </div>
-      </div> -->
    </section>
 
    <!-------------------------------------------------------------------------->
@@ -445,7 +441,7 @@
 
 </body>
 
-<script> // TODO: Testing purpose only. Remove for normal step flow
+<!-- <script> // TODO: Testing purpose only. Remove for normal step flow
    setTimeout(() => {
       let sections = document.querySelectorAll('section');
       sections.forEach(section => {
@@ -455,6 +451,6 @@
       gamePane.setAttribute('style', 'display: flex !important');
    }, 5e2);
 
-</script>
+</script> -->
 
 </html>

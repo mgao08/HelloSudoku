@@ -459,13 +459,13 @@ input[type='password'] {
 
 /** Pause * Won Masks */
 #paused {
-   position: fixed;
+   position: absolute;
    top: 0;
-   left: 0;
+   right: 0;
    width: 100vw;
    height: 100vh;
    background-color: rgba(255, 255, 255, 0.9);
-   color: var(--bs-success-text-emphasis)
+   color: var(--bs-success-text-emphasis);
 }
 
 #pauseToggleWrapper {
@@ -658,6 +658,14 @@ input[type='password'] {
 
    #gameTools {
       row-gap: 1em;
+   }
+
+   /** Paused & Won masks */
+   #paused {
+      top: 35px;
+      width: calc(100vw / 12 * 10 + 30px);  /** same width as contentBox */
+      height: calc(100vh - 35px);
+      background-color: rgba(248, 249, 250, 0.9);
    }
 
 

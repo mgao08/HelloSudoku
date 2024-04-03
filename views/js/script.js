@@ -1,6 +1,51 @@
 // IIFE
 (() => {
 
+// Global vars
+let currentGame = {
+   id: null,
+   puzzle: null,  /** 9x9 2D arr */
+   solution: null,   /** 9x9 2D arr */
+   time: null,    /** hh:mm:ss format */
+   score: null,
+   gameStatus: 'none',   /** 'ongoing' || 'paused' || 'none' */
+   
+   reset: function() {
+      this.id = null;
+      this.puzzle = null;
+      this.solution = null;
+      this.time = null;
+      this.score = null;
+      this.gameStatus = 'none';
+
+      let pauseMask = document.querySelector('#paused');
+      pauseMask.classList.remove('show');
+      let startBtn = document.querySelector('#startGame');
+      startBtn.style.cssText = 'opacity: 1; display: inline-block;';
+   },
+
+   start: function() {
+      let startBtn = document.querySelector('#startGame');
+      startBtn.style.cssText = 'opacity: 0;';
+      setTimeout(() => {
+         startBtn.style.cssText = 'display: none;';
+      }, 2e2);
+
+      // TODO: Start timer & score calculation
+
+      this.gameStatus = 'ongoing';
+   },
+
+   pause: function() {
+      if (this.gameStatus == 'ongoing') {
+         let pauseMask = document.querySelector('#paused');
+         pauseMask.classList.add('show');
+         this.gameStatus = 'paused';
+      }
+   }
+};
+
+
 // setup active nav link visual effects
 const setActiveNavlink = (name) => {
    let navlinks = document.querySelectorAll('.nav-link');
@@ -146,6 +191,7 @@ const fillLevelsGrid = () => {
 const fillNumberPanel = () => {
    const ROW_NUM = 3, COL_NUM = 3;
    let dest = document.querySelector('#numberPanel');
+   
    for (let r = 0; r < ROW_NUM; r++) {
       let row = document.createElement('div');
       row.classList.add('col-4', 'col-lg-12', 'p-0', 'd-flex', 'flex-row');
@@ -191,28 +237,49 @@ const fillGamePaneGrid = (gameId) => {
    const ROW_NUM = 9, COL_NUM = 9;
    let dest = document.querySelector('#gamePaneGrid');
 
-   for (let r = 0; r < ROW_NUM; r++) {
-      let row = document.createElement('div');
-      row.classList.add('row', 'gamePaneRow');
+   // If there is already a grid
+   if (dest.childNodes.length >= ROW_NUM) {
+      for (let r = 0; r < ROW_NUM; r++) {
+         let row = dest.childNodes[r+3];  // first 3 children are start game button elements
 
-      for (let c = 0; c < COL_NUM; c++) {
-         let col = document.createElement('div');
-         col.classList.add('col', 'px-0', 'gamePaneCol');
-         col.innerHTML = `<button class='btn'>${c+1}</button>`;   // TODO: replace with API data
-         col.onclick = (evt) => {
-            if (evt.target.classList.contains("active")) {
-               setVisualActive(-1, -1);   // clear all visual effects
-               evt.target.classList.remove("active");
-            } else {
-               setVisualActive(r, c);
-               evt.target.classList.add("active");
+         for (let c = 0; c < COL_NUM; c++) {
+            let col = row.childNodes[c];
+            col.innerHTML = `<button class='btn'>${9-c}</button>`;   // TODO: replace with API data
+            col.childNodes[0].onclick = (evt) => {
+               if (evt.target.classList.contains("active")) {
+                  setVisualActive(-1, -1);   // clear all visual effects
+                  evt.target.classList.remove("active");
+               } else {
+                  setVisualActive(r, c);
+                  evt.target.classList.add("active");
+               }
             }
          }
-         
-         row.append(col);
       }
 
-      dest.append(row);
+   // If there is no existed grid
+   } else {
+      for (let r = 0; r < ROW_NUM; r++) {
+         let row = document.createElement('div');
+         row.classList.add('row', 'gamePaneRow');
+
+         for (let c = 0; c < COL_NUM; c++) {
+            let col = document.createElement('div');
+            col.classList.add('col', 'px-0', 'gamePaneCol');
+            col.innerHTML = `<button class='btn'>${c+1}</button>`;   // TODO: replace with API data
+            col.childNodes[0].onclick = (evt) => {
+               if (evt.target.classList.contains("active")) {
+                  setVisualActive(-1, -1);   // clear all visual effects
+                  evt.target.classList.remove("active");
+               } else {
+                  setVisualActive(r, c);
+                  evt.target.classList.add("active");
+               }
+            }
+            row.append(col);
+         }
+         dest.append(row);
+      }
    }
 }
 
@@ -249,30 +316,39 @@ const setupGameboard = (gameId) => {
    fillGamePaneGrid(gameId);
 }
 
-// Start Game
-const startGame = (startBtn) => {
-
-   startBtn.style.cssText = 'opacity: 0;';
-
-   // TODO: Start timer & score calculation
-}
-
-// Pause in-game features such as timer & score
-const gamePause = () => {
-   
-   // TODO: pause the timer & score calculations
-}
-
-
 // collection of setup statements that needs to be run onload
 const setup = () => {
    // setup event listeners for links for section switch
    let sectionLinks = document.querySelectorAll('.sectionLink');
    sectionLinks.forEach(link => {
       link.onclick = () => {
-         toSection(link.innerText);
+         if (currentGame.gameStatus != 'none') {
+            currentGame.pause();
+            link.setAttribute('data-bs-toggle', "modal");
+            link.setAttribute('data-bs-target', "#confirmRedirect");
+            link.click();
+
+            let leaveBtn = document.querySelector('#leaveAnyways');
+            leaveBtn.onclick = () => {
+               currentGame.reset();
+               toSection(link.innerText);
+            }
+
+            link.removeAttribute('data-bs-toggle');
+            link.removeAttribute('data-bs-target');
+
+         } else {
+            toSection(link.innerText);
+         }
+
       }
    });
+
+   // pause game when navList in expanded under small screen size
+   let navbarToggler = document.querySelector('.navbar-toggler');
+   navbarToggler.onclick = () => {
+      currentGame.pause();
+   };
 
    // prevent form button from submitting onclick
    let modalTrigger = document.querySelector('#registerBtn');
@@ -331,7 +407,7 @@ const setup = () => {
 
    // Start Game button toggle itself
    let startGameBtn = document.querySelector('#startGame');
-   startGameBtn.onclick = () => {startGame(startGameBtn)};
+   startGameBtn.onclick = () => {currentGame.start();};
 };
 
 
