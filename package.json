@@ -1,0 +1,26 @@
+{
+	"name": "hellosudoku",
+	"version": "1.0.0",
+	"description": "Sudoku game website (Spring 2024 - CPSC 2600 Term Project)",
+	"main": "server.js",
+	"scripts": {
+		"dev": "nodemon server/server.js",
+		"start": "node server/server.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/mgao08/HelloSudoku.git"
+	},
+	"author": "Monica Gao, Yuna Hu",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/mgao08/HelloSudoku/issues"
+	},
+	"homepage": "https://github.com/mgao08/HelloSudoku#readme",
+	"devDependencies": {
+		"nodemon": "^3.1.0"
+	},
+	"dependencies": {
+		"express": "^4.19.2"
+	}
+}
