@@ -6,8 +6,10 @@ let currentGame = {
    id: null,
    puzzle: null,  /** 9x9 2D arr */
    solution: null,   /** 9x9 2D arr */
-   time: null,    /** hh:mm:ss format */
-   score: null,
+   time: 0,    /** hh:mm:ss format */
+   score: 0,
+   blanks: 0,  /** number of blanks in the puzzle */
+   moves: 0,   /** number of moves user took */
    gameStatus: 'none',   /** 'ongoing' || 'paused' || 'none' */
    
    reset: function() {
@@ -41,6 +43,27 @@ let currentGame = {
          let pauseMask = document.querySelector('#paused');
          pauseMask.classList.add('show');
          this.gameStatus = 'paused';
+      }
+   },
+
+   checkWin: function() {
+      if (this.moves >= this.blanks) {
+         for (let r = 0; r < 9; r++) {
+            for (let c = 0; c < 9; c++) {
+               if (this.puzzle[r][c] != this.solution[r][c]) {
+                  return false;
+               }
+
+               // TODO: handle win conditions (score calculation, user data update, currentGame status update, pass time & score into won mask)
+               
+
+               // display won messages
+               document.querySelector('#won').classList.add("show");
+            }
+         }
+
+      } else {
+         return false;
       }
    }
 };
@@ -408,6 +431,20 @@ const setup = () => {
    // Start Game button toggle itself
    let startGameBtn = document.querySelector('#startGame');
    startGameBtn.onclick = () => {currentGame.start();};
+
+   // Winning condition buttons event listener
+   let wonToDashboard = document.querySelector('#wonToDashboard');
+   wonToDashboard.onclick = () => {
+      // TODO: append user data update functions here
+      document.querySelector('#won').classList.remove("show");
+      toSection('dashboard');
+   };
+   let wonToSelect = document.querySelector('#wonToSelect');
+   wonToSelect.onclick = () => {
+      // TODO: append user data update functions here
+      document.querySelector('#won').classList.remove("show");
+      toSection('selectLevel');
+   }
 };
 
 

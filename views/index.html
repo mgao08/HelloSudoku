@@ -180,7 +180,7 @@
 
          <section class="flex-grow-1 d-flex gap-4" id="gamePane">
             <div class="d-flex flex-column text-center gap-2" id="scoreTime-sm">
-               <h5><i class="fa-solid fa-medal"></i>&ensp;Score: <span id="score">123456</span></h5>
+               <h5><i class="fa-solid fa-award"></i>&ensp;Score: <span id="score">123456</span></h5>
                <h6><i class="fa-regular fa-clock"></i>&ensp;Time: <span id="time">0:32:43</span></h6>
             </div>   <!-- Will be hidden for lg screen size -->
 
@@ -419,16 +419,31 @@
    <!-- Masks & Covers -->
    <div class="collapse text-center z-4" id="paused">
       <div class="d-flex flex-column justify-content-center gap-5" id="pauseToggleWrapper">
-         <!-- warning modal also included here -->
+         <!-- warning modal at top -->
          <i class="fa-solid fa-pause"></i>
-         <span class="h1">Your Game Has Paused</span>
-         <button class="btn btn-link" id="continue" data-bs-toggle="collapse" data-bs-target="#paused" aria-controls="paused" aria-expanded="false" aria-label="Continue Playing">
+         <h1>Your Game Has Paused</h1>
+         <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#paused" aria-controls="paused" aria-expanded="false" aria-label="Continue Playing">
             <i class="fa-regular fa-circle-play">&ensp;</i>Continue
          </button>
       </div>
    </div>
 
-   <div id="won"></div>
+   <div class="collapse text-center z-4" id="won">
+      <div class="d-flex flex-column justify-content-center gap-5" id="wonToggleWrapper">
+         <h1><i class="fa-solid fa-trophy text-warning">&ensp;</i>Congratulations!</h1>
+         <h4>Score: <span id="wonScore">123456</span></h4>
+         <h4>Time: <span id="wonTime">1:23:45</span></h4>
+
+         <div class="d-flex justify-content-evenly gap-5">
+            <button class="btn btn-link" id="wonToDashboard">
+               <i class="fa-solid fa-chevron-left">&ensp;</i>Back To Dashboard
+            </button>
+            <button class="btn btn-link" id="wonToSelect">
+               Play Another Level&ensp;<i class="fa-solid fa-chevron-right"></i>
+            </button>
+         </div>
+      </div>
+   </div>
 
    <div class="d-flex flex-column justify-content-center gap-3 text-center" id="settingUp">
       <i class="fa-solid fa-otter fa-spin"></i>
@@ -440,17 +455,5 @@
 </div>   <!-- End outer-most container -->
 
 </body>
-
-<!-- <script> // TODO: Testing purpose only. Remove for normal step flow
-   setTimeout(() => {
-      let sections = document.querySelectorAll('section');
-      sections.forEach(section => {
-         section.setAttribute('style', 'display: none !important');
-      });
-      let gamePane = document.querySelector('#gamePane');
-      gamePane.setAttribute('style', 'display: flex !important');
-   }, 5e2);
-
-</script> -->
 
 </html>

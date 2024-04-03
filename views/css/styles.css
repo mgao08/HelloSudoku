@@ -458,7 +458,7 @@ input[type='password'] {
 }
 
 /** Pause * Won Masks */
-#paused {
+#paused, #won {
    position: absolute;
    top: 0;
    right: 0;
@@ -468,7 +468,7 @@ input[type='password'] {
    color: var(--bs-success-text-emphasis);
 }
 
-#pauseToggleWrapper {
+#pauseToggleWrapper, #wonToggleWrapper {
    width: 100%;
    height: 100%;
 }
@@ -477,10 +477,22 @@ input[type='password'] {
    font-size: 4em;
 }
 
-#pauseToggleWrapper button {
-   margin-top: 20vh;
+#pauseToggleWrapper button, #wonToggleWrapper button {
    color: var(--bs-success);
    font-size: 1.2em;
+}
+
+#wonToggleWrapper div:has( > button) {
+   margin-top: 20vh;
+   flex-direction: column;
+}
+
+
+/** Medium screen size */
+@media screen and (min-width: 600px) {
+   #wonToggleWrapper div:has(> button) {
+         flex-direction: row;
+   }
 }
 
 
@@ -661,7 +673,7 @@ input[type='password'] {
    }
 
    /** Paused & Won masks */
-   #paused {
+   #paused, #won {
       top: 35px;
       width: calc(100vw / 12 * 10 + 30px);  /** same width as contentBox */
       height: calc(100vh - 35px);
