@@ -320,7 +320,21 @@ input[type='password'] {
 }
 
 #gamePaneGrid {
+   position: relative;
    aspect-ratio: 1 / 1;    /** Square 9x9 pane */
+}
+
+#startGame {
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+
+   background-color: var(--bs-white);
+   color: var(--bs-success);
+   font-size: large;
+   transition: all 0.2s;
 }
 
 .gamePaneRow {
@@ -443,6 +457,43 @@ input[type='password'] {
    display: none !important;
 }
 
+/** Pause * Won Masks */
+#paused, #won {
+   position: absolute;
+   top: 0;
+   right: 0;
+   width: 100vw;
+   height: 100vh;
+   background-color: rgba(255, 255, 255, 0.9);
+   color: var(--bs-success-text-emphasis);
+}
+
+#pauseToggleWrapper, #wonToggleWrapper {
+   width: 100%;
+   height: 100%;
+}
+
+#pauseToggleWrapper > i {
+   font-size: 4em;
+}
+
+#pauseToggleWrapper button, #wonToggleWrapper button {
+   color: var(--bs-success);
+   font-size: 1.2em;
+}
+
+#wonToggleWrapper div:has( > button) {
+   margin-top: 20vh;
+   flex-direction: column;
+}
+
+
+/** Medium screen size */
+@media screen and (min-width: 600px) {
+   #wonToggleWrapper div:has(> button) {
+         flex-direction: row;
+   }
+}
 
 
 /** Large screen size */
@@ -619,6 +670,14 @@ input[type='password'] {
 
    #gameTools {
       row-gap: 1em;
+   }
+
+   /** Paused & Won masks */
+   #paused, #won {
+      top: 35px;
+      width: calc(100vw / 12 * 10 + 30px);  /** same width as contentBox */
+      height: calc(100vh - 35px);
+      background-color: rgba(248, 249, 250, 0.9);
    }
 
 

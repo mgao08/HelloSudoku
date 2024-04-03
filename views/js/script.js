@@ -1,6 +1,74 @@
 // IIFE
 (() => {
 
+// Global vars
+let currentGame = {
+   id: null,
+   puzzle: null,  /** 9x9 2D arr */
+   solution: null,   /** 9x9 2D arr */
+   time: 0,    /** hh:mm:ss format */
+   score: 0,
+   blanks: 0,  /** number of blanks in the puzzle */
+   moves: 0,   /** number of moves user took */
+   gameStatus: 'none',   /** 'ongoing' || 'paused' || 'none' */
+   
+   reset: function() {
+      this.id = null;
+      this.puzzle = null;
+      this.solution = null;
+      this.time = null;
+      this.score = null;
+      this.gameStatus = 'none';
+
+      let pauseMask = document.querySelector('#paused');
+      pauseMask.classList.remove('show');
+      let startBtn = document.querySelector('#startGame');
+      startBtn.style.cssText = 'opacity: 1; display: inline-block;';
+   },
+
+   start: function() {
+      let startBtn = document.querySelector('#startGame');
+      startBtn.style.cssText = 'opacity: 0;';
+      setTimeout(() => {
+         startBtn.style.cssText = 'display: none;';
+      }, 2e2);
+
+      // TODO: Start timer & score calculation
+
+      this.gameStatus = 'ongoing';
+   },
+
+   pause: function() {
+      if (this.gameStatus == 'ongoing') {
+         let pauseMask = document.querySelector('#paused');
+         pauseMask.classList.add('show');
+         this.gameStatus = 'paused';
+      }
+   },
+
+   checkWin: function() {
+      if (this.moves >= this.blanks) {
+         for (let r = 0; r < 9; r++) {
+            for (let c = 0; c < 9; c++) {
+               if (this.puzzle[r][c] != this.solution[r][c]) {
+                  return false;
+               }
+
+               // TODO: handle win conditions (score calculation, user data update, currentGame status update, pass time & score into won mask)
+               
+
+               // display won messages
+               document.querySelector('#won').classList.add("show");
+            }
+         }
+
+      } else {
+         return false;
+      }
+   }
+};
+
+
 // setup active nav link visual effects
 const setActiveNavlink = (name) => {
    let navlinks = document.querySelectorAll('.nav-link');
@@ -95,7 +163,7 @@ const adminControl = (cmd) => {
 
 // Fill the select level grid
 // TODO: connect game id with grid cells
-const fillGrid = () => {
+const fillLevelsGrid = () => {
    const ROW_NUM = 5, COL_NUM = 5; /** 5x5 grid */
    let levelsGrid = document.querySelectorAll('.levelsGrid');
    levelsGrid.forEach(grid => {
@@ -146,6 +214,7 @@ const fillGrid = () => {
 const fillNumberPanel = () => {
    const ROW_NUM = 3, COL_NUM = 3;
    let dest = document.querySelector('#numberPanel');
+   
    for (let r = 0; r < ROW_NUM; r++) {
       let row = document.createElement('div');
       row.classList.add('col-4', 'col-lg-12', 'p-0', 'd-flex', 'flex-row');
@@ -191,28 +260,49 @@ const fillGamePaneGrid = (gameId) => {
    const ROW_NUM = 9, COL_NUM = 9;
    let dest = document.querySelector('#gamePaneGrid');
 
-   for (let r = 0; r < ROW_NUM; r++) {
-      let row = document.createElement('div');
-      row.classList.add('row', 'gamePaneRow');
+   // If there is already a grid
+   if (dest.childNodes.length >= ROW_NUM) {
+      for (let r = 0; r < ROW_NUM; r++) {
+         let row = dest.childNodes[r+3];  // first 3 children are start game button elements
 
-      for (let c = 0; c < COL_NUM; c++) {
-         let col = document.createElement('div');
-         col.classList.add('col', 'px-0', 'gamePaneCol');
-         col.innerHTML = `<button class='btn'>${c+1}</button>`;   // TODO: replace with API data
-         col.onclick = (evt) => {
-            if (evt.target.classList.contains("active")) {
-               setVisualActive(-1, -1);   // clear all visual effects
-               evt.target.classList.remove("active");
-            } else {
-               setVisualActive(r, c);
-               evt.target.classList.add("active");
+         for (let c = 0; c < COL_NUM; c++) {
+            let col = row.childNodes[c];
+            col.innerHTML = `<button class='btn'>${9-c}</button>`;   // TODO: replace with API data
+            col.childNodes[0].onclick = (evt) => {
+               if (evt.target.classList.contains("active")) {
+                  setVisualActive(-1, -1);   // clear all visual effects
+                  evt.target.classList.remove("active");
+               } else {
+                  setVisualActive(r, c);
+                  evt.target.classList.add("active");
+               }
             }
          }
-         
-         row.append(col);
       }
 
-      dest.append(row);
+   // If there is no existed grid
+   } else {
+      for (let r = 0; r < ROW_NUM; r++) {
+         let row = document.createElement('div');
+         row.classList.add('row', 'gamePaneRow');
+
+         for (let c = 0; c < COL_NUM; c++) {
+            let col = document.createElement('div');
+            col.classList.add('col', 'px-0', 'gamePaneCol');
+            col.innerHTML = `<button class='btn'>${c+1}</button>`;   // TODO: replace with API data
+            col.childNodes[0].onclick = (evt) => {
+               if (evt.target.classList.contains("active")) {
+                  setVisualActive(-1, -1);   // clear all visual effects
+                  evt.target.classList.remove("active");
+               } else {
+                  setVisualActive(r, c);
+                  evt.target.classList.add("active");
+               }
+            }
+            row.append(col);
+         }
+         dest.append(row);
+      }
    }
 }
 
@@ -240,13 +330,14 @@ const updateStepInfo = (text) => {
    info.innerText = text;
 }
 
-// Setup Game Bodar
+// Setup Game Board
 const setupGameboard = (gameId) => {
    
    toSection('gamePane');
+   let startBtn = document.querySelector('#startGame');
+   startBtn.style.cssText = 'opacity: 1';
    fillGamePaneGrid(gameId);
 }
-
 
 // collection of setup statements that needs to be run onload
 const setup = () => {
@@ -254,9 +345,33 @@ const setup = () => {
    let sectionLinks = document.querySelectorAll('.sectionLink');
    sectionLinks.forEach(link => {
       link.onclick = () => {
-         toSection(link.innerText);
+         if (currentGame.gameStatus != 'none') {
+            currentGame.pause();
+            link.setAttribute('data-bs-toggle', "modal");
+            link.setAttribute('data-bs-target', "#confirmRedirect");
+            link.click();
+
+            let leaveBtn = document.querySelector('#leaveAnyways');
+            leaveBtn.onclick = () => {
+               currentGame.reset();
+               toSection(link.innerText);
+            }
+
+            link.removeAttribute('data-bs-toggle');
+            link.removeAttribute('data-bs-target');
+
+         } else {
+            toSection(link.innerText);
+         }
+
       }
    });
+
+   // pause game when navList in expanded under small screen size
+   let navbarToggler = document.querySelector('.navbar-toggler');
+   navbarToggler.onclick = () => {
+      currentGame.pause();
+   };
 
    // prevent form button from submitting onclick
    let modalTrigger = document.querySelector('#registerBtn');
@@ -301,7 +416,7 @@ const setup = () => {
    deleteUser.onclick = () => {adminControl('delete')};
 
    // Fill the select levels grids
-   fillGrid();
+   fillLevelsGrid();
    // Fill the number panel & pen switch game tool
    fillNumberPanel();
    penSwitch();
@@ -312,6 +427,24 @@ const setup = () => {
    revertLastStep.onclick = () => {alert("Revert Last Step")};
    let hint = document.querySelector("#hint");
    hint.onclick = () => {alert("Get a hint")};
+
+   // Start Game button toggle itself
+   let startGameBtn = document.querySelector('#startGame');
+   startGameBtn.onclick = () => {currentGame.start();};
+
+   // Winning condition buttons event listener
+   let wonToDashboard = document.querySelector('#wonToDashboard');
+   wonToDashboard.onclick = () => {
+      // TODO: append user data update functions here
+      document.querySelector('#won').classList.remove("show");
+      toSection('dashboard');
+   };
+   let wonToSelect = document.querySelector('#wonToSelect');
+   wonToSelect.onclick = () => {
+      // TODO: append user data update functions here
+      document.querySelector('#won').classList.remove("show");
+      toSection('selectLevel');
+   }
 };
 
 

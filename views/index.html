@@ -46,6 +46,26 @@
       </div>
    </div>
 
+   <!-- Confirm redirecting modal -->
+   <div class="modal fade" id="confirmRedirect" tabindex="-1" data-backdrop="false">
+      <div class="modal-dialog modal-dialog-centered">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title">Warning</h5>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               <p>Are you sure you would like to leave this page? Your progress will not be saved!</p>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keep Playing</button>
+               <button type="button" class="btn btn-danger" id="leaveAnyways"
+                  data-bs-dismiss="modal">Leave Anyways</button>
+            </div>
+         </div>
+      </div>
+   </div>
+
 
    <!-- Dark green banner on top (visible only under large screen size) -->
    <div class="row text-white text-center py-2 h6 mb-0" id="top-banner">
@@ -158,10 +178,9 @@
 
          </section>
 
-         <!-- TODO: current -->
          <section class="flex-grow-1 d-flex gap-4" id="gamePane">
             <div class="d-flex flex-column text-center gap-2" id="scoreTime-sm">
-               <h5><i class="fa-solid fa-medal"></i>&ensp;Score: <span id="score">123456</span></h5>
+               <h5><i class="fa-solid fa-award"></i>&ensp;Score: <span id="score">123456</span></h5>
                <h6><i class="fa-regular fa-clock"></i>&ensp;Time: <span id="time">0:32:43</span></h6>
             </div>   <!-- Will be hidden for lg screen size -->
 
@@ -169,7 +188,8 @@
                <div class="card border-success">
                   <div class="card-header bg-success-subtle text-center h6">Level <span id="gameLevel">3 - 1</span></div>
                   <div class="card-body text-center d-flex flex-column align-items-center p-0" id="gamePaneGrid">
-                     <!-- 9x9 grid appended by JS -->
+                     
+                     <button class="btn btn-link" id="startGame"><i class="fa-regular fa-circle-play">&ensp;</i>Click To Start</button>
                   </div>
                   <div class="card-footer" id="stepInfo">
                      <!-- Game operations fetched by JS will be appended here -->
@@ -392,39 +412,38 @@
       
       <span>Already have an account?&emsp;<a class="sectionLink">Log in</a></span>
 
-      <!-- Terms & Policy Modal
-      <div class="modal fade" id="policy" tabindex="-1" data-backdrop="false">
-         <div class="modal-dialog modal-dialog-scrollable">
-            <div class="modal-content">
-               <div class="modal-header">
-                  <h5 class="modal-title">Terms & Policy</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-               </div>
-               <div class="modal-body">
-                  <p>Our Terms & Policy contents will goes here</p>
-                  <ul>
-                     <li>Item 1</li>
-                     <li>Item 2</li>
-                     <li>Item 3</li>
-                  </ul>
-               </div>
-               <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                  <button type="button" class="btn btn-success">Continue</button>
-               </div>
-            </div>
-         </div>
-      </div> -->
    </section>
 
    <!-------------------------------------------------------------------------->
 
    <!-- Masks & Covers -->
-   <div id="paused">
-      <!-- warning modal also included here -->
+   <div class="collapse text-center z-4" id="paused">
+      <div class="d-flex flex-column justify-content-center gap-5" id="pauseToggleWrapper">
+         <!-- warning modal at top -->
+         <i class="fa-solid fa-pause"></i>
+         <h1>Your Game Has Paused</h1>
+         <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#paused" aria-controls="paused" aria-expanded="false" aria-label="Continue Playing">
+            <i class="fa-regular fa-circle-play">&ensp;</i>Continue
+         </button>
+      </div>
    </div>
 
-   <div id="won"></div>
+   <div class="collapse text-center z-4" id="won">
+      <div class="d-flex flex-column justify-content-center gap-5" id="wonToggleWrapper">
+         <h1><i class="fa-solid fa-trophy text-warning">&ensp;</i>Congratulations!</h1>
+         <h4>Score: <span id="wonScore">123456</span></h4>
+         <h4>Time: <span id="wonTime">1:23:45</span></h4>
+
+         <div class="d-flex justify-content-evenly gap-5">
+            <button class="btn btn-link" id="wonToDashboard">
+               <i class="fa-solid fa-chevron-left">&ensp;</i>Back To Dashboard
+            </button>
+            <button class="btn btn-link" id="wonToSelect">
+               Play Another Level&ensp;<i class="fa-solid fa-chevron-right"></i>
+            </button>
+         </div>
+      </div>
+   </div>
 
    <div class="d-flex flex-column justify-content-center gap-3 text-center" id="settingUp">
       <i class="fa-solid fa-otter fa-spin"></i>
@@ -436,17 +455,5 @@
 </div>   <!-- End outer-most container -->
 
 </body>
-
-<!-- <script> // TODO: Testing purpose only. Remove for normal step flow
-   setTimeout(() => {
-      let sections = document.querySelectorAll('section');
-      sections.forEach(section => {
-         section.setAttribute('style', 'display: none !important');
-      });
-      let gamePane = document.querySelector('#gamePane');
-      gamePane.setAttribute('style', 'display: flex !important');
-   }, 5e2);
-
-</script> -->
 
 </html>
