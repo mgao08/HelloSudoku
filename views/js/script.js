@@ -167,7 +167,7 @@ const fillLevelsGrid = () => {
    const ROW_NUM = 5, COL_NUM = 5; /** 5x5 grid */
    let levelsGrid = document.querySelectorAll('.levelsGrid');
    levelsGrid.forEach(grid => {
-      for (let r = ROW_NUM; r >= 0; r--) {
+      for (let r = ROW_NUM - 1; r >= 0; r--) {
          let row = document.createElement('div');
          row.classList.add('col-12', 'row', 'm-auto', 'p-0');
 
@@ -331,12 +331,21 @@ const updateStepInfo = (text) => {
 }
 
 // Setup Game Board
-const setupGameboard = (gameId) => {
+const setupGameboard = (dummyGameId) => {
    
    toSection('gamePane');
    let startBtn = document.querySelector('#startGame');
    startBtn.style.cssText = 'opacity: 1';
-   fillGamePaneGrid(gameId);
+   fillGamePaneGrid(dummyGameId);
+}
+
+// Guest Login
+// TODO: setup guest authentication conditions
+const guestLogin = () => {
+   setupGameboard(); // TODO: replace with daily sudoku id/token
+
+   // TODO: disable all section links for guest access
+   // TODO: once the game has won, any further operation bring them to entry section
 }
 
 // collection of setup statements that needs to be run onload
@@ -445,6 +454,10 @@ const setup = () => {
       document.querySelector('#won').classList.remove("show");
       toSection('selectLevel');
    }
+
+   // Continue as guest event listener
+   let guestLoginBtn = document.querySelector('#guestLogin');
+   guestLoginBtn.onclick = () => { guestLogin() };
 };
 
 
