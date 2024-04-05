@@ -337,6 +337,11 @@
          <span class="text-secondary">Already have an account?&ensp;
             <a class="sectionLink text-success">Log in</a>
          </span>
+         <span class="text-secondary">Not sure if you will like it?&ensp;
+            <a class="sectionLink text-success" id="guestLogin">Continue As Guest</a>
+            <br>
+            <i class="mt-1">* NOTE: Your progress will not be saved if playing as guest. *</i>
+         </span>
       </div>
 
       <footer class="text-center z-1">
@@ -378,7 +383,6 @@
       <span>Don't have an account?&emsp;<a class="sectionLink">Register Now</a></span>
       
    </section>
-
 
    <section class="d-flex flex-column justify-content-center gap-4 text-center" id="register">
       <div class="d-flex flex-column gap-1" id="registerTitle">
@@ -455,5 +459,17 @@
 </div>   <!-- End outer-most container -->
 
 </body>
+
+<!-- For testing purpose only -->
+<!-- <script>
+   setTimeout(() => {
+      let sections = document.querySelectorAll('section');
+      sections.forEach(section => {
+         section.setAttribute('style', 'display: none !important;');
+      });
+   }, 5e2);
+   let entry = document.querySelector('#entry');
+   entry.setAttribute('style', 'display: flex !important;');
+</script> -->
 
 </html>

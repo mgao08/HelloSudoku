@@ -167,7 +167,7 @@ const fillLevelsGrid = () => {
    const ROW_NUM = 5, COL_NUM = 5; /** 5x5 grid */
    let levelsGrid = document.querySelectorAll('.levelsGrid');
    levelsGrid.forEach(grid => {
-      for (let r = ROW_NUM; r >= 0; r--) {
+      for (let r = ROW_NUM - 1; r >= 0; r--) {
          let row = document.createElement('div');
          row.classList.add('col-12', 'row', 'm-auto', 'p-0');
 
