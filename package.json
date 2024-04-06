@@ -18,9 +18,13 @@
 	},
 	"homepage": "https://github.com/mgao08/HelloSudoku#readme",
 	"devDependencies": {
+		"dotenv": "^16.4.5",
 		"nodemon": "^3.1.0"
 	},
 	"dependencies": {
-		"express": "^4.19.2"
+		"axios": "^1.6.8",
+		"bcrypt": "^5.1.1",
+		"express": "^4.19.2",
+		"mongodb": "^6.5.0"
 	}
 }
