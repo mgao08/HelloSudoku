@@ -35,8 +35,11 @@ const changeRole = async targetname => {
    }
 }
 
+const deleteUser = async targetname => mongo.db().collection("users").deleteOne({ username: targetname });
+
 module.exports = {
    getUser,
    createUser,
    changeRole,
+   deleteUser,
 }
