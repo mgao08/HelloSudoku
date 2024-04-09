@@ -60,8 +60,14 @@ const fetchPuzzleOfTheDay = async () => {
    }
 }
 
+const fetchPuzzleById = async (id) => {
+   const puzzle = await mongo.db().collection("puzzles").findOne({puzzle_id: parseInt(id)});
+   return puzzle; 
+}
+
 module.exports = {
    newBoard,
    initialize,
    fetchPuzzleOfTheDay,
+   fetchPuzzleById,
 }
