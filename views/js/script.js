@@ -94,6 +94,7 @@ const toSection = (text) => {
    } else if (dest.includes("daily")) {
       dest = "gamePane";
       setActiveNavlink('daily');
+      fillGamePaneGrid("daily");
 
    } else if (dest.includes("game")) {
       dest = "gamePane";
@@ -177,7 +178,6 @@ const fillLevelsGrid = () => {
             col.classList.add('col', 'p-0');
             let lvlLink = document.createElement('a');
             lvlLink.innerHTML = `&nbsp;${levelNum}&nbsp;`;
-            // TODO: connect each lvlLink with a game id from API
 
             // TODO: redirecting features goes here
             lvlLink.onclick = () => {
@@ -197,7 +197,8 @@ const fillLevelsGrid = () => {
                }, 2e3);
 
                console.log(`Go To Level ${difficulty} - ${levelNum}`);
-               setupGameboard();
+               const puzzle_id = (difficulty - 1) * 25 + levelNum;
+               setupGameboard(puzzle_id);
             };
 
             col.append(lvlLink);
@@ -256,7 +257,17 @@ const penSwitch = () => {
 }
 
 // Fill game panel 9x9 grid
-const fillGamePaneGrid = (gameId) => {
+const fillGamePaneGrid = async puzzle_id => {
+   const serverURL = 'http://localhost:3000';
+   let response;
+
+   if (puzzle_id === "daily") {
+      response = await fetch(`${serverURL}/sudoku/puzzleOfTheDay`);
+   } else {
+      response = await fetch(`${serverURL}/sudoku/${puzzle_id}`);
+   }
+   const puzzle = await response.json();
+
    const ROW_NUM = 9, COL_NUM = 9;
    let dest = document.querySelector('#gamePaneGrid');
 
@@ -267,7 +278,7 @@ const fillGamePaneGrid = (gameId) => {
 
          for (let c = 0; c < COL_NUM; c++) {
             let col = row.childNodes[c];
-            col.innerHTML = `<button class='btn'>${9-c}</button>`;   // TODO: replace with API data
+            col.innerHTML = `<button class='btn'>${puzzle.board[c][r]}</button>`;
             col.childNodes[0].onclick = (evt) => {
                if (evt.target.classList.contains("active")) {
                   setVisualActive(-1, -1);   // clear all visual effects
@@ -289,7 +300,7 @@ const fillGamePaneGrid = (gameId) => {
          for (let c = 0; c < COL_NUM; c++) {
             let col = document.createElement('div');
             col.classList.add('col', 'px-0', 'gamePaneCol');
-            col.innerHTML = `<button class='btn'>${c+1}</button>`;   // TODO: replace with API data
+            col.innerHTML = `<button class='btn'>${puzzle.board[c][r]}</button>`;
             col.childNodes[0].onclick = (evt) => {
                if (evt.target.classList.contains("active")) {
                   setVisualActive(-1, -1);   // clear all visual effects
@@ -331,12 +342,12 @@ const updateStepInfo = (text) => {
 }
 
 // Setup Game Board
-const setupGameboard = (dummyGameId) => {
+const setupGameboard = puzzle_id => {
    
    toSection('gamePane');
    let startBtn = document.querySelector('#startGame');
    startBtn.style.cssText = 'opacity: 1';
-   fillGamePaneGrid(dummyGameId);
+   fillGamePaneGrid(puzzle_id);
 }
 
 // Guest Login
