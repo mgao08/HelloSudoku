@@ -22,7 +22,7 @@ sudokuController.get("/puzzleOfTheDay", async (req, res) => {
    }
 });
 
-sudokuController.get("/board/:puzzle_id", async (req, res) => {
+sudokuController.get("/:puzzle_id", async (req, res) => {
    try {
       const puzzle = await fetchPuzzleById(req.params.puzzle_id);
       res.send(puzzle);
