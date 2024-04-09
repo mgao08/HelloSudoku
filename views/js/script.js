@@ -144,8 +144,7 @@ const loginWith = async () => {
    const userInfo = await res.json();
    userInfo.username = loginUsername;
    userInfo.password = loginPassword;
-   localStorage.setItem('userInfo', userInfo);
-   console.log(userInfo);
+   localStorage.setItem('userInfo', JSON.stringify(userInfo));
 
    if (localStorage.getItem('userInfo')) toSection('dashboard');
 }
@@ -174,7 +173,7 @@ const register = async () => {
       })
    });
    const userInfo = await res.json();
-   localStorage.setItem('userInfo', userInfo);
+   localStorage.setItem('userInfo', JSON.stringify(userInfo));
 
    toSection('dashboard');
 }
@@ -197,6 +196,26 @@ const adminControl = (cmd) => {
       default:;
    }
 }
+
+const searchUsername = document.querySelector("#searchUsername");
+searchUsername.addEventListener('keydown', async event => {
+   if (event.key === 'Enter') {
+      const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      console.log(userInfo);
+      console.log(userInfo.username)
+      console.log(userInfo.password)
+      const res = await fetch(`${serverURL}/users/search/${searchUsername.value}`, {
+         headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json',
+            username: userInfo.username,
+            password: userInfo.password
+         }
+      });
+      const searchResult = await res.json(); // TODO: show this search result in the result
+      console.log(searchResult);
+   }
+});
 
 // Fill the select level grid
 // TODO: connect game id with grid cells
