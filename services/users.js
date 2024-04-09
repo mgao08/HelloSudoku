@@ -22,7 +22,21 @@ const createUser = async userInfo => {
    return response;
 };
 
+const changeRole = async targetname => {
+   const mongoRes = await mongo.db().collection("users").findOne({ username: targetname });
+   console.log(mongoRes);
+   if (mongoRes) {
+      mongoRes.role === "admin" ? mongoRes.role = "member" : mongoRes.role = 'admin';
+      const mongoRes2 = await mongo.db().collection("users").replaceOne({ username: targetname },  mongoRes);
+      if (mongoRes2.acknowledged) return mongo.db().collection("users").findOne({ username: targetname });
+      else return mongoRes2;
+   } else {
+      console.log('no..')
+   }
+}
+
 module.exports = {
    getUser,
    createUser,
+   changeRole,
 }

@@ -179,10 +179,28 @@ const register = async () => {
 }
 
 // TODO: admin functions
-const adminControl = (cmd) => {
+const adminControl = async (cmd) => {
    switch (cmd) {
       case 'role':
-         alert('Change role of users and update database');
+         {
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            const target = JSON.parse(localStorage.getItem('target'));
+
+            const res = await fetch(`${serverURL}/users/changeRole`, {
+               method: 'POST',
+               headers: {
+                  'Accept': 'application/json, text/plain, */*',
+                  'Content-Type': 'application/json',
+                  username: userInfo.username,
+                  password: userInfo.password,
+               },
+               body: JSON.stringify({
+                  target: target.username
+               })
+            });
+            const response = await res.json();
+            localStorage.setItem('target', JSON.stringify(response));
+         }
          break;
 
       case 'export':
@@ -201,9 +219,6 @@ const searchUsername = document.querySelector("#searchUsername");
 searchUsername.addEventListener('keydown', async event => {
    if (event.key === 'Enter') {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-      console.log(userInfo);
-      console.log(userInfo.username)
-      console.log(userInfo.password)
       const res = await fetch(`${serverURL}/users/search/${searchUsername.value}`, {
          headers: {
             'Accept': 'application/json, text/plain, */*',
@@ -213,7 +228,7 @@ searchUsername.addEventListener('keydown', async event => {
          }
       });
       const searchResult = await res.json(); // TODO: show this search result in the result
-      console.log(searchResult);
+      localStorage.setItem('target', JSON.stringify(searchResult));
    }
 });
 
@@ -477,6 +492,7 @@ const setup = () => {
    const logoutBtn = document.querySelector("#logout");
    logoutBtn.onclick = (evt) => {
       localStorage.removeItem('userInfo');
+      localStorage.removeItem('target');
       toSection('entry');
    }
 

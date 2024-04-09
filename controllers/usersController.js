@@ -1,5 +1,5 @@
 const express = require("express");
-const { createUser, getUser } = require("../services/users");
+const { createUser, getUser, changeRole } = require("../services/users");
 const authorize = require("../middlewares/authorize");
 
 const usersController = express.Router();
@@ -46,6 +46,17 @@ usersController.get("/search/:username", authorize(["admin"]), async (req, res) 
       res.sendStatus(404);
    else
       res.send(user);
+})
+
+usersController.post("/changeRole", authorize(["admin"]), async (req, res) => {
+   console.log(req.body.target)
+   const user = await changeRole(req.body.target);
+
+   if (!user) {
+      res.sendStatus(404);
+   } else {
+      res.send(user);
+   }
 })
 
 module.exports = usersController;
