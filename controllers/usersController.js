@@ -7,9 +7,17 @@ const usersController = express.Router();
 usersController.post("/signup", async (req, res) => {
    try {
       const user = req.body;
-      const result = await createUser(user);
-      if (result.acknowledged)
-         res.sendStatus(200);
+      const userInfo = await createUser(user);
+      const mongoRes = userInfo[1];
+
+      if (mongoRes.acknowledged) {
+         console.log(userInfo[0])
+         const response = {
+            role: userInfo[0].role,
+            registrationDate: userInfo[0].registrationDate
+         }
+         res.send(response);
+      }      
    } catch (err) {
       res.status(500).send(err.message);
    }
@@ -17,7 +25,15 @@ usersController.post("/signup", async (req, res) => {
 
 usersController.get("/signin", authorize(), async (req, res) => {
    try {
-      res.sendStatus(req.user ? 200 : 401);
+      if (req.user) {
+         const response = {
+            role: req.user.role,
+            registrationDate: req.user.registrationDate
+         }
+         res.send(response);
+      } else {
+         res.sendStatus(401);
+      }
    } catch (err) {
       res.status(500).send(err.message);
    }

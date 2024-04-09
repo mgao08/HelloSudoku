@@ -68,6 +68,7 @@ let currentGame = {
    }
 };
 
+const serverURL = 'http://localhost:3000';
 
 // setup active nav link visual effects
 const setActiveNavlink = (name) => {
@@ -127,20 +128,55 @@ const toSection = (text) => {
 
 
 // TODO: login function
-const loginWith = (dummy) => {
+const loginWith = async () => {
    // Append login functions here
+   const loginUsername = document.querySelector("#login-username").value;
+   const loginPassword = document.querySelector("#login-password").value;
 
+   const res = await fetch(`${serverURL}/users/signin`, {
+      headers: {
+         'Accept': 'application/json, text/plain, */*',
+         'Content-Type': 'application/json',
+         username: loginUsername,
+         password: loginPassword
+      }
+   });
+   const userInfo = await res.json();
+   userInfo.username = loginUsername;
+   userInfo.password = loginPassword;
+   localStorage.setItem('userInfo', userInfo);
+   console.log(userInfo);
 
-   toSection('dashboard');
+   if (localStorage.getItem('userInfo')) toSection('dashboard');
 }
 
 
-// TODO: register function
-const registerWith = (dummy) => {
-   // Append login functions here
+const register = async () => {
+   const registerUsername = document.querySelector("#register-username").value;
+   const registerPassword = document.querySelector("#register-password").value;
+   const registerPasswordRepeat = document.querySelector("#register-password-repeat").value;
+   
+   if (registerPassword !== registerPasswordRepeat) {
+      // TODO: 
+      console.log('passwords do not match');
+      return;
+   }
 
+   const res = await fetch(`${serverURL}/users/signup`, {
+      method: 'POST',
+      headers: {
+         'Accept': 'application/json, text/plain, */*',
+         'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+         username: registerUsername,
+         password: registerPassword
+      })
+   });
+   const userInfo = await res.json();
+   localStorage.setItem('userInfo', userInfo);
 
-   loginWith('auto login with new username & password');
+   toSection('dashboard');
 }
 
 // TODO: admin functions
@@ -258,7 +294,6 @@ const penSwitch = () => {
 
 // Fill game panel 9x9 grid
 const fillGamePaneGrid = async puzzle_id => {
-   const serverURL = 'http://localhost:3000';
    let res;
 
    if (puzzle_id === "daily") {
@@ -411,14 +446,20 @@ const setup = () => {
    let registerBtn = document.querySelector('#continueRegister');
    registerBtn.onclick = (evt) => {
       evt.preventDefault();
-      registerWith('dummy data');
+      register();
    };
 
    let loginBtn = document.querySelector('#loginBtn');
    loginBtn.onclick = (evt) => {
       evt.preventDefault();
-      loginWith('dummy data');
+      loginWith();
    };
+
+   const logoutBtn = document.querySelector("#logout");
+   logoutBtn.onclick = (evt) => {
+      localStorage.removeItem('userInfo');
+      toSection('entry');
+   }
 
    // Toggle admin search result display & button transform
    let resultToggle = document.querySelector('#toggleResult');

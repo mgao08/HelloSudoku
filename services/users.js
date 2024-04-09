@@ -15,7 +15,11 @@ const createUser = async userInfo => {
    user.registrationDate = new Date().toISOString();
    user.role = "member";
 
-   return mongo.db().collection("users").insertOne(user);
+   const response = [];
+   response.push(user);
+   const mongoRes = await mongo.db().collection("users").insertOne(user);
+   response.push(mongoRes);
+   return response;
 };
 
 module.exports = {
