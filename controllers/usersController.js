@@ -1,5 +1,5 @@
 const express = require("express");
-const { createUser, getUser, changeRole } = require("../services/users");
+const { createUser, getUser, changeRole, deleteUser } = require("../services/users");
 const authorize = require("../middlewares/authorize");
 
 const usersController = express.Router();
@@ -46,7 +46,7 @@ usersController.get("/search/:username", authorize(["admin"]), async (req, res) 
       res.sendStatus(404);
    else
       res.send(user);
-})
+});
 
 usersController.post("/changeRole", authorize(["admin"]), async (req, res) => {
    console.log(req.body.target)
@@ -57,6 +57,16 @@ usersController.post("/changeRole", authorize(["admin"]), async (req, res) => {
    } else {
       res.send(user);
    }
-})
+});
+
+usersController.delete("/delete", authorize(["admin"]), async (req, res) => {
+   const response = await deleteUser(req.body.target);
+
+   if (response.acknowledged) {
+      res.sendStatus(200);
+   } else {
+      res.sendStatus(404);
+   }
+});
 
 module.exports = usersController;

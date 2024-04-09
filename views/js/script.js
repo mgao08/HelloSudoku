@@ -208,7 +208,31 @@ const adminControl = async (cmd) => {
          break;
 
       case 'delete':
-         alert('Delete user from database & logout');
+         {
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            const target = JSON.parse(localStorage.getItem('target'));
+            if (target) {
+               const res = await fetch(`${serverURL}/users/delete`, {
+                  method: 'DELETE',
+                  headers: {
+                     'Accept': 'application/json, text/plain, */*',
+                     'Content-Type': 'application/json',
+                     username: userInfo.username,
+                     password: userInfo.password,
+                  },
+                  body: JSON.stringify({
+                     target: target.username
+                  })
+               });;
+               if (res.status === 200) {
+                  alert('successfully deleted');
+                  localStorage.removeItem('target');
+               } else {
+                  `could not delete the user ${target.username}`;
+               }
+            }
+            else alert('No user to delete.');
+         }
          break;
 
       default:;
