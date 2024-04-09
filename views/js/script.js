@@ -259,14 +259,22 @@ const penSwitch = () => {
 // Fill game panel 9x9 grid
 const fillGamePaneGrid = async puzzle_id => {
    const serverURL = 'http://localhost:3000';
-   let response;
+   let res;
 
    if (puzzle_id === "daily") {
-      response = await fetch(`${serverURL}/sudoku/puzzleOfTheDay`);
+      res = await fetch(`${serverURL}/sudoku/puzzleOfTheDay`);
    } else {
-      response = await fetch(`${serverURL}/sudoku/${puzzle_id}`);
+      res = await fetch(`${serverURL}/sudoku/${puzzle_id}`);
    }
-   const puzzle = await response.json();
+   
+   const response = await res.json();
+   const puzzle = response.board;
+   const solution = response.solution;
+   const difficulty = response.difficulty;
+
+   currentGame.id = puzzle_id;
+   currentGame.puzzle = puzzle;
+   currentGame.solution = solution;
 
    const ROW_NUM = 9, COL_NUM = 9;
    let dest = document.querySelector('#gamePaneGrid');
@@ -278,7 +286,7 @@ const fillGamePaneGrid = async puzzle_id => {
 
          for (let c = 0; c < COL_NUM; c++) {
             let col = row.childNodes[c];
-            col.innerHTML = `<button class='btn'>${puzzle.board[c][r]}</button>`;
+            col.innerHTML = `<button class='btn'>${puzzle[c][r]}</button>`;
             col.childNodes[0].onclick = (evt) => {
                if (evt.target.classList.contains("active")) {
                   setVisualActive(-1, -1);   // clear all visual effects
@@ -300,7 +308,7 @@ const fillGamePaneGrid = async puzzle_id => {
          for (let c = 0; c < COL_NUM; c++) {
             let col = document.createElement('div');
             col.classList.add('col', 'px-0', 'gamePaneCol');
-            col.innerHTML = `<button class='btn'>${puzzle.board[c][r]}</button>`;
+            col.innerHTML = `<button class='btn'>${puzzle[c][r]}</button>`;
             col.childNodes[0].onclick = (evt) => {
                if (evt.target.classList.contains("active")) {
                   setVisualActive(-1, -1);   // clear all visual effects
