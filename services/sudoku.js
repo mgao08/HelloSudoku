@@ -2,6 +2,7 @@ const axios = require("axios");
 const { mongo } = require("../utils/db");
 const Puzzle = require("../models/puzzle");
 const { retryablePromise } = require("../utils/promise");
+const PuzzleForADay = require("../models/puzzleForADay");
 
 const SUDOKU_API_URL = "https://sudoku-api.vercel.app/api";
 
@@ -45,7 +46,22 @@ const initialize = async () => {
 
 }
 
+const fetchPuzzleOfTheDay = async () => {
+   const puzzleOfTheDay = await mongo.db().collection("puzzleOfTheDay").find({}).toArray();
+   const today = new Date().toISOString().slice(0, 10); // e.g. '2024-04-09'
+   if (puzzleOfTheDay.length) {
+      if (puzzleOfTheDay[0].date === today) return puzzleOfTheDay;
+   } else {
+      const board = await newBoard(1);
+      const puzzle = board[0];
+      const puzzleOfTheDay = PuzzleForADay(today, puzzle.value, puzzle.difficulty, puzzle.solution);
+      await mongo.db().collection("puzzleOfTheDay").replaceOne({}, puzzleOfTheDay, { upsert: true });
+      return puzzleOfTheDay;
+   }
+}
+
 module.exports = {
    newBoard,
    initialize,
+   fetchPuzzleOfTheDay,
 }

@@ -1,5 +1,5 @@
 const express = require("express");
-const { newBoard } = require("../services/sudoku");
+const { newBoard, fetchPuzzleOfTheDay } = require("../services/sudoku");
 
 const sudokuController = express.Router();
 
@@ -8,6 +8,15 @@ sudokuController.get("/newBoard", async (req, res) => {
       const board = await newBoard();
       console.log(board)
       res.send(board);
+   } catch (err) {
+      res.status(500).send(err.message);
+   }
+});
+
+sudokuController.get("/puzzleOfTheDay", async (req, res) => {
+   try {
+      const puzzle = await fetchPuzzleOfTheDay();
+      res.send(puzzle);
    } catch (err) {
       res.status(500).send(err.message);
    }
