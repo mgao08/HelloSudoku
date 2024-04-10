@@ -147,8 +147,9 @@ const loginWith = async () => {
    userInfo.username = loginUsername;
    userInfo.password = loginPassword;
    localStorage.setItem('userInfo', JSON.stringify(userInfo));
-
-   if (localStorage.getItem('userInfo')) toSection('dashboard');
+   const rememberme = document.querySelector("#rememberme");
+   localStorage.setItem('rememberMe', rememberme.checked);
+   toSection('dashboard');
 }
 
 
@@ -500,6 +501,7 @@ const setup = () => {
    logoutBtn.onclick = (evt) => {
       localStorage.removeItem('userInfo');
       localStorage.removeItem('target');
+      localStorage.removeItem('rememberMe');
       toSection('entry');
    }
 
@@ -564,9 +566,17 @@ const setup = () => {
 
 
 window.onload = () => {
-
    setup();
-   toSection('entry');
+   const rememberMe = localStorage.getItem('rememberMe');
+   const userInfo = localStorage.getItem('userInfo');
+   if (rememberMe) {
+      if (userInfo) 
+         toSection('daily'); // TODO: Change it back to dashboard after finishing with daily sudoku 
+      else 
+         toSection('entry');
+   } else {
+      toSection('entry');
+   }
 };
 
 })();
