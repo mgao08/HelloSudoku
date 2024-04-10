@@ -1,23 +1,26 @@
 (() => {
 
+const serverURL = 'http://localhost:3000';
+
 // Global vars
 let currentGame = {
    id: null,
    puzzle: null,  /** 9x9 2D arr */
-   cells: [],
    solution: null,   /** 9x9 2D arr */
-   time: 0,    /** hh:mm:ss format */
+   cells: [],
    score: 0,
    blanks: -1,  /** number of blanks in the puzzle */
    moves: [],   /** user move history */
    gameStatus: 'none',   /** 'ongoing' || 'paused' || 'none' */
    active: [0, 0],
+   timerInterval: null,
+   startTime: null,
    
    reset: function() {
       this.id = null;
       this.puzzle = null;
       this.solution = null;
-      this.time = null;
+      this.cells = [];
       this.score = null;
       this.gameStatus = 'none';
 
@@ -35,6 +38,19 @@ let currentGame = {
       }, 2e2);
 
       // TODO: Start timer & score calculation
+      const startTime = Date.now();
+      currentGame.startTime = startTime;
+      const updateTime = () => {
+         const timer = document.querySelectorAll(".time");
+         const totalSeconds = Math.round((Date.now() - startTime)/1000);
+         const hours = Math.floor(totalSeconds/3600).toString().padStart(2,'0');
+         const minutes = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2,'0');
+         const seconds = (totalSeconds % 60).toString().padStart(2,'0');
+         const time = `${hours}:${minutes}:${seconds}`;
+         timer.forEach(x => x.innerHTML = time);
+      }   
+      const interval = setInterval(updateTime, 500);
+      currentGame.timerInterval = interval;
 
       this.gameStatus = 'ongoing';
    },
@@ -48,10 +64,16 @@ let currentGame = {
    },
 
    checkWin: function() {
-      // TODO: handle win conditions (score calculation, user data update, currentGame status update, pass time & score into won mask)
+      // TODO: user data update, currentGame status update
       // display won messages
       if (this.blanks === 0) {
          document.querySelector('#won').classList.add("show");
+         clearInterval(currentGame.timerInterval);
+         currentGame.interval = null;
+         const time = Math.round((Date.now() - currentGame.startTime) / 1000);
+         console.log(time);
+         console.log(currentGame.score);
+
       }
    },
 
@@ -101,8 +123,6 @@ let currentGame = {
       this.checkWin();
    }
 };
-
-const serverURL = 'http://localhost:3000';
 
 // setup active nav link visual effects
 const setActiveNavlink = (name) => {
@@ -376,6 +396,8 @@ const fillNumberPanel = () => {
                   cell.classList.remove("incorrect");
                   currentGame.blanks--;
                   currentGame.score++;
+                  const scores = document.querySelectorAll('.score');
+                  scores.forEach(x => x.innerHTML = currentGame.score);
                } else {
                   currentGame.cells[row][col].classList.add("incorrect");
                }
