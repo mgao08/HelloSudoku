@@ -11,6 +11,8 @@ let currentGame = {
    blanks: 0,  /** number of blanks in the puzzle */
    moves: 0,   /** number of moves user took */
    gameStatus: 'none',   /** 'ongoing' || 'paused' || 'none' */
+   active: [0, 0],
+   cell: null,
    
    reset: function() {
       this.id = null;
@@ -317,20 +319,26 @@ const fillNumberPanel = () => {
       for (let c = 1; c <= COL_NUM; c++) {
          let col = document.createElement('div');
          col.classList.add('col-4', 'p-0');
-         col.innerHTML = `<button class="btn">${r * COL_NUM + c}</button>`;
+         const num = r * COL_NUM + c
+         col.innerHTML = `<button class="btn">${num}</button>`;
          col.onclick = (evt) => {
-            if (evt.target.classList.contains("active")) {
-               evt.target.classList.remove("active");
-
-            } else {
-               let allNum = document.querySelectorAll('#numberPanel button');
-               allNum.forEach(num => {
-                  num.classList.remove("active");
-               });
-               evt.target.classList.toggle("active");
+            const row = currentGame.active[0];
+            const col = currentGame.active[1];
+            const cell = currentGame.cell;
+            const cellContent = currentGame.puzzle[row][col];
+            const solution = currentGame.solution[row][col];
+            if (cellContent !== solution) {
+               cell.innerHTML = num;
+               console.log(cell.innerHTML)
+               currentGame.puzzle[row][col] = num;
+               if (currentGame.solution[row][col] === num) {
+                  currentGame.cell.classList.add("correct");
+                  currentGame.cell.classList.remove("incorrect");
+               } else {
+                  currentGame.cell.classList.add("incorrect");
+               }
             }
          }
-         
          row.append(col);
       }
 
@@ -371,50 +379,25 @@ const fillGamePaneGrid = async puzzle_id => {
 
    const ROW_NUM = 9, COL_NUM = 9;
    let dest = document.querySelector('#gamePaneGrid');
+   dest.querySelectorAll(".gamePaneRow").forEach(e => e.remove());
 
-   // If there is already a grid
-   if (dest.childNodes.length >= ROW_NUM) {
-      for (let r = 0; r < ROW_NUM; r++) {
-         let row = dest.childNodes[r+3];  // first 3 children are start game button elements
+   for (let r = 0; r < ROW_NUM; r++) {
+      let row = document.createElement('div');
+      row.classList.add('row', 'gamePaneRow');
 
-         for (let c = 0; c < COL_NUM; c++) {
-            let col = row.childNodes[c];
-            col.innerHTML = `<button class='btn'>${puzzle[c][r]}</button>`;
-            col.childNodes[0].onclick = (evt) => {
-               if (evt.target.classList.contains("active")) {
-                  setVisualActive(-1, -1);   // clear all visual effects
-                  evt.target.classList.remove("active");
-               } else {
-                  setVisualActive(r, c);
-                  evt.target.classList.add("active");
-               }
-            }
+      for (let c = 0; c < COL_NUM; c++) {
+         let col = document.createElement('div');
+         col.classList.add('col', 'px-0', 'gamePaneCol');
+         col.innerHTML = `<button class='btn'>${puzzle[r][c] ? puzzle[r][c] : ""}</button>`;
+         col.childNodes[0].onclick = (evt) => {
+            setVisualActive(r, c);
+            evt.target.classList.add("active");
+            currentGame.active = [r, c];
+            currentGame.cell = col.childNodes[0];
          }
+         row.append(col);
       }
-
-   // If there is no existed grid
-   } else {
-      for (let r = 0; r < ROW_NUM; r++) {
-         let row = document.createElement('div');
-         row.classList.add('row', 'gamePaneRow');
-
-         for (let c = 0; c < COL_NUM; c++) {
-            let col = document.createElement('div');
-            col.classList.add('col', 'px-0', 'gamePaneCol');
-            col.innerHTML = `<button class='btn'>${puzzle[c][r]}</button>`;
-            col.childNodes[0].onclick = (evt) => {
-               if (evt.target.classList.contains("active")) {
-                  setVisualActive(-1, -1);   // clear all visual effects
-                  evt.target.classList.remove("active");
-               } else {
-                  setVisualActive(r, c);
-                  evt.target.classList.add("active");
-               }
-            }
-            row.append(col);
-         }
-         dest.append(row);
-      }
+      dest.append(row);
    }
 }
 
