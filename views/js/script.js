@@ -1,18 +1,17 @@
-// IIFE
 (() => {
 
 // Global vars
 let currentGame = {
    id: null,
    puzzle: null,  /** 9x9 2D arr */
+   cells: [],
    solution: null,   /** 9x9 2D arr */
    time: 0,    /** hh:mm:ss format */
    score: 0,
-   blanks: 0,  /** number of blanks in the puzzle */
-   moves: 0,   /** number of moves user took */
+   blanks: -1,  /** number of blanks in the puzzle */
+   moves: [],   /** user move history */
    gameStatus: 'none',   /** 'ongoing' || 'paused' || 'none' */
    active: [0, 0],
-   cell: null,
    
    reset: function() {
       this.id = null;
@@ -49,24 +48,57 @@ let currentGame = {
    },
 
    checkWin: function() {
-      if (this.moves >= this.blanks) {
-         for (let r = 0; r < 9; r++) {
-            for (let c = 0; c < 9; c++) {
-               if (this.puzzle[r][c] != this.solution[r][c]) {
-                  return false;
-               }
+      // TODO: handle win conditions (score calculation, user data update, currentGame status update, pass time & score into won mask)
+      // display won messages
+      if (this.blanks === 0) {
+         document.querySelector('#won').classList.add("show");
+      }
+   },
 
-               // TODO: handle win conditions (score calculation, user data update, currentGame status update, pass time & score into won mask)
-               
+   undo: function() {
+      if (this.moves.length) {
+         const lastMove = this.moves.pop();
+         const { row, col, before, after, blanksBefore, correct } = lastMove;
+         const cell = this.cells[row][col];
+         currentGame.blanks = blanksBefore;
+         currentGame.puzzle[row][col] = before;
+         cell.innerHTML = before;
+         cell.classList.remove('incorrect');
+         cell.classList.remove('correct');
+         if (correct === true) {
+            cell.classList.add('correct');
+         } else if (correct === false) {
+            cell.classList.add('incorrect');
+         }
+         cell.click();
+      }
+   },
 
-               // display won messages
-               document.querySelector('#won').classList.add("show");
+   hint: function() {
+      let row;
+      let col;
+
+      for (let r = 0; r < 9; r++) {
+         for (let c = 0; c < 9; c++) {
+            if (this.puzzle[r][c] !== this.solution[r][c]) {
+               col = c;
+               row = r;
+               break
             }
          }
 
-      } else {
-         return false;
+         if (col !== undefined) break;
       }
+
+      const cell = this.cells[row][col];
+      const solution = this.solution[row][col];
+      cell.classList.add("correct");
+      cell.classList.remove("incorrect");
+      this.blanks--;
+      cell.innerHTML = solution;
+      this.puzzle[row][col] = solution;
+      cell.click();
+      this.checkWin();
    }
 };
 
@@ -311,7 +343,7 @@ const fillLevelsGrid = () => {
 // Fill number 1-9 panel
 const fillNumberPanel = () => {
    const ROW_NUM = 3, COL_NUM = 3;
-   let dest = document.querySelector('#numberPanel');
+   let grid = document.querySelector('#numberPanel');
    
    for (let r = 0; r < ROW_NUM; r++) {
       let row = document.createElement('div');
@@ -325,25 +357,36 @@ const fillNumberPanel = () => {
          col.onclick = (evt) => {
             const row = currentGame.active[0];
             const col = currentGame.active[1];
-            const cell = currentGame.cell;
+            const cell = currentGame.cells[row][col];
             const cellContent = currentGame.puzzle[row][col];
             const solution = currentGame.solution[row][col];
             if (cellContent !== solution) {
                cell.innerHTML = num;
-               console.log(cell.innerHTML)
                currentGame.puzzle[row][col] = num;
-               if (currentGame.solution[row][col] === num) {
-                  currentGame.cell.classList.add("correct");
-                  currentGame.cell.classList.remove("incorrect");
-               } else {
-                  currentGame.cell.classList.add("incorrect");
+               const move = {
+                  row,
+                  col,
+                  before: cellContent ? cellContent : "",
+                  after: num,
+                  blanksBefore: currentGame.blanks,
+                  correct: cellContent ? cellContent === solution : null
                }
+               if (currentGame.solution[row][col] === num) {
+                  cell.classList.add("correct");
+                  cell.classList.remove("incorrect");
+                  currentGame.blanks--;
+                  currentGame.score++;
+               } else {
+                  currentGame.cells[row][col].classList.add("incorrect");
+               }
+               currentGame.moves.push(move);
+               currentGame.checkWin()
             }
          }
          row.append(col);
       }
 
-      dest.append(row);
+      grid.append(row);
    }
 };
 
@@ -378,13 +421,18 @@ const fillGamePaneGrid = async puzzle_id => {
    currentGame.puzzle = puzzle;
    currentGame.solution = solution;
 
+   currentGame.blanks = puzzle.flat().filter(x => !x).length;
+
+
    const ROW_NUM = 9, COL_NUM = 9;
-   let dest = document.querySelector('#gamePaneGrid');
-   dest.querySelectorAll(".gamePaneRow").forEach(e => e.remove());
+   let grid = document.querySelector('#gamePaneGrid');
+   grid.querySelectorAll(".gamePaneRow").forEach(e => e.remove());
+   currentGame.cells = [];
 
    for (let r = 0; r < ROW_NUM; r++) {
       let row = document.createElement('div');
       row.classList.add('row', 'gamePaneRow');
+      const cells = [];
 
       for (let c = 0; c < COL_NUM; c++) {
          let col = document.createElement('div');
@@ -394,12 +442,16 @@ const fillGamePaneGrid = async puzzle_id => {
             setVisualActive(r, c);
             evt.target.classList.add("active");
             currentGame.active = [r, c];
-            currentGame.cell = col.childNodes[0];
          }
          row.append(col);
+         cells.push(col.childNodes[0]);
       }
-      dest.append(row);
-   }
+      grid.append(row);
+      currentGame.cells.push(cells);
+   }            
+   setVisualActive(0, 0);
+   const firstCell = grid.querySelector(".gamePaneRow").childNodes[0].childNodes[0];
+   firstCell.classList.add("active");
 }
 
 // Set visual effects for selected grid cell & row/column
@@ -537,9 +589,9 @@ const setup = () => {
    // Event listeners for revert & hint
    // TODO: replace by actual features
    let revertLastStep = document.querySelector("#revertLastStep");
-   revertLastStep.onclick = () => {alert("Revert Last Step")};
+   revertLastStep.onclick = () => currentGame.undo();
    let hint = document.querySelector("#hint");
-   hint.onclick = () => {alert("Get a hint")};
+   hint.onclick = () => currentGame.hint();
 
    // Start Game button toggle itself
    let startGameBtn = document.querySelector('#startGame');
