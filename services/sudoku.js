@@ -50,13 +50,15 @@ const fetchPuzzleOfTheDay = async () => {
    const puzzleOfTheDay = await mongo.db().collection("puzzleOfTheDay").find({}).toArray();
    const today = new Date().toISOString().slice(0, 10); // e.g. '2024-04-09'
    if (puzzleOfTheDay.length) {
-      if (puzzleOfTheDay[0].date === today) return puzzleOfTheDay[0];
-   } else {
-      const board = await newBoard(1);
-      const puzzle = board[0];
-      const puzzleOfTheDay = PuzzleForADay(today, puzzle.value, puzzle.difficulty, puzzle.solution);
-      await mongo.db().collection("puzzleOfTheDay").replaceOne({}, puzzleOfTheDay, { upsert: true });
-      return puzzleOfTheDay[0];
+      if (puzzleOfTheDay[0].date === today) {
+         return puzzleOfTheDay[0];
+      } else {
+         const board = await newBoard(1);
+         const puzzle = board[0];
+         console.log(puzzle)
+         const puzzleOfTheDay = PuzzleForADay(today, puzzle.value, puzzle.difficulty, puzzle.solution);
+         return await mongo.db().collection("puzzleOfTheDay").replaceOne({}, puzzleOfTheDay, { upsert: true });
+      }
    }
 }
 
