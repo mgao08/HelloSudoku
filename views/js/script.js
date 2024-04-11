@@ -63,17 +63,43 @@ let currentGame = {
       }
    },
 
-   checkWin: function() {
+   checkWin: async function() {
       // TODO: user data update, currentGame status update
       // display won messages
       if (this.blanks === 0) {
          document.querySelector('#won').classList.add("show");
          clearInterval(currentGame.timerInterval);
-         currentGame.interval = null;
-         const time = Math.round((Date.now() - currentGame.startTime) / 1000);
-         console.log(time);
-         console.log(currentGame.score);
+         currentGame.timerInterval = null;
+         const playtime = Math.round((Date.now() - currentGame.startTime) / 1000);
+         console.log('score: ', currentGame.score);
+         console.log('playtime in seconds:', playtime);
 
+         const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+
+         const record = {
+            username: userInfo.username,
+            score: currentGame.score,
+            playtime,
+            timestamp: new Date(),
+         }
+
+         const res = await fetch(`${serverURL}/sudoku/record`, {
+            method: 'POST',
+            headers: {
+               'Accept': 'application/json, text/plain, */*',
+               'Content-Type': 'application/json',
+               username: userInfo.username,
+               password: userInfo.password,
+            },
+            body: JSON.stringify({
+               record,
+            }),
+         });
+         const response = await res.json();
+
+         if (response.acknowledged) {
+            displayUserStatistics();
+         }
       }
    },
 
@@ -638,11 +664,49 @@ const setup = () => {
    guestLoginBtn.onclick = () => { guestLogin() };
 };
 
+const displayUserStatistics = async () => {
+   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+   if (userInfo.role === 'member' || userInfo.role === 'admin') {
+      const res = await fetch(`${serverURL}/sudoku/records/${userInfo.username}`, {
+         headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json',
+            username: userInfo.username,
+            password: userInfo.password,
+         }
+      });
+
+      const response = await res.json();
+      console.log(response);
+  
+      let totalPlaytime = 0;
+      let highestScore = 0;
+      const games = response.length;
+      let gamesLast7days = 0;
+      const records = response.map(x => {
+         totalPlaytime += x.playtime;
+         if (x.score > highestScore) {
+            highestScore = x.score;
+         }
+         const now = new Date();
+         const recordTime = new Date(x.timestamp);
+         const sevenDaysAgo = now.getTime() - (7*24*60*60*1000);
+         if (recordTime < sevenDaysAgo) {
+            gamesLast7days++;
+         }
+      });
+      console.log(totalPlaytime, 'totalPlaytime'); // TODO: display
+      console.log(highestScore, 'highestScore'); // TODO: display
+      console.log(games, 'Conquered number of sudokus'); // TODO: display
+      console.log(gamesLast7days, 'Conquered number of sudokus in the last 7 days'); // TODO: display
+   }
+}
 
 window.onload = () => {
    setup();
-   const rememberMe = localStorage.getItem('rememberMe');
+   
    const userInfo = localStorage.getItem('userInfo');
+   const rememberMe = localStorage.getItem('rememberMe');
    if (rememberMe) {
       if (userInfo) 
          toSection('daily'); // TODO: Change it back to dashboard after finishing with daily sudoku 
@@ -651,6 +715,8 @@ window.onload = () => {
    } else {
       toSection('entry');
    }
+
+   displayUserStatistics();
 };
 
 })();
