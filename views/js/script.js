@@ -254,6 +254,15 @@ const login = async (loginUsername, loginPassword) => {
       }
    });
 
+   // Hide admin panel section link if not logged in as admin
+   if (userInfo.role == "admin") {
+      let toAdmin = document.querySelector('#toAdmin');
+      toAdmin.style.display = 'block';
+   } else {
+      let toAdmin = document.querySelector('#toAdmin');
+      toAdmin.style.display = 'none';
+   }
+
    fillUserInfo(userInfo);
 }
 
@@ -829,11 +838,17 @@ window.onload = () => {
    
    const userInfo = localStorage.getItem('userInfo');
    const rememberMe = localStorage.getItem('rememberMe');
-   if (rememberMe) {
-      if (userInfo) 
-         toSection('dashboard');
-      else 
-         toSection('entry');
+   if (rememberMe && userInfo) {
+      // Hide admin panel section link if not logged in as admin
+      if (userInfo.role == "admin") {
+         let toAdmin = document.querySelector('#toAdmin');
+         toAdmin.style.display = 'block';
+      } else {
+         let toAdmin = document.querySelector('#toAdmin');
+         toAdmin.style.display = 'none';
+      }
+      toSection('dashboard');
+      
    } else {
       toSection('entry');
    }
