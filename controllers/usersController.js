@@ -11,7 +11,6 @@ usersController.post("/signup", async (req, res) => {
       const mongoRes = userInfo[1];
 
       if (mongoRes.acknowledged) {
-         console.log(userInfo[0])
          const response = {
             role: userInfo[0].role,
             registrationDate: userInfo[0].registrationDate
@@ -49,7 +48,6 @@ usersController.get("/search/:username", authorize(["admin"]), async (req, res) 
 });
 
 usersController.post("/changeRole", authorize(["admin"]), async (req, res) => {
-   console.log(req.body.target)
    const user = await changeRole(req.body.target);
 
    if (!user) {

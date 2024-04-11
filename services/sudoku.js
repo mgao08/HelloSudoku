@@ -55,7 +55,6 @@ const fetchPuzzleOfTheDay = async () => {
       } else {
          const board = await newBoard(1);
          const puzzle = board[0];
-         console.log(puzzle)
          const puzzleOfTheDay = PuzzleForADay(today, puzzle.value, puzzle.difficulty, puzzle.solution);
          return await mongo.db().collection("puzzleOfTheDay").replaceOne({}, puzzleOfTheDay, { upsert: true });
       }

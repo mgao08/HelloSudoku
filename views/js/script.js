@@ -21,8 +21,18 @@ let currentGame = {
       this.puzzle = null;
       this.solution = null;
       this.cells = [];
-      this.score = null;
+      this.score = 0;
+      this.blanks = -1;
+      this.moves = [];
       this.gameStatus = 'none';
+      active = [0, 0];
+      clearInterval(this.timerInterval);
+      timerInterval = null;
+      startTime = null;
+      const scores = document.querySelectorAll('.score');
+      scores.forEach(x => x.innerHTML = currentGame.score);
+      const times = document.querySelectorAll('.time');
+      times.forEach(x => x.innerHTML = "00:00:00");
 
       let pauseMask = document.querySelector('#paused');
       pauseMask.classList.remove('show');
@@ -68,11 +78,7 @@ let currentGame = {
          clearInterval(currentGame.timerInterval);
          currentGame.timerInterval = null;
          const playtime = Math.round((Date.now() - currentGame.startTime) / 1000);
-         console.log('score: ', currentGame.score);
-         console.log('playtime in seconds:', playtime);
-
          const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-
          const record = {
             username: userInfo.username,
             score: currentGame.score,
@@ -708,12 +714,14 @@ const setup = () => {
    wonToDashboard.onclick = () => {
       // TODO: append user data update functions here
       document.querySelector('#won').classList.remove("show");
+      currentGame.reset();
       toSection('dashboard');
    };
    let wonToSelect = document.querySelector('#wonToSelect');
    wonToSelect.onclick = () => {
       // TODO: append user data update functions here
       document.querySelector('#won').classList.remove("show");
+      currentGame.reset();
       toSection('selectLevel');
    }
 
