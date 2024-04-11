@@ -156,11 +156,42 @@ let currentGame = {
    }
 };
 
+// Convert time in seconds to be HH:MM:SS format
 const processTimeFormat = (totalSeconds) => {
    const hours = Math.floor(totalSeconds/3600).toString().padStart(2,'0');
    const minutes = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2,'0');
    const seconds = (totalSeconds % 60).toString().padStart(2,'0');
    return `${hours}:${minutes}:${seconds}`;
+}
+
+// Convert JS date object into Month Date, Year format
+const processDateFormat = (dateObj) => {
+   let result = "";
+   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+   let monthStr = months[dateObj.getMonth()];
+   result += monthStr + " ";
+
+   let date = dateObj.getDate();
+   result += date;
+
+   switch (date) {
+      case 1:
+         result += "st";
+         break;
+      case 2:
+         result += "nd";
+         break;
+      case 3:
+         result += "rd";
+         break;
+      default:
+         result += "th";
+         break;
+   }
+   result += ", ";
+   result += dateObj.getFullYear();
+
+   return result;
 }
 
 // setup active nav link visual effects
@@ -268,8 +299,9 @@ const login = async (loginUsername, loginPassword) => {
  * 
  * @param userInfo the fetched user information from login function
  */
-const fillUserInfo = async (userInfo) => {
-   const recordsRes = await fetch(`${serverURL}/sudoku/records/${userInfo.username}`, {
+const fillUserInfo = async () => {
+   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+   const res = await fetch(`${serverURL}/sudoku/records/${userInfo.username}`, {
       headers: {
          'Accept': 'application/json, text/plain, */*',
          'Content-Type': 'application/json',
@@ -278,7 +310,7 @@ const fillUserInfo = async (userInfo) => {
       }
    });
 
-   const response = await recordsRes.json();
+   const response = await res.json();
    const { totalPlaytime, highestScore, games, gamesLast7days } = processRecords(response);
 
    let usernameSpan = document.querySelectorAll('.username');
@@ -286,7 +318,7 @@ const fillUserInfo = async (userInfo) => {
       span.innerText = userInfo.username;
    })
 
-   document.querySelector('#registerDate').innerText = userInfo.registrationDate;
+   document.querySelector('#registerDate').innerText = processDateFormat(new Date(userInfo.registrationDate));
    document.querySelector('#highestScore').innerText = highestScore;
    document.querySelector('#levelsPassed').innerText = games;
    document.querySelector('#levelsPastWeek').innerText = gamesLast7days;
@@ -359,7 +391,8 @@ const adminControl = async (cmd) => {
          break;
 
       case 'export':
-         alert('Export user data as json(or whatever) format');
+         console.log(localStorage.getItem('target'));
+         exportUserData(localStorage.getItem('target'))
          break;
 
       case 'delete':
@@ -402,6 +435,11 @@ searchUsername.addEventListener('keydown', async event => {
    }
 });
 
+// TODO: admin functions - export user data
+const exportUserData = (data) => {
+
+}
+
 // TODO: also record the last logged in time
 const searchUser = async () => {
    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -432,7 +470,7 @@ const searchUser = async () => {
    document.querySelector('#resultUsername').innerText = searchResult.username;
    document.querySelector('#resultRole').innerHTML = `Role: ${searchResult.role}<br>
                                                       Last logged in: ${searchResult.lastLoggedIn}`;
-   document.querySelector('#resultOthers').innerHTML = `Registered since: ${searchResult.registrationDate}<br>
+   document.querySelector('#resultOthers').innerHTML = `Registered since: ${processDateFormat(new Date(searchResult.registrationDate))}<br>
                                                          Highest score: ${highestScore}<br>
                                                          Levels passed: ${games}<br>
                                                          Levels passed past week: ${gamesLast7days}<br>
@@ -469,7 +507,6 @@ const processRecords = records => {
 }
 
 // Fill the select level grid
-// TODO: connect game id with grid cells
 const fillLevelsGrid = () => {
    const ROW_NUM = 5, COL_NUM = 5; /** 5x5 grid */
    let levelsGrid = document.querySelectorAll('.levelsGrid');
@@ -485,7 +522,6 @@ const fillLevelsGrid = () => {
             let lvlLink = document.createElement('a');
             lvlLink.innerHTML = `&nbsp;${levelNum}&nbsp;`;
 
-            // TODO: redirecting features goes here
             lvlLink.onclick = () => {
                let difficulty = grid.id.toLowerCase();
                if (difficulty.includes('easy')) {
@@ -502,7 +538,6 @@ const fillLevelsGrid = () => {
                   loading.setAttribute('style', 'display: none !important;');
                }, 2e3);
 
-               console.log(`Go To Level ${difficulty} - ${levelNum}`);
                const puzzle_id = (difficulty - 1) * 25 + levelNum;
                setupGameboard(puzzle_id);
             };
@@ -791,7 +826,6 @@ const setup = () => {
    penSwitch();
 
    // Event listeners for revert & hint
-   // TODO: replace by actual features
    let revertLastStep = document.querySelector("#revertLastStep");
    revertLastStep.onclick = () => currentGame.undo();
    let hint = document.querySelector("#hint");
@@ -822,29 +856,28 @@ const setup = () => {
    guestLoginBtn.onclick = () => { guestLogin() };
 };
 
-const displayUserStatistics = async () => {
-   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-   if (userInfo.role === 'member' || userInfo.role === 'admin') {
-      const res = await fetch(`${serverURL}/sudoku/records/${userInfo.username}`, {
-         headers: {
-            'Accept': 'application/json, text/plain, */*',
-            'Content-Type': 'application/json',
-            username: userInfo.username,
-            password: userInfo.password,
-         }
-      });
+// TODO: delete if fillUserData worked well
+// const displayUserStatistics = async () => {
+//    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+//    if (userInfo.role === 'member' || userInfo.role === 'admin') {
+//       const res = await fetch(`${serverURL}/sudoku/records/${userInfo.username}`, {
+//          headers: {
+//             'Accept': 'application/json, text/plain, */*',
+//             'Content-Type': 'application/json',
+//             username: userInfo.username,
+//             password: userInfo.password,
+//          }
+//       });
 
-      const response = await res.json();
-      const { totalPlaytime, highestScore, games, gamesLast7days } = processRecords(response);
+//       const response = await res.json();
+//       const { totalPlaytime, highestScore, games, gamesLast7days } = processRecords(response);
 
-      console.log(processTimeFormat(totalPlaytime), ': Total Playtime'); // TODO: display
-      console.log(highestScore, 'Highest score'); // TODO: display
-      console.log(games, 'Conquered number of sudokus'); // TODO: display
-      console.log(gamesLast7days, 'Conquered number of sudokus in the last 7 days'); // TODO: display
-   } else {
-      // TODO: display for guest
-   }
-}
+//       console.log(processTimeFormat(totalPlaytime), ': Total Playtime');
+//       console.log(highestScore, 'Highest score');
+//       console.log(games, 'Conquered number of sudokus');
+//       console.log(gamesLast7days, 'Conquered number of sudokus in the last 7 days');
+//    }
+// }
 
 window.onload = () => {
    setup();
