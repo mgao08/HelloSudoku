@@ -79,29 +79,32 @@ let currentGame = {
          currentGame.timerInterval = null;
          const playtime = Math.round((Date.now() - currentGame.startTime) / 1000);
          const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-         const record = {
-            username: userInfo.username,
-            score: currentGame.score,
-            playtime,
-            timestamp: new Date(),
-         }
 
-         const res = await fetch(`${serverURL}/sudoku/record`, {
-            method: 'POST',
-            headers: {
-               'Accept': 'application/json, text/plain, */*',
-               'Content-Type': 'application/json',
+         if (userInfo.role === 'member' || userInfo.role === 'admin') {
+            const record = {
                username: userInfo.username,
-               password: userInfo.password,
-            },
-            body: JSON.stringify({
-               record,
-            }),
-         });
-         const response = await res.json();
-
-         if (response.acknowledged) {
-            displayUserStatistics();
+               score: currentGame.score,
+               playtime,
+               timestamp: new Date(),
+            }
+   
+            const res = await fetch(`${serverURL}/sudoku/record`, {
+               method: 'POST',
+               headers: {
+                  'Accept': 'application/json, text/plain, */*',
+                  'Content-Type': 'application/json',
+                  username: userInfo.username,
+                  password: userInfo.password,
+               },
+               body: JSON.stringify({
+                  record,
+               }),
+            });
+            const response = await res.json();
+   
+            if (response.acknowledged) {
+               displayUserStatistics();
+            }
          }
       }
    },
@@ -218,7 +221,7 @@ const toSection = (text) => {
 
 
 // TODO: login function
-const loginWith = async () => {
+const login = async () => {
    // Append login functions here
    const loginUsername = document.querySelector("#login-username").value;
    const loginPassword = document.querySelector("#login-password").value;
@@ -593,15 +596,19 @@ const updateStepInfo = (text) => {
 // Setup Game Board
 const setupGameboard = puzzle_id => {
    
-   toSection('gamePane');
+   toSection('daily');
    let startBtn = document.querySelector('#startGame');
    startBtn.style.cssText = 'opacity: 1';
-   fillGamePaneGrid(puzzle_id);
+   fillGamePaneGrid('daily');
 }
 
 // Guest Login
 // TODO: setup guest authentication conditions
 const guestLogin = () => {
+   const userInfo = {
+      role: "guest",
+   }
+   localStorage.setItem('userInfo', JSON.stringify(userInfo));
    setupGameboard(); // TODO: replace with daily sudoku id/token
 
    // TODO: disable all section links for guest access
@@ -658,7 +665,7 @@ const setup = () => {
    let loginBtn = document.querySelector('#loginBtn');
    loginBtn.onclick = (evt) => {
       evt.preventDefault();
-      loginWith();
+      login();
    };
 
    const logoutBtn = document.querySelector("#logout");
@@ -767,8 +774,6 @@ window.onload = () => {
    } else {
       toSection('entry');
    }
-
-   displayUserStatistics();
 };
 
 })();
