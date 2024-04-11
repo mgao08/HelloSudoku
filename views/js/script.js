@@ -276,10 +276,10 @@ const fillUserInfo = (userInfo) => {
    })
 
    document.querySelector('#registerDate').innerText = userInfo.registrationDate;
-   document.querySelector('#highestScore').innerText = userInfo.highscore;
-   document.querySelector('#levelsPassed').innerText = userInfo.levelsPassed;
-   document.querySelector('#levelsPastWeek').innerText = userInfo.levelsPastWeek;
-   document.querySelector('#avgTime').innerText = userInfo.averageTime;
+   document.querySelector('#highestScore').innerText = userInfo.highestScore;
+   document.querySelector('#levelsPassed').innerText = userInfo.games;
+   document.querySelector('#levelsPastWeek').innerText = userInfo.gamesLast7Days;
+   document.querySelector('#avgTime').innerText = userInfo.totalPlaytime;
 }
 
 /**
