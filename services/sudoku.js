@@ -67,9 +67,15 @@ const fetchPuzzleById = async (id) => {
    return puzzle; 
 }
 
+const record = async record => await mongo.db().collection("records").insertOne(record);
+
+const records = async username => await mongo.db().collection("records").find({ username: username }).toArray();
+
 module.exports = {
    newBoard,
    initialize,
    fetchPuzzleOfTheDay,
    fetchPuzzleById,
+   record,
+   records,
 }

@@ -1,12 +1,12 @@
 const express = require("express");
-const { newBoard, fetchPuzzleOfTheDay, fetchPuzzleById } = require("../services/sudoku");
+const { newBoard, fetchPuzzleOfTheDay, fetchPuzzleById, record, records } = require("../services/sudoku");
+const authorize = require("../middlewares/authorize");
 
 const sudokuController = express.Router();
 
 sudokuController.get("/newBoard", async (req, res) => {
    try {
       const board = await newBoard();
-      console.log(board)
       res.send(board);
    } catch (err) {
       res.status(500).send(err.message);
@@ -26,6 +26,26 @@ sudokuController.get("/:puzzle_id", async (req, res) => {
    try {
       const puzzle = await fetchPuzzleById(req.params.puzzle_id);
       res.send(puzzle);
+   } catch (err) {
+      res.status(500).send(err.message);
+   }
+});
+
+sudokuController.post("/record", authorize(["admin", "member"]), async (req, res) => {
+   try {
+      const response = await record(req.body.record);
+      console.log(response);
+      res.send(response);
+   } catch (err) {
+      res.status(500).send(err.message);
+   }
+});
+
+sudokuController.get("/records/:username", authorize(["admin", "member"]), async (req, res) => {
+   try {
+      const response = await records(req.params.username);
+      console.log(response);
+      res.send(response);
    } catch (err) {
       res.status(500).send(err.message);
    }
