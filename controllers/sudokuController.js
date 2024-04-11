@@ -34,7 +34,6 @@ sudokuController.get("/:puzzle_id", async (req, res) => {
 sudokuController.post("/record", authorize(["admin", "member"]), async (req, res) => {
    try {
       const response = await record(req.body.record);
-      console.log(response);
       res.send(response);
    } catch (err) {
       res.status(500).send(err.message);
@@ -44,7 +43,6 @@ sudokuController.post("/record", authorize(["admin", "member"]), async (req, res
 sudokuController.get("/records/:username", authorize(["admin", "member"]), async (req, res) => {
    try {
       const response = await records(req.params.username);
-      console.log(response);
       res.send(response);
    } catch (err) {
       res.status(500).send(err.message);
