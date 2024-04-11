@@ -71,7 +71,7 @@
 
       <!-- Dark green banner on top (visible only under large screen size) -->
       <div class="row text-white text-center py-2 h6 mb-0" id="top-banner">
-         <div class="col-2">
+         <div class="col-2 username">
             ${username}
          </div>
          <div class="col-10">
@@ -130,7 +130,7 @@
                         </button>
                      </li>
                      <li class="nav-item w-100 text-center">
-                        <a class="nav-link sectionLink text-decoration-underline">Admin Panel</a>
+                        <a class="nav-link sectionLink text-decoration-underline" id="toAdmin">Admin Panel</a>
                      </li>
                   </ul>
                </div>
@@ -382,7 +382,7 @@
                <label for="password" class="mt-2 fw-normal">Password</label>
                <input id="login-password" type="password" name="password" class="border border-dark-subtle rounded"
                   placeholder="Enter your password">
-               <span class="text-danger" id="loginErr">${error msg}</span>
+               <span class="text-danger" id="loginErr"></span>
             </div>
 
             <div class="row gy-3 mt-4">
@@ -414,15 +414,15 @@
             <div class="d-flex flex-column text-start gap-1">
                <label class="mt-2 fw-normal">Username&nbsp;<span class="text-danger">*</span></label>
                <input id="register-username" type="text" name="register-username"
-                  class="border border-dark-subtle rounded" placeholder="Enter your username">
+                  class="border border-dark-subtle rounded" placeholder="Enter your username" required>
                <label class="mt-2 fw-normal">Password&nbsp;<span class="text-danger">*</span></label>
                <input id="register-password" type="password" name="register-password"
-                  class="border border-dark-subtle rounded" placeholder="Enter your password">
+                  class="border border-dark-subtle rounded" placeholder="Enter your password" required>
                <label class="mt-2 fw-normal">Repeat Password&nbsp;<span class="text-danger">*</span></label>
                <input id="register-password-repeat" type="password" name="register-repeat"
-                  class="border border-dark-subtle rounded" placeholder="Repeat your password">
+                  class="border border-dark-subtle rounded" placeholder="Repeat your password" required>
 
-               <span class="text-danger" id="registerErr">${error msg}</span>
+               <span class="text-danger" id="registerErr"></span>
             </div>
 
             <div class="row gy-3 mt-4">

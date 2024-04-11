@@ -221,10 +221,7 @@ const toSection = (text) => {
 
 
 // TODO: login function
-const login = async () => {
-   // Append login functions here
-   const loginUsername = document.querySelector("#login-username").value;
-   const loginPassword = document.querySelector("#login-password").value;
+const login = async (loginUsername, loginPassword) => {
 
    const res = await fetch(`${serverURL}/users/signin`, {
       headers: {
@@ -234,24 +231,79 @@ const login = async () => {
          password: loginPassword
       }
    });
+
+   if (res.statusText == "Unauthorized") {
+      document.querySelector('#loginErr').innerText = "Username and password do not match";
+      return;
+   }
+
    const userInfo = await res.json();
    userInfo.username = loginUsername;
    userInfo.password = loginPassword;
    localStorage.setItem('userInfo', JSON.stringify(userInfo));
    const rememberme = document.querySelector("#rememberme");
    localStorage.setItem('rememberMe', rememberme.checked);
+
    toSection('dashboard');
+
+   // Remove disabled attribute for sectionlinks if previous login was guest
+   let sectionLinks = document.querySelectorAll('nav .sectionLink');
+   sectionLinks.forEach(link => {
+      link.classList.remove("disabled");
+      link.style.display = 'block';
+   });
+
+   // Hide admin panel section link if not logged in as admin
+   if (userInfo.role == "admin") {
+      let toAdmin = document.querySelector('#toAdmin');
+      toAdmin.style.display = 'block';
+   } else {
+      let toAdmin = document.querySelector('#toAdmin');
+      toAdmin.style.display = 'none';
+   }
+
+   fillUserInfo(userInfo);
 }
 
+/**
+ * 
+ * @param userInfo the fetched user information from login function
+ */
+const fillUserInfo = (userInfo) => {
+   let usernameSpan = document.querySelectorAll('.username');
+   usernameSpan.forEach(span => {
+      span.innerText = userInfo.username;
+   })
 
+   document.querySelector('#registerDate').innerText = userInfo.registrationDate;
+   document.querySelector('#highestScore').innerText = userInfo.highscore;
+   document.querySelector('#levelsPassed').innerText = userInfo.levelsPassed;
+   document.querySelector('#levelsPastWeek').innerText = userInfo.levelsPastWeek;
+   document.querySelector('#avgTime').innerText = userInfo.averageTime;
+}
+
+/**
+ * 
+ * Handle user registration features & input validation
+ */
 const register = async () => {
    const registerUsername = document.querySelector("#register-username").value;
    const registerPassword = document.querySelector("#register-password").value;
    const registerPasswordRepeat = document.querySelector("#register-password-repeat").value;
    
-   if (registerPassword !== registerPasswordRepeat) {
-      // TODO: 
-      console.log('passwords do not match');
+   let errMsg = document.querySelector('#registerErr');
+
+   // TODO: username & password format?
+   if (registerUsername == "") {
+      errMsg.innerText = "Username is required";
+      return;
+
+   } else if (registerPassword == "") {
+      errMsg.innerText = "Password is required";
+      return;
+
+   } else if (registerPassword !== registerPasswordRepeat) {
+      errMsg.innerText = "The passwords do not match, please try again";
       return;
    }
 
@@ -269,7 +321,7 @@ const register = async () => {
    const userInfo = await res.json();
    localStorage.setItem('userInfo', JSON.stringify(userInfo));
 
-   toSection('dashboard');
+   login(registerUsername, registerPassword);
 }
 
 // TODO: admin functions
@@ -337,7 +389,7 @@ const searchUsername = document.querySelector("#searchUsername");
 searchUsername.addEventListener('keydown', async event => {
    if (event.key === 'Enter') {
       searchUser();
-      // optional TODO: It opens/closes result display.
+      // TODO: It opens/closes result display.
    }
 });
 
@@ -594,7 +646,7 @@ const updateStepInfo = (text) => {
 }
 
 // Setup Game Board
-const setupGameboard = puzzle_id => {
+const setupGameboard = (puzzle_id) => {
    
    toSection('daily');
    let startBtn = document.querySelector('#startGame');
@@ -608,12 +660,20 @@ const guestLogin = () => {
       role: "guest",
    }
    localStorage.setItem('userInfo', JSON.stringify(userInfo));
+
+   document.querySelector('#top-banner .username').innerText = "Guest_4105";
+   // Disable all section links except logout & daily sudoku
+   let sectionLinks = document.querySelectorAll("nav .sectionLink");
+   sectionLinks.forEach(link => {
+      if (link.id !== "logout" && !link.innerText.includes("Daily")) {
+         link.classList.add("disabled");
+         link.parentNode.style.display = 'none';
+      }
+   });
+   // TODO: once the game has won, any further operation bring them to entry section
    
    setupGameboard();
-   
-   // TODO: replce ${username} on top of the page
-   // TODO: disable all section links for guest access
-   // TODO: once the game has won, any further operation bring them to entry section
+
 }
 
 // collection of setup statements that needs to be run onload
@@ -666,7 +726,19 @@ const setup = () => {
    let loginBtn = document.querySelector('#loginBtn');
    loginBtn.onclick = (evt) => {
       evt.preventDefault();
-      login();
+      const loginUsername = document.querySelector("#login-username").value;
+      const loginPassword = document.querySelector("#login-password").value;
+
+      if (loginUsername == "") {
+         document.querySelector('#loginErr').innerText = "Username is required";
+         return;
+
+      } else if (loginPassword == "") {
+         document.querySelector('#loginErr').innerText = "Password is required";
+         return;
+      }
+
+      login(loginUsername, loginPassword);
    };
 
    const logoutBtn = document.querySelector("#logout");
@@ -767,11 +839,17 @@ window.onload = () => {
    
    const userInfo = localStorage.getItem('userInfo');
    const rememberMe = localStorage.getItem('rememberMe');
-   if (rememberMe) {
-      if (userInfo) 
-         toSection('dashboard');
-      else 
-         toSection('entry');
+   if (rememberMe && userInfo) {
+      // Hide admin panel section link if not logged in as admin
+      if (userInfo.role == "admin") {
+         let toAdmin = document.querySelector('#toAdmin');
+         toAdmin.style.display = 'block';
+      } else {
+         let toAdmin = document.querySelector('#toAdmin');
+         toAdmin.style.display = 'none';
+      }
+      toSection('dashboard');
+
    } else {
       toSection('entry');
    }
