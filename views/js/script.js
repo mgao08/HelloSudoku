@@ -241,17 +241,43 @@ const login = async () => {
    const rememberme = document.querySelector("#rememberme");
    localStorage.setItem('rememberMe', rememberme.checked);
    toSection('dashboard');
+
+   fillUserInfo(userInfo);
 }
 
+/**
+ * 
+ * @param userInfo the fetched user information from login function
+ */
+const fillUserInfo = (userInfo) => {
+   let usernameSpan = document.querySelectorAll('.username');
+   usernameSpan.forEach(span => {
+      span.innerText = userInfo.username;
+   })
+}
 
+/**
+ * 
+ * Handle user registration features & input validation
+ */
 const register = async () => {
    const registerUsername = document.querySelector("#register-username").value;
    const registerPassword = document.querySelector("#register-password").value;
    const registerPasswordRepeat = document.querySelector("#register-password-repeat").value;
    
-   if (registerPassword !== registerPasswordRepeat) {
-      // TODO: 
-      console.log('passwords do not match');
+   let errMsg = document.querySelector('#registerErr');
+
+   // TODO: username & password format?
+   if (registerUsername != "") {
+      errMsg.innerText = "Username is required";
+      return;
+
+   } else if (registerPassword != "") {
+      errMsg.innerText = "Password is required";
+      return;
+
+   } else if (registerPassword !== registerPasswordRepeat) {
+      errMsg.innerText = "The passwords do not match, please try again";
       return;
    }
 
