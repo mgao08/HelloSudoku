@@ -242,6 +242,12 @@ const login = async () => {
    localStorage.setItem('rememberMe', rememberme.checked);
    toSection('dashboard');
 
+   // Remove disabled attribute for sectionlinks if previous login was guest
+   let sectionLinks = document.querySelectorAll('.sectionLink');
+   sectionLinks.forEach(link => {
+      link.classList.remove("disabled");
+   })
+
    fillUserInfo(userInfo);
 }
 
@@ -369,7 +375,7 @@ const searchUsername = document.querySelector("#searchUsername");
 searchUsername.addEventListener('keydown', async event => {
    if (event.key === 'Enter') {
       searchUser();
-      // optional TODO: It opens/closes result display.
+      // TODO: It opens/closes result display.
    }
 });
 
@@ -626,7 +632,7 @@ const updateStepInfo = (text) => {
 }
 
 // Setup Game Board
-const setupGameboard = puzzle_id => {
+const setupGameboard = (puzzle_id) => {
    
    toSection('daily');
    let startBtn = document.querySelector('#startGame');
@@ -640,12 +646,16 @@ const guestLogin = () => {
       role: "guest",
    }
    localStorage.setItem('userInfo', JSON.stringify(userInfo));
+
+   document.querySelector('#top-banner .username').innerText = "Guest_4105";
+   let sectionLinks = document.querySelectorAll(".sectionLink");
+   sectionLinks.forEach(link => {
+      link.classList.add("disabled");
+   });
+   // TODO: once the game has won, any further operation bring them to entry section
    
    setupGameboard();
-   
-   // TODO: replce ${username} on top of the page
-   // TODO: disable all section links for guest access
-   // TODO: once the game has won, any further operation bring them to entry section
+
 }
 
 // collection of setup statements that needs to be run onload
