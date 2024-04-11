@@ -603,14 +603,15 @@ const setupGameboard = puzzle_id => {
 }
 
 // Guest Login
-// TODO: setup guest authentication conditions
 const guestLogin = () => {
    const userInfo = {
       role: "guest",
    }
    localStorage.setItem('userInfo', JSON.stringify(userInfo));
-   setupGameboard(); // TODO: replace with daily sudoku id/token
-
+   
+   setupGameboard();
+   
+   // TODO: replce ${username} on top of the page
    // TODO: disable all section links for guest access
    // TODO: once the game has won, any further operation bring them to entry section
 }
