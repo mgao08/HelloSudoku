@@ -156,7 +156,7 @@ let currentGame = {
    }
 };
 
-const processTimeFormat = totalSeconds => {
+const processTimeFormat = (totalSeconds) => {
    const hours = Math.floor(totalSeconds/3600).toString().padStart(2,'0');
    const minutes = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2,'0');
    const seconds = (totalSeconds % 60).toString().padStart(2,'0');
@@ -220,7 +220,6 @@ const toSection = (text) => {
 };
 
 
-// TODO: login function
 const login = async (loginUsername, loginPassword) => {
 
    const res = await fetch(`${serverURL}/users/signin`, {
@@ -269,17 +268,29 @@ const login = async (loginUsername, loginPassword) => {
  * 
  * @param userInfo the fetched user information from login function
  */
-const fillUserInfo = (userInfo) => {
+const fillUserInfo = async (userInfo) => {
+   const recordsRes = await fetch(`${serverURL}/sudoku/records/${userInfo.username}`, {
+      headers: {
+         'Accept': 'application/json, text/plain, */*',
+         'Content-Type': 'application/json',
+         username: userInfo.username,
+         password: userInfo.password,
+      }
+   });
+
+   const response = await recordsRes.json();
+   const { totalPlaytime, highestScore, games, gamesLast7days } = processRecords(response);
+
    let usernameSpan = document.querySelectorAll('.username');
    usernameSpan.forEach(span => {
       span.innerText = userInfo.username;
    })
 
    document.querySelector('#registerDate').innerText = userInfo.registrationDate;
-   document.querySelector('#highestScore').innerText = userInfo.highestScore;
-   document.querySelector('#levelsPassed').innerText = userInfo.games;
-   document.querySelector('#levelsPastWeek').innerText = userInfo.gamesLast7Days;
-   document.querySelector('#avgTime').innerText = userInfo.totalPlaytime;
+   document.querySelector('#highestScore').innerText = highestScore;
+   document.querySelector('#levelsPassed').innerText = games;
+   document.querySelector('#levelsPastWeek').innerText = gamesLast7days;
+   document.querySelector('#avgTime').innerText = processTimeFormat(totalPlaytime);
 }
 
 /**
@@ -292,8 +303,6 @@ const register = async () => {
    const registerPasswordRepeat = document.querySelector("#register-password-repeat").value;
    
    let errMsg = document.querySelector('#registerErr');
-
-   // TODO: username & password format?
    if (registerUsername == "") {
       errMsg.innerText = "Username is required";
       return;
@@ -324,7 +333,7 @@ const register = async () => {
    login(registerUsername, registerPassword);
 }
 
-// TODO: admin functions
+// TODO: admin functions - export user data
 const adminControl = async (cmd) => {
    switch (cmd) {
       case 'role':
@@ -385,14 +394,15 @@ const adminControl = async (cmd) => {
    }
 }
 
+// Allow display result when pressing enter on the input field
 const searchUsername = document.querySelector("#searchUsername");
 searchUsername.addEventListener('keydown', async event => {
    if (event.key === 'Enter') {
-      searchUser();
-      // TODO: It opens/closes result display.
+      document.querySelector('#toggleResult').click();
    }
 });
 
+// TODO: also record the last logged in time
 const searchUser = async () => {
    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
    const res = await fetch(`${serverURL}/users/search/${searchUsername.value}`, {
@@ -418,13 +428,15 @@ const searchUser = async () => {
    const response = await recordsRes.json();
    const { totalPlaytime, highestScore, games, gamesLast7days } = processRecords(response);
    
-   // TODO: display this search result in the result
-   console.log(searchResult.role, 'Role')
-   console.log(new Date(searchResult.registrationDate), ':Registered since')
-   console.log(processTimeFormat(totalPlaytime), ':Total Playtime');
-   console.log(highestScore, 'Highest score');
-   console.log(games, 'Conquered number of sudokus'); 
-   console.log(gamesLast7days, 'Conquered number of sudokus in the last 7 days');
+   // TODO: check last logged in parameter name
+   document.querySelector('#resultUsername').innerText = searchResult.username;
+   document.querySelector('#resultRole').innerHTML = `Role: ${searchResult.role}<br>
+                                                      Last logged in: ${searchResult.lastLoggedIn}`;
+   document.querySelector('#resultOthers').innerHTML = `Registered since: ${searchResult.registrationDate}<br>
+                                                         Highest score: ${highestScore}<br>
+                                                         Levels passed: ${games}<br>
+                                                         Levels passed past week: ${gamesLast7days}<br>
+                                                         Total play time: ${processTimeFormat(totalPlaytime)}`;
 }
 
 const processRecords = records => {
