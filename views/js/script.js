@@ -243,10 +243,12 @@ const login = async () => {
    toSection('dashboard');
 
    // Remove disabled attribute for sectionlinks if previous login was guest
-   let sectionLinks = document.querySelectorAll('.sectionLink');
+   let sectionLinks = document.querySelectorAll('nav .sectionLink');
    sectionLinks.forEach(link => {
-      link.classList.remove("disabled");
-   })
+      if (link.id !== "logout") {
+         link.classList.remove("disabled");
+      }
+   });
 
    fillUserInfo(userInfo);
 }
@@ -648,9 +650,11 @@ const guestLogin = () => {
    localStorage.setItem('userInfo', JSON.stringify(userInfo));
 
    document.querySelector('#top-banner .username').innerText = "Guest_4105";
-   let sectionLinks = document.querySelectorAll(".sectionLink");
+   let sectionLinks = document.querySelectorAll("nav .sectionLink");
    sectionLinks.forEach(link => {
-      link.classList.add("disabled");
+      if (link.id !== "logout") {
+         link.classList.add("disabled");
+      }
    });
    // TODO: once the game has won, any further operation bring them to entry section
    
