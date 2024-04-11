@@ -254,6 +254,12 @@ const fillUserInfo = (userInfo) => {
    usernameSpan.forEach(span => {
       span.innerText = userInfo.username;
    })
+
+   document.querySelector('#registerDate').innerText = userInfo.registrationDate;
+   document.querySelector('#highestScore').innerText = userInfo.highscore;
+   document.querySelector('#levelsPassed').innerText = userInfo.levelsPassed;
+   document.querySelector('#levelsPastWeek').innerText = userInfo.levelsPastWeek;
+   document.querySelector('#avgTime').innerText = userInfo.averageTime;
 }
 
 /**
@@ -268,11 +274,11 @@ const register = async () => {
    let errMsg = document.querySelector('#registerErr');
 
    // TODO: username & password format?
-   if (registerUsername != "") {
+   if (registerUsername == "") {
       errMsg.innerText = "Username is required";
       return;
 
-   } else if (registerPassword != "") {
+   } else if (registerPassword == "") {
       errMsg.innerText = "Password is required";
       return;
 
