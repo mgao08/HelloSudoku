@@ -249,9 +249,8 @@ const login = async (loginUsername, loginPassword) => {
    // Remove disabled attribute for sectionlinks if previous login was guest
    let sectionLinks = document.querySelectorAll('nav .sectionLink');
    sectionLinks.forEach(link => {
-      if (link.id !== "logout") {
-         link.classList.remove("disabled");
-      }
+      link.classList.remove("disabled");
+      link.style.display = 'block';
    });
 
    // Hide admin panel section link if not logged in as admin
@@ -663,10 +662,12 @@ const guestLogin = () => {
    localStorage.setItem('userInfo', JSON.stringify(userInfo));
 
    document.querySelector('#top-banner .username').innerText = "Guest_4105";
+   // Disable all section links except logout & daily sudoku
    let sectionLinks = document.querySelectorAll("nav .sectionLink");
    sectionLinks.forEach(link => {
-      if (link.id !== "logout") {
+      if (link.id !== "logout" && !link.innerText.includes("Daily")) {
          link.classList.add("disabled");
+         link.parentNode.style.display = 'none';
       }
    });
    // TODO: once the game has won, any further operation bring them to entry section
@@ -848,7 +849,7 @@ window.onload = () => {
          toAdmin.style.display = 'none';
       }
       toSection('dashboard');
-      
+
    } else {
       toSection('entry');
    }
