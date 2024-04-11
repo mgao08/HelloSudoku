@@ -231,12 +231,19 @@ const login = async (loginUsername, loginPassword) => {
          password: loginPassword
       }
    });
+
+   if (res.statusText == "Unauthorized") {
+      document.querySelector('#loginErr').innerText = "Username and password do not match";
+      return;
+   }
+
    const userInfo = await res.json();
    userInfo.username = loginUsername;
    userInfo.password = loginPassword;
    localStorage.setItem('userInfo', JSON.stringify(userInfo));
    const rememberme = document.querySelector("#rememberme");
    localStorage.setItem('rememberMe', rememberme.checked);
+
    toSection('dashboard');
 
    // Remove disabled attribute for sectionlinks if previous login was guest
@@ -711,6 +718,16 @@ const setup = () => {
       evt.preventDefault();
       const loginUsername = document.querySelector("#login-username").value;
       const loginPassword = document.querySelector("#login-password").value;
+
+      if (loginUsername == "") {
+         document.querySelector('#loginErr').innerText = "Username is required";
+         return;
+
+      } else if (loginPassword == "") {
+         document.querySelector('#loginErr').innerText = "Password is required";
+         return;
+      }
+
       login(loginUsername, loginPassword);
    };
 
