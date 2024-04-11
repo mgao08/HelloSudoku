@@ -221,10 +221,7 @@ const toSection = (text) => {
 
 
 // TODO: login function
-const login = async () => {
-   // Append login functions here
-   const loginUsername = document.querySelector("#login-username").value;
-   const loginPassword = document.querySelector("#login-password").value;
+const login = async (loginUsername, loginPassword) => {
 
    const res = await fetch(`${serverURL}/users/signin`, {
       headers: {
@@ -309,7 +306,7 @@ const register = async () => {
    const userInfo = await res.json();
    localStorage.setItem('userInfo', JSON.stringify(userInfo));
 
-   toSection('dashboard');
+   login(registerUsername, registerPassword);
 }
 
 // TODO: admin functions
@@ -712,7 +709,9 @@ const setup = () => {
    let loginBtn = document.querySelector('#loginBtn');
    loginBtn.onclick = (evt) => {
       evt.preventDefault();
-      login();
+      const loginUsername = document.querySelector("#login-username").value;
+      const loginPassword = document.querySelector("#login-password").value;
+      login(loginUsername, loginPassword);
    };
 
    const logoutBtn = document.querySelector("#logout");
