@@ -761,7 +761,7 @@ window.onload = () => {
    const rememberMe = localStorage.getItem('rememberMe');
    if (rememberMe) {
       if (userInfo) 
-         toSection('daily'); // TODO: Change it back to dashboard after finishing with daily sudoku 
+         toSection('dashboard');
       else 
          toSection('entry');
    } else {
