@@ -71,7 +71,6 @@ let currentGame = {
    },
 
    checkWin: async function() {
-      // TODO: user data update, currentGame status update
       // display won messages
       if (this.blanks === 0) {
          document.querySelector('#won').classList.add("show");
@@ -105,6 +104,8 @@ let currentGame = {
             if (response.acknowledged) {
                displayUserStatistics();
             }
+         } else {
+            setTimeout(toSection, 2000, 'entry');
          }
       }
    },
@@ -451,7 +452,6 @@ const exportUserData = (data, filename, type) => {
    window.URL.revokeObjectURL(url);
 }
 
-// TODO: also record the last logged in time
 const searchUser = async () => {
    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
    const res = await fetch(`${serverURL}/users/search/${searchUsername.value}`, {
@@ -477,10 +477,8 @@ const searchUser = async () => {
    const response = await recordsRes.json();
    const { totalPlaytime, highestScore, games, gamesLast7days } = processRecords(response);
    
-   // TODO: check last logged in parameter name
    document.querySelector('#resultUsername').innerText = searchResult.username;
-   document.querySelector('#resultRole').innerHTML = `Role: ${searchResult.role}<br>
-                                                      Last logged in: ${searchResult.lastLoggedIn}`;
+   document.querySelector('#resultRole').innerHTML = `Role: ${searchResult.role}`;
    document.querySelector('#resultOthers').innerHTML = `Registered since: ${processDateFormat(new Date(searchResult.registrationDate))}<br>
                                                          Highest score: ${highestScore}<br>
                                                          Levels passed: ${games}<br>
@@ -731,7 +729,6 @@ const guestLogin = () => {
    // TODO: once the game has won, any further operation bring them to entry section
    
    setupGameboard();
-
 }
 
 // collection of setup statements that needs to be run onload
@@ -849,14 +846,12 @@ const setup = () => {
    // Winning condition buttons event listener
    let wonToDashboard = document.querySelector('#wonToDashboard');
    wonToDashboard.onclick = () => {
-      // TODO: append user data update functions here
       document.querySelector('#won').classList.remove("show");
       currentGame.reset();
       toSection('dashboard');
    };
    let wonToSelect = document.querySelector('#wonToSelect');
    wonToSelect.onclick = () => {
-      // TODO: append user data update functions here
       document.querySelector('#won').classList.remove("show");
       currentGame.reset();
       toSection('selectLevel');
@@ -867,28 +862,6 @@ const setup = () => {
    guestLoginBtn.onclick = () => { guestLogin() };
 };
 
-// TODO: delete if fillUserData worked well
-// const displayUserStatistics = async () => {
-//    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-//    if (userInfo.role === 'member' || userInfo.role === 'admin') {
-//       const res = await fetch(`${serverURL}/sudoku/records/${userInfo.username}`, {
-//          headers: {
-//             'Accept': 'application/json, text/plain, */*',
-//             'Content-Type': 'application/json',
-//             username: userInfo.username,
-//             password: userInfo.password,
-//          }
-//       });
-
-//       const response = await res.json();
-//       const { totalPlaytime, highestScore, games, gamesLast7days } = processRecords(response);
-
-//       console.log(processTimeFormat(totalPlaytime), ': Total Playtime');
-//       console.log(highestScore, 'Highest score');
-//       console.log(games, 'Conquered number of sudokus');
-//       console.log(gamesLast7days, 'Conquered number of sudokus in the last 7 days');
-//    }
-// }
 
 window.onload = () => {
    setup();
