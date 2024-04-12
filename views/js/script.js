@@ -767,8 +767,7 @@ const guestLogin = () => {
          link.parentNode.style.display = 'none';
       }
    });
-   
-   setupGameboard();
+   toSection('daily');
 }
 
 // collection of setup statements that needs to be run onload
