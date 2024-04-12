@@ -392,8 +392,7 @@ const adminControl = async (cmd) => {
 
       case 'export':
          const target = JSON.parse(localStorage.getItem('target'));
-         let userdata = JSON.stringify(target);
-         exportUserData(userdata, `${target.username}-hellosudoku.txt`, 'text/plain');
+         exportUserData(target, `${target.username}-hellosudoku.txt`, 'text/plain');
          break;
 
       case 'delete':
@@ -438,7 +437,8 @@ searchUsername.addEventListener('keydown', async event => {
 
 // Download user data as text file
 const exportUserData = (data, filename, type) => {
-   let file = new Blob([data], {type: type});
+
+   let file = new Blob([JSON.stringify(data)], {type: type});
    let a = document.createElement("a");
    url = URL.createObjectURL(file);
 
