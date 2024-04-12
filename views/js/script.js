@@ -5,6 +5,7 @@ const serverURL = 'http://localhost:3000';
 // Global vars
 let currentGame = {
    id: null,
+   levelCode: null,  /** Level 1 - 1 (for displaying only) */
    puzzle: null,  /** 9x9 2D arr */
    solution: null,   /** 9x9 2D arr */
    cells: [],
@@ -18,6 +19,7 @@ let currentGame = {
    
    reset: function() {
       this.id = null;
+      this.levelCode = null;
       this.puzzle = null;
       this.solution = null;
       this.cells = [];
@@ -231,24 +233,30 @@ const toSection = (text) => {
       section.setAttribute('style', 'display: none !important');
          /** Used setAttribute cuz need to overwrite important */
    });
+   let navbarBrand = document.querySelector('.navbar-brand');
 
    let dest = text.toLowerCase();
    if (dest.includes("dashboard")) {
       dest = "dashboard";  /** corresponding id */
       setActiveNavlink('dashboard');
+      // change navbar brand text
+      navbarBrand.innerHTML = "<i class='fa-solid fa-gauge-high'></i>&ensp;My Dashboard";
 
    } else if (dest.includes("daily")) {
       dest = "gamePane";
       setActiveNavlink('daily');
       fillGamePaneGrid("daily");
+      navbarBrand.innerHTML = "<i class='fa-solid fa-calendar-day'></i>&ensp;Daily Sudoku";
 
    } else if (dest.includes("game")) {
       dest = "gamePane";
       setActiveNavlink('select');
+      navbarBrand.innerHTML = `<i class="fa-solid fa-star text-warning"></i>&ensp;${currentGame.levelCode}`;
 
    } else if (dest.includes("select")) {
       dest = "selectLevel";
       setActiveNavlink('select');
+      navbarBrand.innerHTML = "<i class='fa-solid fa-grip'></i>&ensp;Select Level";
 
    } else if (dest.includes("register")) {
       dest = "register";
@@ -568,6 +576,7 @@ const fillLevelsGrid = () => {
                }, 2e3);
 
                const puzzle_id = (difficulty - 1) * 25 + levelNum;
+               currentGame.levelCode = `Level&ensp;${difficulty} - ${levelNum}`;
                setupGameboard(puzzle_id);
             };
 
@@ -646,13 +655,17 @@ const penSwitch = () => {
 }
 
 // Fill game panel 9x9 grid
-const fillGamePaneGrid = async puzzle_id => {
+const fillGamePaneGrid = async (puzzle_id) => {
    let res;
 
    if (puzzle_id === "daily") {
       res = await fetch(`${serverURL}/sudoku/puzzleOfTheDay`);
+      document.querySelector('#gameLevel').innerHTML = "Daily Sudoku";
+
    } else {
       res = await fetch(`${serverURL}/sudoku/${puzzle_id}`);
+      document.querySelector('#gameLevel').innerHTML = currentGame.levelCode;
+
    }
    
    const response = await res.json();
@@ -691,7 +704,7 @@ const fillGamePaneGrid = async puzzle_id => {
       }
       grid.append(row);
       currentGame.cells.push(cells);
-   }            
+   }
    setVisualActive(0, 0);
    const firstCell = grid.querySelector(".gamePaneRow").childNodes[0].childNodes[0];
    firstCell.classList.add("active");
@@ -724,10 +737,10 @@ const updateStepInfo = (text) => {
 // Setup Game Board
 const setupGameboard = (puzzle_id) => {
    
-   toSection('daily');
+   toSection('game');
    let startBtn = document.querySelector('#startGame');
    startBtn.style.cssText = 'opacity: 1';
-   fillGamePaneGrid('daily');
+   fillGamePaneGrid(puzzle_id);
 }
 
 // Guest Login
@@ -895,7 +908,7 @@ window.onload = () => {
       // Auto login
       userInfo = JSON.parse(userInfo);
       login(userInfo.username, userInfo.password);
-      
+
       // Hide admin panel section link if not logged in as admin
       if (userInfo.role == "admin") {
          let toAdmin = document.querySelector('#toAdmin');
