@@ -233,30 +233,30 @@ const toSection = (text) => {
       section.setAttribute('style', 'display: none !important');
          /** Used setAttribute cuz need to overwrite important */
    });
-   let navbarBrand = document.querySelector('.navbar-brand');
+   let sectionName = "";
 
    let dest = text.toLowerCase();
    if (dest.includes("dashboard")) {
       dest = "dashboard";  /** corresponding id */
       setActiveNavlink('dashboard');
       // change navbar brand text
-      navbarBrand.innerHTML = "<i class='fa-solid fa-gauge-high'></i>&ensp;My Dashboard";
+      sectionName = "<i class='fa-solid fa-gauge-high'></i>&ensp;My Dashboard";
 
    } else if (dest.includes("daily")) {
       dest = "gamePane";
       setActiveNavlink('daily');
       fillGamePaneGrid("daily");
-      navbarBrand.innerHTML = "<i class='fa-solid fa-calendar-day'></i>&ensp;Daily Sudoku";
+      sectionName = "<i class='fa-solid fa-calendar-day'></i>&ensp;Daily Sudoku";
 
    } else if (dest.includes("game")) {
       dest = "gamePane";
       setActiveNavlink('select');
-      navbarBrand.innerHTML = `<i class="fa-solid fa-star text-warning"></i>&ensp;${currentGame.levelCode}`;
+      sectionName = `<i class="fa-solid fa-star text-warning"></i>&ensp;${currentGame.levelCode}`;
 
    } else if (dest.includes("select")) {
       dest = "selectLevel";
       setActiveNavlink('select');
-      navbarBrand.innerHTML = "<i class='fa-solid fa-grip'></i>&ensp;Select Level";
+      sectionName = "<i class='fa-solid fa-grip'></i>&ensp;Select Level";
 
    } else if (dest.includes("register")) {
       dest = "register";
@@ -277,6 +277,13 @@ const toSection = (text) => {
       document.getElementById('navList').classList.remove("show");
    }
    document.getElementById(dest).setAttribute('style', 'display: flex !important');
+
+   // Change section name display on navbar brand & banner for different section
+   let sectionNameHolder = document.querySelectorAll('.sectionName');
+   sectionNameHolder.forEach(holder => {
+      holder.innerHTML = sectionName;
+   })
+
 };
 
 
@@ -661,6 +668,7 @@ const fillGamePaneGrid = async (puzzle_id) => {
    if (puzzle_id === "daily") {
       res = await fetch(`${serverURL}/sudoku/puzzleOfTheDay`);
       document.querySelector('#gameLevel').innerHTML = "Daily Sudoku";
+      document
 
    } else {
       res = await fetch(`${serverURL}/sudoku/${puzzle_id}`);
