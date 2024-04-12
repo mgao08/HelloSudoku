@@ -13,8 +13,8 @@ let currentGame = {
    moves: [],   /** user move history */
    gameStatus: 'none',   /** 'ongoing' || 'paused' || 'none' */
    active: [0, 0],
+   time: 0,
    timerInterval: null,
-   startTime: null,
    
    reset: function() {
       this.id = null;
@@ -27,8 +27,9 @@ let currentGame = {
       this.gameStatus = 'none';
       active = [0, 0];
       clearInterval(this.timerInterval);
-      timerInterval = null;
-      startTime = null;
+      this.time = 0;
+      this.timerInterval = null;
+
       const scores = document.querySelectorAll('.score');
       scores.forEach(x => x.innerHTML = currentGame.score);
       const times = document.querySelectorAll('.time');
@@ -47,17 +48,15 @@ let currentGame = {
          startBtn.style.cssText = 'display: none;';
       }, 2e2);
 
-      // TODO: Start timer & score calculation
-      const startTime = Date.now();
-      currentGame.startTime = startTime;
-      const updateTime = () => {
-         const timer = document.querySelectorAll(".time");
-         const totalSeconds = Math.round((Date.now() - startTime)/1000);
-         const time = processTimeFormat(totalSeconds)
-         timer.forEach(x => x.innerHTML = time);
-      }   
-      const interval = setInterval(updateTime, 500);
-      currentGame.timerInterval = interval;
+      let timer = document.querySelectorAll(".time");
+      const startTimer = () => {
+         let timeFormatted = processTimeFormat(++this.time)
+         timer.forEach((item) => {
+            item.innerHTML = timeFormatted;
+         });
+      }
+      let interval = setInterval(startTimer, 1000);
+      this.timerInterval = interval;
 
       this.gameStatus = 'ongoing';
    },
@@ -66,7 +65,24 @@ let currentGame = {
       if (this.gameStatus == 'ongoing') {
          let pauseMask = document.querySelector('#paused');
          pauseMask.classList.add('show');
+         clearInterval(this.timerInterval);
          this.gameStatus = 'paused';
+      }
+   },
+
+   continue: function() {
+      if (this.gameStatus == 'paused') {
+         let timer = document.querySelectorAll(".time");
+         const startTimer = () => {
+            let timeFormatted = processTimeFormat(++this.time)
+            timer.forEach((item) => {
+               item.innerHTML = timeFormatted;
+            });
+         }
+
+         let interval = setInterval(startTimer, 1000);
+         this.timerInterval = interval;
+         this.gameStatus = 'ongoing';
       }
    },
 
@@ -726,7 +742,6 @@ const guestLogin = () => {
          link.parentNode.style.display = 'none';
       }
    });
-   // TODO: once the game has won, any further operation bring them to entry section
    
    setupGameboard();
 }
@@ -856,6 +871,10 @@ const setup = () => {
       currentGame.reset();
       toSection('selectLevel');
    }
+
+   // Continue paused game eventlistener
+   let continuePlaying = document.querySelector('#continuePlaying');
+   continuePlaying.onclick = () => {currentGame.continue();};
 
    // Continue as guest event listener
    let guestLoginBtn = document.querySelector('#guestLogin');
