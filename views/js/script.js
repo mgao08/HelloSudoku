@@ -365,7 +365,7 @@ const register = async () => {
    login(registerUsername, registerPassword);
 }
 
-// TODO: admin functions - export user data
+// Admin functions
 const adminControl = async (cmd) => {
    switch (cmd) {
       case 'role':
@@ -391,8 +391,9 @@ const adminControl = async (cmd) => {
          break;
 
       case 'export':
-         console.log(localStorage.getItem('target'));
-         exportUserData(localStorage.getItem('target'))
+         const target = JSON.parse(localStorage.getItem('target'));
+         let userdata = JSON.stringify(target);
+         exportUserData(userdata, `${target.username}-hellosudoku.txt`, 'text/plain');
          break;
 
       case 'delete':
@@ -435,9 +436,19 @@ searchUsername.addEventListener('keydown', async event => {
    }
 });
 
-// TODO: admin functions - export user data
-const exportUserData = (data) => {
+// Download user data as text file
+const exportUserData = (data, filename, type) => {
+   let file = new Blob([data], {type: type});
+   let a = document.createElement("a");
+   url = URL.createObjectURL(file);
 
+   a.href = url;
+   a.download = filename;
+   document.body.appendChild(a);
+   a.click();
+
+   document.body.removeChild(a);
+   window.URL.revokeObjectURL(url);
 }
 
 // TODO: also record the last logged in time
