@@ -1,24 +1,41 @@
-// IIFE
 (() => {
+
+const serverURL = 'http://localhost:3000';
 
 // Global vars
 let currentGame = {
    id: null,
+   levelCode: null,  /** Level 1 - 1 (for displaying only) */
    puzzle: null,  /** 9x9 2D arr */
    solution: null,   /** 9x9 2D arr */
-   time: 0,    /** hh:mm:ss format */
+   cells: [],
    score: 0,
-   blanks: 0,  /** number of blanks in the puzzle */
-   moves: 0,   /** number of moves user took */
+   blanks: -1,  /** number of blanks in the puzzle */
+   moves: [],   /** user move history */
    gameStatus: 'none',   /** 'ongoing' || 'paused' || 'none' */
+   active: [0, 0],
+   time: 0,
+   timerInterval: null,
    
    reset: function() {
       this.id = null;
+      this.levelCode = null;
       this.puzzle = null;
       this.solution = null;
-      this.time = null;
-      this.score = null;
+      this.cells = [];
+      this.score = 0;
+      this.blanks = -1;
+      this.moves = [];
       this.gameStatus = 'none';
+      active = [0, 0];
+      clearInterval(this.timerInterval);
+      this.time = 0;
+      this.timerInterval = null;
+
+      const scores = document.querySelectorAll('.score');
+      scores.forEach(x => x.innerHTML = currentGame.score);
+      const times = document.querySelectorAll('.time');
+      times.forEach(x => x.innerHTML = "00:00:00");
 
       let pauseMask = document.querySelector('#paused');
       pauseMask.classList.remove('show');
@@ -33,7 +50,15 @@ let currentGame = {
          startBtn.style.cssText = 'display: none;';
       }, 2e2);
 
-      // TODO: Start timer & score calculation
+      let timer = document.querySelectorAll(".time");
+      const startTimer = () => {
+         let timeFormatted = processTimeFormat(++this.time)
+         timer.forEach((item) => {
+            item.innerHTML = timeFormatted;
+         });
+      }
+      let interval = setInterval(startTimer, 1000);
+      this.timerInterval = interval;
 
       this.gameStatus = 'ongoing';
    },
@@ -42,32 +67,155 @@ let currentGame = {
       if (this.gameStatus == 'ongoing') {
          let pauseMask = document.querySelector('#paused');
          pauseMask.classList.add('show');
+         clearInterval(this.timerInterval);
          this.gameStatus = 'paused';
       }
    },
 
-   checkWin: function() {
-      if (this.moves >= this.blanks) {
-         for (let r = 0; r < 9; r++) {
-            for (let c = 0; c < 9; c++) {
-               if (this.puzzle[r][c] != this.solution[r][c]) {
-                  return false;
-               }
+   continue: function() {
+      if (this.gameStatus == 'paused') {
+         let timer = document.querySelectorAll(".time");
+         const startTimer = () => {
+            let timeFormatted = processTimeFormat(++this.time)
+            timer.forEach((item) => {
+               item.innerHTML = timeFormatted;
+            });
+         }
 
-               // TODO: handle win conditions (score calculation, user data update, currentGame status update, pass time & score into won mask)
-               
+         let interval = setInterval(startTimer, 1000);
+         this.timerInterval = interval;
+         this.gameStatus = 'ongoing';
+      }
+   },
 
-               // display won messages
-               document.querySelector('#won').classList.add("show");
+   checkWin: async function() {
+      // display won messages
+      if (this.blanks === 0) {
+         document.querySelector('#won').classList.add("show");
+         clearInterval(currentGame.timerInterval);
+         currentGame.timerInterval = null;
+         const playtime = Math.round((Date.now() - currentGame.startTime) / 1000);
+         const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+
+         if (userInfo.role === 'member' || userInfo.role === 'admin') {
+            const record = {
+               username: userInfo.username,
+               score: currentGame.score,
+               playtime,
+               timestamp: new Date(),
+            }
+   
+            const res = await fetch(`${serverURL}/sudoku/record`, {
+               method: 'POST',
+               headers: {
+                  'Accept': 'application/json, text/plain, */*',
+                  'Content-Type': 'application/json',
+                  username: userInfo.username,
+                  password: userInfo.password,
+               },
+               body: JSON.stringify({
+                  record,
+               }),
+            });
+            const response = await res.json();
+   
+            if (response.acknowledged) {
+               displayUserStatistics();
+            }
+         } else {
+            // Logout the guest
+            localStorage.removeItem('userInfo');
+            localStorage.removeItem('target');
+            localStorage.removeItem('rememberMe');
+            setTimeout(toSection, 2000, 'entry');
+         }
+      }
+   },
+
+   undo: function() {
+      if (this.moves.length) {
+         const lastMove = this.moves.pop();
+         const { row, col, before, after, blanksBefore, correct } = lastMove;
+         const cell = this.cells[row][col];
+         currentGame.blanks = blanksBefore;
+         currentGame.puzzle[row][col] = before;
+         cell.innerHTML = before;
+         cell.classList.remove('incorrect');
+         cell.classList.remove('correct');
+         if (correct === true) {
+            cell.classList.add('correct');
+         } else if (correct === false) {
+            cell.classList.add('incorrect');
+         }
+         cell.click();
+      }
+   },
+
+   hint: function() {
+      let row;
+      let col;
+
+      for (let r = 0; r < 9; r++) {
+         for (let c = 0; c < 9; c++) {
+            if (this.puzzle[r][c] !== this.solution[r][c]) {
+               col = c;
+               row = r;
+               break
             }
          }
 
-      } else {
-         return false;
+         if (col !== undefined) break;
       }
+
+      const cell = this.cells[row][col];
+      const solution = this.solution[row][col];
+      cell.classList.add("correct");
+      cell.classList.remove("incorrect");
+      this.blanks--;
+      cell.innerHTML = solution;
+      this.puzzle[row][col] = solution;
+      cell.click();
+      this.checkWin();
    }
 };
 
+// Convert time in seconds to be HH:MM:SS format
+const processTimeFormat = (totalSeconds) => {
+   const hours = Math.floor(totalSeconds/3600).toString().padStart(2,'0');
+   const minutes = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2,'0');
+   const seconds = (totalSeconds % 60).toString().padStart(2,'0');
+   return `${hours}:${minutes}:${seconds}`;
+}
+
+// Convert JS date object into Month Date, Year format
+const processDateFormat = (dateObj) => {
+   let result = "";
+   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+   let monthStr = months[dateObj.getMonth()];
+   result += monthStr + " ";
+
+   let date = dateObj.getDate();
+   result += date;
+
+   switch (date) {
+      case 1:
+         result += "st";
+         break;
+      case 2:
+         result += "nd";
+         break;
+      case 3:
+         result += "rd";
+         break;
+      default:
+         result += "th";
+         break;
+   }
+   result += ", ";
+   result += dateObj.getFullYear();
+
+   return result;
+}
 
 // setup active nav link visual effects
 const setActiveNavlink = (name) => {
@@ -85,23 +233,30 @@ const toSection = (text) => {
       section.setAttribute('style', 'display: none !important');
          /** Used setAttribute cuz need to overwrite important */
    });
+   let sectionName = "";
 
    let dest = text.toLowerCase();
    if (dest.includes("dashboard")) {
       dest = "dashboard";  /** corresponding id */
       setActiveNavlink('dashboard');
+      // change navbar brand text
+      sectionName = "<i class='fa-solid fa-gauge-high'></i>&ensp;My Dashboard";
 
    } else if (dest.includes("daily")) {
       dest = "gamePane";
       setActiveNavlink('daily');
+      fillGamePaneGrid("daily");
+      sectionName = "<i class='fa-solid fa-calendar-day'></i>&ensp;Daily Sudoku";
 
    } else if (dest.includes("game")) {
       dest = "gamePane";
       setActiveNavlink('select');
+      sectionName = `<i class="fa-solid fa-star text-warning"></i>&ensp;${currentGame.levelCode}`;
 
    } else if (dest.includes("select")) {
       dest = "selectLevel";
       setActiveNavlink('select');
+      sectionName = "<i class='fa-solid fa-grip'></i>&ensp;Select Level";
 
    } else if (dest.includes("register")) {
       dest = "register";
@@ -122,52 +277,285 @@ const toSection = (text) => {
       document.getElementById('navList').classList.remove("show");
    }
    document.getElementById(dest).setAttribute('style', 'display: flex !important');
+
+   // Change section name display on navbar brand & banner for different section
+   let sectionNameHolder = document.querySelectorAll('.sectionName');
+   sectionNameHolder.forEach(holder => {
+      holder.innerHTML = sectionName;
+   })
+
 };
 
 
-// TODO: login function
-const loginWith = (dummy) => {
-   // Append login functions here
+const login = async (loginUsername, loginPassword) => {
 
+   const res = await fetch(`${serverURL}/users/signin`, {
+      headers: {
+         'Accept': 'application/json, text/plain, */*',
+         'Content-Type': 'application/json',
+         username: loginUsername,
+         password: loginPassword
+      }
+   });
+
+   if (res.statusText == "Unauthorized") {
+      document.querySelector('#loginErr').innerText = "Username and password do not match";
+      return;
+   }
+
+   const userInfo = await res.json();
+   userInfo.username = loginUsername;
+   userInfo.password = loginPassword;
+   localStorage.setItem('userInfo', JSON.stringify(userInfo));
+   const rememberme = document.querySelector("#rememberme");
+   localStorage.setItem('rememberMe', rememberme.checked);
 
    toSection('dashboard');
+
+   // Remove disabled attribute for sectionlinks if previous login was guest
+   let sectionLinks = document.querySelectorAll('nav .sectionLink');
+   sectionLinks.forEach(link => {
+      link.classList.remove("disabled");
+      link.style.display = 'block';
+   });
+
+   // Hide admin panel section link if not logged in as admin
+   if (userInfo.role == "admin") {
+      let toAdmin = document.querySelector('#toAdmin');
+      toAdmin.style.display = 'block';
+   } else {
+      let toAdmin = document.querySelector('#toAdmin');
+      toAdmin.style.display = 'none';
+   }
+
+   fillUserInfo(userInfo);
 }
 
+/**
+ * 
+ * @param userInfo the fetched user information from login function
+ */
+const fillUserInfo = async () => {
+   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+   const res = await fetch(`${serverURL}/sudoku/records/${userInfo.username}`, {
+      headers: {
+         'Accept': 'application/json, text/plain, */*',
+         'Content-Type': 'application/json',
+         username: userInfo.username,
+         password: userInfo.password,
+      }
+   });
 
-// TODO: register function
-const registerWith = (dummy) => {
-   // Append login functions here
+   const response = await res.json();
+   const { totalPlaytime, highestScore, games, gamesLast7days } = processRecords(response);
 
+   let usernameSpan = document.querySelectorAll('.username');
+   usernameSpan.forEach(span => {
+      span.innerText = userInfo.username;
+   })
 
-   loginWith('auto login with new username & password');
+   document.querySelector('#registerDate').innerText = processDateFormat(new Date(userInfo.registrationDate));
+   document.querySelector('#highestScore').innerText = highestScore;
+   document.querySelector('#levelsPassed').innerText = games;
+   document.querySelector('#levelsPastWeek').innerText = gamesLast7days;
+   document.querySelector('#avgTime').innerText = processTimeFormat(totalPlaytime);
 }
 
-// TODO: admin functions
-const adminControl = (cmd) => {
+/**
+ * 
+ * Handle user registration features & input validation
+ */
+const register = async () => {
+   const registerUsername = document.querySelector("#register-username").value;
+   const registerPassword = document.querySelector("#register-password").value;
+   const registerPasswordRepeat = document.querySelector("#register-password-repeat").value;
+   
+   let errMsg = document.querySelector('#registerErr');
+   if (registerUsername == "") {
+      errMsg.innerText = "Username is required";
+      return;
+
+   } else if (registerPassword == "") {
+      errMsg.innerText = "Password is required";
+      return;
+
+   } else if (registerPassword !== registerPasswordRepeat) {
+      errMsg.innerText = "The passwords do not match, please try again";
+      return;
+   }
+
+   const res = await fetch(`${serverURL}/users/signup`, {
+      method: 'POST',
+      headers: {
+         'Accept': 'application/json, text/plain, */*',
+         'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+         username: registerUsername,
+         password: registerPassword
+      })
+   });
+   const userInfo = await res.json();
+   localStorage.setItem('userInfo', JSON.stringify(userInfo));
+
+   login(registerUsername, registerPassword);
+}
+
+// Admin functions
+const adminControl = async (cmd) => {
    switch (cmd) {
       case 'role':
-         alert('Change role of users and update database');
+         {
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            const target = JSON.parse(localStorage.getItem('target'));
+
+            const res = await fetch(`${serverURL}/users/changeRole`, {
+               method: 'POST',
+               headers: {
+                  'Accept': 'application/json, text/plain, */*',
+                  'Content-Type': 'application/json',
+                  username: userInfo.username,
+                  password: userInfo.password,
+               },
+               body: JSON.stringify({
+                  target: target.username
+               })
+            });
+            const response = await res.json();
+            localStorage.setItem('target', JSON.stringify(response));
+         }
          break;
 
       case 'export':
-         alert('Export user data as json(or whatever) format');
+         const target = JSON.parse(localStorage.getItem('target'));
+         exportUserData(target, `${target.username}-hellosudoku.txt`, 'text/plain');
          break;
 
       case 'delete':
-         alert('Delete user from database & logout');
+         {
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            const target = JSON.parse(localStorage.getItem('target'));
+            if (target) {
+               const res = await fetch(`${serverURL}/users/delete`, {
+                  method: 'DELETE',
+                  headers: {
+                     'Accept': 'application/json, text/plain, */*',
+                     'Content-Type': 'application/json',
+                     username: userInfo.username,
+                     password: userInfo.password,
+                  },
+                  body: JSON.stringify({
+                     target: target.username
+                  })
+               });;
+               if (res.status === 200) {
+                  alert('successfully deleted');
+                  localStorage.removeItem('target');
+               } else {
+                  `could not delete the user ${target.username}`;
+               }
+            }
+            else alert('No user to delete.');
+         }
          break;
 
       default:;
    }
 }
 
+// Allow display result when pressing enter on the input field
+const searchUsername = document.querySelector("#searchUsername");
+searchUsername.addEventListener('keydown', async event => {
+   if (event.key === 'Enter') {
+      document.querySelector('#toggleResult').click();
+   }
+});
+
+// Download user data as text file
+const exportUserData = (data, filename, type) => {
+
+   let file = new Blob([JSON.stringify(data)], {type: type});
+   let a = document.createElement("a");
+   url = URL.createObjectURL(file);
+
+   a.href = url;
+   a.download = filename;
+   document.body.appendChild(a);
+   a.click();
+
+   document.body.removeChild(a);
+   window.URL.revokeObjectURL(url);
+}
+
+const searchUser = async () => {
+   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+   const res = await fetch(`${serverURL}/users/search/${searchUsername.value}`, {
+      headers: {
+         'Accept': 'application/json, text/plain, */*',
+         'Content-Type': 'application/json',
+         username: userInfo.username,
+         password: userInfo.password
+      }
+   });
+   const searchResult = await res.json(); 
+   localStorage.setItem('target', JSON.stringify(searchResult));
+
+   const recordsRes = await fetch(`${serverURL}/sudoku/records/${searchResult.username}`, {
+      headers: {
+         'Accept': 'application/json, text/plain, */*',
+         'Content-Type': 'application/json',
+         username: userInfo.username,
+         password: userInfo.password,
+      }
+   });
+
+   const response = await recordsRes.json();
+   const { totalPlaytime, highestScore, games, gamesLast7days } = processRecords(response);
+   
+   document.querySelector('#resultUsername').innerText = searchResult.username;
+   document.querySelector('#resultRole').innerHTML = `Role: ${searchResult.role}`;
+   document.querySelector('#resultOthers').innerHTML = `Registered since: ${processDateFormat(new Date(searchResult.registrationDate))}<br>
+                                                         Highest score: ${highestScore}<br>
+                                                         Levels passed: ${games}<br>
+                                                         Levels passed past week: ${gamesLast7days}<br>
+                                                         Total play time: ${processTimeFormat(totalPlaytime)}`;
+}
+
+const processRecords = records => {
+   const games = records.length;
+   let totalPlaytime = 0;
+   let highestScore = 0;
+   let gamesLast7days = 0;
+   
+   records.map(x => {
+      totalPlaytime += x.playtime;
+   
+      if (x.score > highestScore) {
+         highestScore = x.score;
+      }
+   
+      const now = new Date();
+      const recordTime = new Date(x.timestamp);
+      const sevenDaysAgo = now.getTime() - (7*24*60*60*1000);
+      if (recordTime < sevenDaysAgo) {
+         gamesLast7days++;
+      }
+   });
+
+   return {
+      totalPlaytime,
+      highestScore, 
+      games,
+      gamesLast7days,
+   }
+}
+
 // Fill the select level grid
-// TODO: connect game id with grid cells
 const fillLevelsGrid = () => {
    const ROW_NUM = 5, COL_NUM = 5; /** 5x5 grid */
    let levelsGrid = document.querySelectorAll('.levelsGrid');
    levelsGrid.forEach(grid => {
-      for (let r = ROW_NUM; r >= 0; r--) {
+      for (let r = ROW_NUM - 1; r >= 0; r--) {
          let row = document.createElement('div');
          row.classList.add('col-12', 'row', 'm-auto', 'p-0');
 
@@ -177,9 +565,7 @@ const fillLevelsGrid = () => {
             col.classList.add('col', 'p-0');
             let lvlLink = document.createElement('a');
             lvlLink.innerHTML = `&nbsp;${levelNum}&nbsp;`;
-            // TODO: connect each lvlLink with a game id from API
 
-            // TODO: redirecting features goes here
             lvlLink.onclick = () => {
                let difficulty = grid.id.toLowerCase();
                if (difficulty.includes('easy')) {
@@ -196,8 +582,9 @@ const fillLevelsGrid = () => {
                   loading.setAttribute('style', 'display: none !important;');
                }, 2e3);
 
-               console.log(`Go To Level ${difficulty} - ${levelNum}`);
-               setupGameboard();
+               const puzzle_id = (difficulty - 1) * 25 + levelNum;
+               currentGame.levelCode = `Level&ensp;${difficulty} - ${levelNum}`;
+               setupGameboard(puzzle_id);
             };
 
             col.append(lvlLink);
@@ -213,7 +600,7 @@ const fillLevelsGrid = () => {
 // Fill number 1-9 panel
 const fillNumberPanel = () => {
    const ROW_NUM = 3, COL_NUM = 3;
-   let dest = document.querySelector('#numberPanel');
+   let grid = document.querySelector('#numberPanel');
    
    for (let r = 0; r < ROW_NUM; r++) {
       let row = document.createElement('div');
@@ -222,24 +609,43 @@ const fillNumberPanel = () => {
       for (let c = 1; c <= COL_NUM; c++) {
          let col = document.createElement('div');
          col.classList.add('col-4', 'p-0');
-         col.innerHTML = `<button class="btn">${r * COL_NUM + c}</button>`;
+         const num = r * COL_NUM + c
+         col.innerHTML = `<button class="btn">${num}</button>`;
          col.onclick = (evt) => {
-            if (evt.target.classList.contains("active")) {
-               evt.target.classList.remove("active");
-
-            } else {
-               let allNum = document.querySelectorAll('#numberPanel button');
-               allNum.forEach(num => {
-                  num.classList.remove("active");
-               });
-               evt.target.classList.toggle("active");
+            const row = currentGame.active[0];
+            const col = currentGame.active[1];
+            const cell = currentGame.cells[row][col];
+            const cellContent = currentGame.puzzle[row][col];
+            const solution = currentGame.solution[row][col];
+            if (cellContent !== solution) {
+               cell.innerHTML = num;
+               currentGame.puzzle[row][col] = num;
+               const move = {
+                  row,
+                  col,
+                  before: cellContent ? cellContent : "",
+                  after: num,
+                  blanksBefore: currentGame.blanks,
+                  correct: cellContent ? cellContent === solution : null
+               }
+               if (currentGame.solution[row][col] === num) {
+                  cell.classList.add("correct");
+                  cell.classList.remove("incorrect");
+                  currentGame.blanks--;
+                  currentGame.score++;
+                  const scores = document.querySelectorAll('.score');
+                  scores.forEach(x => x.innerHTML = currentGame.score);
+               } else {
+                  currentGame.cells[row][col].classList.add("incorrect");
+               }
+               currentGame.moves.push(move);
+               currentGame.checkWin()
             }
          }
-         
          row.append(col);
       }
 
-      dest.append(row);
+      grid.append(row);
    }
 };
 
@@ -256,54 +662,60 @@ const penSwitch = () => {
 }
 
 // Fill game panel 9x9 grid
-const fillGamePaneGrid = (gameId) => {
-   const ROW_NUM = 9, COL_NUM = 9;
-   let dest = document.querySelector('#gamePaneGrid');
+const fillGamePaneGrid = async (puzzle_id) => {
+   let res;
 
-   // If there is already a grid
-   if (dest.childNodes.length >= ROW_NUM) {
-      for (let r = 0; r < ROW_NUM; r++) {
-         let row = dest.childNodes[r+3];  // first 3 children are start game button elements
+   if (puzzle_id === "daily") {
+      res = await fetch(`${serverURL}/sudoku/puzzleOfTheDay`);
+      document.querySelector('#gameLevel').innerHTML = "Daily Sudoku";
+      document
 
-         for (let c = 0; c < COL_NUM; c++) {
-            let col = row.childNodes[c];
-            col.innerHTML = `<button class='btn'>${9-c}</button>`;   // TODO: replace with API data
-            col.childNodes[0].onclick = (evt) => {
-               if (evt.target.classList.contains("active")) {
-                  setVisualActive(-1, -1);   // clear all visual effects
-                  evt.target.classList.remove("active");
-               } else {
-                  setVisualActive(r, c);
-                  evt.target.classList.add("active");
-               }
-            }
-         }
-      }
-
-   // If there is no existed grid
    } else {
-      for (let r = 0; r < ROW_NUM; r++) {
-         let row = document.createElement('div');
-         row.classList.add('row', 'gamePaneRow');
+      res = await fetch(`${serverURL}/sudoku/${puzzle_id}`);
+      document.querySelector('#gameLevel').innerHTML = currentGame.levelCode;
 
-         for (let c = 0; c < COL_NUM; c++) {
-            let col = document.createElement('div');
-            col.classList.add('col', 'px-0', 'gamePaneCol');
-            col.innerHTML = `<button class='btn'>${c+1}</button>`;   // TODO: replace with API data
-            col.childNodes[0].onclick = (evt) => {
-               if (evt.target.classList.contains("active")) {
-                  setVisualActive(-1, -1);   // clear all visual effects
-                  evt.target.classList.remove("active");
-               } else {
-                  setVisualActive(r, c);
-                  evt.target.classList.add("active");
-               }
-            }
-            row.append(col);
-         }
-         dest.append(row);
-      }
    }
+   
+   const response = await res.json();
+   const puzzle = response.board;
+   const solution = response.solution;
+   const difficulty = response.difficulty;
+
+   currentGame.id = puzzle_id;
+   currentGame.puzzle = puzzle;
+   currentGame.solution = solution;
+
+   currentGame.blanks = puzzle.flat().filter(x => !x).length;
+
+
+   const ROW_NUM = 9, COL_NUM = 9;
+   let grid = document.querySelector('#gamePaneGrid');
+   grid.querySelectorAll(".gamePaneRow").forEach(e => e.remove());
+   currentGame.cells = [];
+
+   for (let r = 0; r < ROW_NUM; r++) {
+      let row = document.createElement('div');
+      row.classList.add('row', 'gamePaneRow');
+      const cells = [];
+
+      for (let c = 0; c < COL_NUM; c++) {
+         let col = document.createElement('div');
+         col.classList.add('col', 'px-0', 'gamePaneCol');
+         col.innerHTML = `<button class='btn'>${puzzle[r][c] ? puzzle[r][c] : ""}</button>`;
+         col.childNodes[0].onclick = (evt) => {
+            setVisualActive(r, c);
+            evt.target.classList.add("active");
+            currentGame.active = [r, c];
+         }
+         row.append(col);
+         cells.push(col.childNodes[0]);
+      }
+      grid.append(row);
+      currentGame.cells.push(cells);
+   }
+   setVisualActive(0, 0);
+   const firstCell = grid.querySelector(".gamePaneRow").childNodes[0].childNodes[0];
+   firstCell.classList.add("active");
 }
 
 // Set visual effects for selected grid cell & row/column
@@ -331,12 +743,32 @@ const updateStepInfo = (text) => {
 }
 
 // Setup Game Board
-const setupGameboard = (gameId) => {
+const setupGameboard = (puzzle_id) => {
    
-   toSection('gamePane');
+   toSection('game');
    let startBtn = document.querySelector('#startGame');
    startBtn.style.cssText = 'opacity: 1';
-   fillGamePaneGrid(gameId);
+   fillGamePaneGrid(puzzle_id);
+}
+
+// Guest Login
+const guestLogin = () => {
+   const userInfo = {
+      role: "guest",
+   }
+   localStorage.setItem('userInfo', JSON.stringify(userInfo));
+
+   document.querySelector('#top-banner .username').innerText = "Guest_4105";
+   // Disable all section links except logout & daily sudoku
+   let sectionLinks = document.querySelectorAll("nav .sectionLink");
+   sectionLinks.forEach(link => {
+      if (link.id !== "logout" && !link.innerText.includes("Daily")) {
+         link.classList.add("disabled");
+         link.parentNode.style.display = 'none';
+      }
+   });
+   
+   setupGameboard();
 }
 
 // collection of setup statements that needs to be run onload
@@ -383,14 +815,34 @@ const setup = () => {
    let registerBtn = document.querySelector('#continueRegister');
    registerBtn.onclick = (evt) => {
       evt.preventDefault();
-      registerWith('dummy data');
+      register();
    };
 
    let loginBtn = document.querySelector('#loginBtn');
    loginBtn.onclick = (evt) => {
       evt.preventDefault();
-      loginWith('dummy data');
+      const loginUsername = document.querySelector("#login-username").value;
+      const loginPassword = document.querySelector("#login-password").value;
+
+      if (loginUsername == "") {
+         document.querySelector('#loginErr').innerText = "Username is required";
+         return;
+
+      } else if (loginPassword == "") {
+         document.querySelector('#loginErr').innerText = "Password is required";
+         return;
+      }
+
+      login(loginUsername, loginPassword);
    };
+
+   const logoutBtn = document.querySelector("#logout");
+   logoutBtn.onclick = (evt) => {
+      localStorage.removeItem('userInfo');
+      localStorage.removeItem('target');
+      localStorage.removeItem('rememberMe');
+      toSection('entry');
+   }
 
    // Toggle admin search result display & button transform
    let resultToggle = document.querySelector('#toggleResult');
@@ -400,7 +852,7 @@ const setup = () => {
       if (status == "true") {
          resultToggle.style.cssText = 'background-color: var(--bs-white); color: var(--bs-success); margin-top: 0;';
          resultToggle.innerText = "Hide Result";
-
+         searchUser();
       } else if (status == "false") {
          resultToggle.style.cssText = 'background-color: var(--bs-success); color: var(--bs-white); margin-top: 20vh;';
          resultToggle.innerText = "Display Result";
@@ -422,11 +874,10 @@ const setup = () => {
    penSwitch();
 
    // Event listeners for revert & hint
-   // TODO: replace by actual features
    let revertLastStep = document.querySelector("#revertLastStep");
-   revertLastStep.onclick = () => {alert("Revert Last Step")};
+   revertLastStep.onclick = () => currentGame.undo();
    let hint = document.querySelector("#hint");
-   hint.onclick = () => {alert("Get a hint")};
+   hint.onclick = () => currentGame.hint();
 
    // Start Game button toggle itself
    let startGameBtn = document.querySelector('#startGame');
@@ -435,23 +886,50 @@ const setup = () => {
    // Winning condition buttons event listener
    let wonToDashboard = document.querySelector('#wonToDashboard');
    wonToDashboard.onclick = () => {
-      // TODO: append user data update functions here
       document.querySelector('#won').classList.remove("show");
+      currentGame.reset();
       toSection('dashboard');
    };
    let wonToSelect = document.querySelector('#wonToSelect');
    wonToSelect.onclick = () => {
-      // TODO: append user data update functions here
       document.querySelector('#won').classList.remove("show");
+      currentGame.reset();
       toSection('selectLevel');
    }
+
+   // Continue paused game eventlistener
+   let continuePlaying = document.querySelector('#continuePlaying');
+   continuePlaying.onclick = () => {currentGame.continue();};
+
+   // Continue as guest event listener
+   let guestLoginBtn = document.querySelector('#guestLogin');
+   guestLoginBtn.onclick = () => { guestLogin() };
 };
 
 
 window.onload = () => {
-
    setup();
-   toSection('entry');
+   
+   let userInfo = localStorage.getItem('userInfo');
+   let rememberMe = localStorage.getItem('rememberMe');
+   if (rememberMe && userInfo) {
+      // Auto login
+      userInfo = JSON.parse(userInfo);
+      login(userInfo.username, userInfo.password);
+
+      // Hide admin panel section link if not logged in as admin
+      if (userInfo.role == "admin") {
+         let toAdmin = document.querySelector('#toAdmin');
+         toAdmin.style.display = 'block';
+      } else {
+         let toAdmin = document.querySelector('#toAdmin');
+         toAdmin.style.display = 'none';
+      }
+      toSection('dashboard');
+
+   } else {
+      toSection('entry');
+   }
 };
 
 })();

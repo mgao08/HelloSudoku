@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
+
    <link rel="stylesheet" href="css/bootstrap.min.css">
    <link rel="stylesheet" href="css/styles.css">
 
@@ -19,441 +20,478 @@
 
 <body>
 
-<div class="container-fluid p-0" id="outer-most">
-   <!-- Modals need to be at top otherwise might cause error -->
+   <div class="container-fluid p-0" id="outer-most">
+      <!-- Modals need to be at top otherwise might cause error -->
 
-   <!-- Terms & Policy Modal -->
-   <div class="modal fade" id="policy" tabindex="-1" data-backdrop="false">
-      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-         <div class="modal-content">
-            <div class="modal-header">
-               <h5 class="modal-title">Terms & Policy</h5>
-               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-               <p>Our Terms & Policy contents will goes here</p>
-               <ul>
-                  <li>Item 1</li>
-                  <li>Item 2</li>
-                  <li>Item 3</li>
-               </ul>
-            </div>
-            <div class="modal-footer">
-               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-               <button type="button" class="btn btn-success" id="continueRegister" data-bs-dismiss="modal">Continue</button>
-            </div>
-         </div>
-      </div>
-   </div>
-
-   <!-- Confirm redirecting modal -->
-   <div class="modal fade" id="confirmRedirect" tabindex="-1" data-backdrop="false">
-      <div class="modal-dialog modal-dialog-centered">
-         <div class="modal-content">
-            <div class="modal-header">
-               <h5 class="modal-title">Warning</h5>
-               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-               <p>Are you sure you would like to leave this page? Your progress will not be saved!</p>
-            </div>
-            <div class="modal-footer">
-               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keep Playing</button>
-               <button type="button" class="btn btn-danger" id="leaveAnyways"
-                  data-bs-dismiss="modal">Leave Anyways</button>
+      <!-- Terms & Policy Modal -->
+      <div class="modal fade" id="policy" tabindex="-1" data-backdrop="false">
+         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title">Terms & Policy</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body">
+                  <p>Our Terms & Policy contents will goes here</p>
+                  <ul>
+                     <li>Item 1</li>
+                     <li>Item 2</li>
+                     <li>Item 3</li>
+                  </ul>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-success" id="continueRegister"
+                     data-bs-dismiss="modal">Continue</button>
+               </div>
             </div>
          </div>
       </div>
-   </div>
 
-
-   <!-- Dark green banner on top (visible only under large screen size) -->
-   <div class="row text-white text-center py-2 h6 mb-0" id="top-banner">
-      <div class="col-2">
-         ${username}
+      <!-- Confirm redirecting modal -->
+      <div class="modal fade" id="confirmRedirect" tabindex="-1" data-backdrop="false">
+         <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title">Warning</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body">
+                  <p>Are you sure you would like to leave this page? Your progress will not be saved!</p>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keep Playing</button>
+                  <button type="button" class="btn btn-danger" id="leaveAnyways" data-bs-dismiss="modal">Leave
+                     Anyways</button>
+               </div>
+            </div>
+         </div>
       </div>
-      <div class="col-10">
-         <i class="fa-solid fa-otter"></i>&nbsp;
-         Hello! Sudoku!
+
+
+      <!-- Dark green banner on top (visible only under large screen size) -->
+      <div class="row text-white text-center py-2 h6 mb-0" id="top-banner">
+         <div class="col-2 username">
+            ${username}
+         </div>
+         <div class="col-10 sectionName">
+            <i class="fa-solid fa-otter"></i>&nbsp;
+            Hello! Sudoku!
+         </div>
       </div>
-   </div>
 
-   <!-------------------------------------------------------------------------->
+      <!-------------------------------------------------------------------------->
 
-   <!-- Main Content -->
-   <div class="row">
-      <!-- Navbar -->
-      <div class="col-lg-2 col-md-12 pe-0">
-         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <span class="navbar-brand">
-               <!-- TODO: Switch navbar brand when switching between sections -->
-               <i class="fa-solid fa-gauge-high"></i>&nbsp;
-               My Dashboard
+      <!-- Main Content -->
+      <div class="row">
+         <!-- Navbar -->
+         <div class="col-lg-2 col-md-12 pe-0">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+               <span class="navbar-brand sectionName">
+                  <!-- TODO: Switch navbar brand when switching between sections -->
+                  <i class="fa-solid fa-gauge-high"></i>&nbsp;
+                  My Dashboard
+               </span>
+               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navList"
+                  aria-controls="navList" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+               </button>
+
+               <div class="collapse navbar-collapse z-2" id="navList">
+                  <button type="button" class="btn-close" data-bs-toggle="collapse" data-bs-target="#navList"
+                     aria-controls="navList" aria-label="Close Navigation"></button>
+                  <ul class="navbar-nav mr-auto align-items-center">
+                     <li class="nav-item active">
+                        <a class="nav-link sectionLink" href="#dashboard">
+                           My Dashboard&emsp;<i class="fa-solid fa-gauge-high"></i>
+                        </a>
+                     </li>
+
+                     <li class="nav-item">
+                        <a class="nav-link sectionLink" href="#daily">
+                           Daily Sudoku&emsp;<i class="fa-solid fa-calendar-day"></i>
+                        </a>
+                     </li>
+
+                     <li class="nav-item">
+                        <a class="nav-link sectionLink" href="#select">
+                           Select Level&emsp;<i class="fa-solid fa-grip"></i>
+                        </a>
+                     </li>
+
+                     <li class="nav-item">
+                        <a class="nav-link" href="#about">
+                           About Us&emsp;<i class="fa-solid fa-circle-info"></i>
+                        </a>
+                     </li>
+                     <li class="nav-item w-100 d-flex flex-grow-1">
+                        <button class="btn btn-outline-danger mt-auto mx-auto sectionLink" id="logout">
+                           <i class="fa-solid fa-power-off">&emsp;</i>Log Out
+                        </button>
+                     </li>
+                     <li class="nav-item w-100 text-center">
+                        <a class="nav-link sectionLink text-decoration-underline" id="toAdmin">Admin Panel</a>
+                     </li>
+                  </ul>
+               </div>
+            </nav>
+         </div>
+
+         <!-- Sections -->
+         <div class="col-lg-10 col-md-12 p-0 d-flex flex-column" id="contentBox">
+
+            <section class="flex-grow-1 d-flex flex-column align-items-center" id="dashboard">
+               <!-- Avatar -->
+               <div class="d-flex flex-column align-items-center" id="avatar">
+                  <div id="avatarBorder"> <!-- the outer border of avatar (visual effects only) -->
+                     <img src="img/sample-avatar.svg" class="rounded-circle border border-success" width="200"
+                        height="200">
+                  </div>
+                  <span class="fs-2 text-center">Welcome home, <span class="username">${username}</span>!</span>
+               </div>
+
+               <!-- Divider -->
+               <div class="row text-center w-100 px-4">
+                  <div class="col-12 d-flex flex-row">
+                     <hr class="w-100">
+                     <span class="px-3 text-secondary text-nowrap lh-lg" style="font-size: small">Display My Game
+                        Activity</span>
+                     <hr class="w-100">
+                  </div>
+                  <div class="col-12">
+                     <i class="fa-solid fa-chevron-down text-secondary"></i>
+                  </div>
+               </div>
+
+               <!-- User Information -->
+               <div class="d-flex flex-column text-center gap-3 my-5">
+                  <p>You have been our member since <span class="highlight-text" id="registerDate">March 17th,
+                        2024</span></p>
+                  <p>Achieved the highest score of <span class="highlight-text" id="highestScore">123456</span></p>
+                  <p>Conquered <span class="highlight-text" id="levelsPassed">21</span> Sudoku puzzles, <span
+                        class="highlight-text" id="levelsPastWeek">3</span> from the past week</p>
+                  <p>Spent <span class="highlight-text" id="avgTime">32 minutes</span> in average on each puzzle</p>
+               </div>
+
+               <!-- Suggestions -->
+               <div class="d-flex flex-column mt-auto text-center" id="suggestions">
+                  <span>Getting bored? Start solving puzzles!</span>
+                  <div class="d-flex flex-row">
+                     <a class="sectionLink">Daily Sudoku Puzzle</a>
+                     &ensp;Or&ensp;
+                     <a class="sectionLink">Select A Level</a>
+                  </div>
+               </div>
+
+            </section>
+
+            <section class="flex-grow-1 d-flex gap-4" id="gamePane">
+               <div class="d-flex flex-column text-center gap-2" id="scoreTime-sm">
+                  <h5><i class="fa-solid fa-award"></i>&ensp;Score: <span class="score">0</span></h5>
+                  <h6><i class="fa-regular fa-clock"></i>&ensp;Time: <span class="time">00:00:00</span></h6>
+               </div> <!-- Will be hidden for lg screen size -->
+
+               <div class="order-lg-first" id="gamePaneOuterBorder">
+                  <div class="card border-success">
+                     <div class="card-header bg-success-subtle text-center h6"><span id="gameLevel">Level&ensp;3 - 1</span>
+                     </div>
+                     <div class="card-body text-center d-flex flex-column align-items-center p-0" id="gamePaneGrid">
+
+                        <button class="btn btn-link" id="startGame"><i class="fa-regular fa-circle-play">&ensp;</i>Click
+                           To Start</button>
+                     </div>
+                     <div class="card-footer" id="stepInfo">
+                        <!-- Game operations fetched by JS will be appended here -->
+                        Switched to pencil.
+                     </div>
+                  </div>
+               </div>
+
+               <div class="d-flex flex-column text-center gap-4">
+                  <div class="d-flex flex-column text-center gap-2" id="scoreTime-lg">
+                     <h5><i class="fa-solid fa-medal"></i>&ensp;Score: <span class="score">0</span></h5>
+                     <h6><i class="fa-regular fa-clock"></i>&ensp;Time: <span class="time">00:00:00</span></h6>
+                  </div>
+
+                  <div class="row justify-content-evenly" id="numberPanel">
+                     <!-- Numbers appended by JS -->
+                  </div>
+
+                  <div class="row align-items-end justify-content-between w-100" id="gameTools">
+                     <div class="col-2 col-lg-6">
+                        <button class="btn" id="revertLastStep"><i class="fa-solid fa-rotate-left"></i></button>
+                     </div>
+                     <div class="col-8 col-lg-12 order-lg-first d-flex flex-row justify-content-center p-0"
+                        id="penSwitch">
+                        <button class="btn active"><i class="fa-solid fa-pencil"></i>&ensp;Pencil</button>
+                        <button class="btn"><i class="fa-solid fa-pen-nib"></i>&ensp;Pen</button>
+                     </div>
+                     <div class="col-2 col-lg-6">
+                        <button class="btn" id="hint"><i class="fa-regular fa-lightbulb"></i></button>
+                     </div>
+                  </div>
+               </div>
+
+            </section>
+
+            <section class="flex-grow-1 d-flex flex-column gap-4 justify-content-center" id="selectLevel">
+               <div class="carousel carousel-dark slide w-100 text-center" id="levelsCarousel">
+                  <div class="carousel-indicators z-1">
+                     <button type="button" data-bs-target="#levelsCarousel" data-bs-slide-to="0" class="active"
+                        aria-current="true" aria-label="Difficulty: Easy"></button>
+                     <button type="button" data-bs-target="#levelsCarousel" data-bs-slide-to="1"
+                        aria-label="Difficulty: Medium"></button>
+                     <button type="button" data-bs-target="#levelsCarousel" data-bs-slide-to="2"
+                        aria-label="Difficulty: Hard"></button>
+                  </div>
+                  <div class="carousel-inner">
+                     <div class="carousel-item active">
+                        <h2 class="text-success mb-4"><i class="fa-solid fa-puzzle-piece"></i>&nbsp;Easy</h2>
+                        <div class="row bg-white levelsGrid" id="easyGrid">
+                           <!-- grid inserted by JS-->
+                        </div>
+                     </div>
+                     <div class="carousel-item">
+                        <h2 class="text-warning mb-4"><i class="fa-solid fa-puzzle-piece"></i>&nbsp;Medium</h2>
+                        <div class="row bg-white levelsGrid" id="mediumGrid">
+                           <!-- grid inserted by JS-->
+                        </div>
+                     </div>
+                     <div class="carousel-item">
+                        <h2 class="text-danger mb-4"><i class="fa-solid fa-puzzle-piece"></i>&nbsp;Hard</h2>
+                        <div class="row bg-white levelsGrid" id="hardGrid">
+                           <!-- grid inserted by JS-->
+                        </div>
+                     </div>
+                  </div>
+                  <button class="carousel-control-prev" type="button" data-bs-target="#levelsCarousel"
+                     data-bs-slide="prev">
+                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                     <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#levelsCarousel"
+                     data-bs-slide="next">
+                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                     <span class="visually-hidden">Next</span>
+                  </button>
+               </div>
+
+               <span class="text-secondary">Can't decide? Try <a class="text-success sectionLink">Daily Sudoku
+                     Puzzle</a></span>
+            </section>
+
+            <section class="flex-grow-1 d-flex flex-column gap-4" id="admin">
+               <div class="d-flex flex-column align-items-center gap-3" id="searchBar">
+                  <label class="h3" for="searchUsername"><i class="fa-solid fa-magnifying-glass"></i>&ensp;Search For
+                     User</label>
+                  <input id="searchUsername" type="text" name="searchUsername" class="border border-dark-subtle rounded"
+                     placeholder="Enter username">
+               </div>
+
+               <div class="collapse" id="searchResult">
+                  <!-- collapse wrapper to prevent jumpy collapse animation -->
+                  <div class="card">
+                     <div class="card-header h4" id="resultUsername">${username}</div>
+
+                     <div class="card-body">
+                        <div class="card-title fw-bold" id="resultRole">
+                           Role: Member<br>
+                           Last logged in: March 19th, 2024
+                        </div>
+
+                        <div class="card-text fs-small" id="resultOthers">
+                           Registered since: March 19th, 2024<br>
+                           Highest score: 123456<br>
+                           Levels passed: 88<br>
+                           Levels passed past week: 13<br>
+                           Average time each puzzle: 1:28:37
+                        </div>
+                     </div>
+
+                     <div class="card-footer">
+                        <div class="d-flex flex-row gap-2">
+                           <button class="btn btn-warning btn-md flex-fill" id="changeRole">Change Role</button>
+                           <button class="btn btn-primary btn-sm flex-fill" id="exportData">Export Data</button>
+                           <button class="btn btn-danger btn-sm flex-fill" id="deleteUser">Delete User</button>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               <button class="btn btn-success btn-lg" id="toggleResult" data-bs-toggle="collapse"
+                  data-bs-target="#searchResult" aria-expanded="false" aria-controls="searchResult">
+                  Display Result
+               </button>
+            </section>
+
+            <footer class="text-center z-1">
+               <hr>
+               <kbd class="bg-secondary">&copy;&nbsp;Copyright 2024. CPSC 2600 - Group #</kbd>
+            </footer>
+
+         </div>
+      </div>
+
+      <!-------------------------------------------------------------------------->
+
+      <!-- Full screen sections -->
+      <section class="d-flex flex-column gap-5 text-center" id="entry">
+         <div class="d-flex flex-column gap-3" id="entryTitle">
+            <i class="fa-solid fa-otter"></i>
+            <h1>Hello! Sudoku!</h1>
+         </div>
+
+         <p class="text-secondary">
+            A free Sudoku web application which allows you to enjoy Sudoku puzzle anywhere, anytime.
+         </p>
+
+         <div class="d-flex flex-column flex-grow-1 justify-content-center gap-3">
+            <button class="btn btn-lg btn-success sectionLink">
+               <i class="fa-solid fa-paper-plane"></i>
+               &ensp;Register Now
+            </button>
+            <span class="text-secondary">Already have an account?&ensp;
+               <a class="sectionLink text-success">Log in</a>
             </span>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navList"
-               aria-controls="navList" aria-expanded="false" aria-label="Toggle navigation">
-               <span class="navbar-toggler-icon"></span>
-            </button>
-         
-            <div class="collapse navbar-collapse z-2" id="navList">
-               <button type="button" class="btn-close" data-bs-toggle="collapse" data-bs-target="#navList" aria-controls="navList" aria-label="Close Navigation"></button>
-               <ul class="navbar-nav mr-auto align-items-center">
-                  <li class="nav-item active">
-                     <a class="nav-link sectionLink" href="#dashboard">
-                        My Dashboard&emsp;<i class="fa-solid fa-gauge-high"></i>
-                     </a>
-                  </li>
-
-                  <li class="nav-item">
-                     <a class="nav-link sectionLink" href="#daily">
-                        Daily Sudoku&emsp;<i class="fa-solid fa-calendar-day"></i>
-                     </a>
-                  </li>
-
-                  <li class="nav-item">
-                     <a class="nav-link sectionLink" href="#select">
-                        Select Level&emsp;<i class="fa-solid fa-grip"></i>
-                     </a>
-                  </li>
-
-                  <li class="nav-item">
-                     <a class="nav-link" href="#about">
-                        About Us&emsp;<i class="fa-solid fa-circle-info"></i>
-                     </a>
-                  </li>
-                  <li class="nav-item w-100 d-flex flex-grow-1">
-                     <button class="btn btn-outline-danger mt-auto mx-auto sectionLink" id="logout">
-                        <i class="fa-solid fa-power-off">&emsp;</i>Log Out
-                     </button>
-                  </li>
-                  <li class="nav-item w-100 text-center">
-                     <a class="nav-link sectionLink text-decoration-underline">Admin Panel</a>
-                  </li>
-               </ul>
-            </div>
-         </nav>
-      </div>
-
-      <!-- Sections -->
-      <div class="col-lg-10 col-md-12 p-0 d-flex flex-column" id="contentBox">
-
-         <section class="flex-grow-1 d-flex flex-column align-items-center" id="dashboard">
-            <!-- Avatar -->
-            <div class="d-flex flex-column align-items-center" id="avatar">
-               <div id="avatarBorder">    <!-- the outer border of avatar (visual effects only) -->
-                  <img src="img/sample-avatar.svg" class="rounded-circle border border-success" width="200" height="200">
-               </div>
-               <span class="fs-2 text-center">Welcome home, <span class="username">${username}</span>!</span>
-            </div>
-
-            <!-- Divider -->
-            <div class="row text-center w-100 px-4">
-               <div class="col-12 d-flex flex-row">
-                  <hr class="w-100">
-                  <span class="px-3 text-secondary text-nowrap lh-lg" style="font-size: small">Display My Game Activity</span>
-                  <hr class="w-100">
-               </div>
-               <div class="col-12">
-                  <i class="fa-solid fa-chevron-down text-secondary"></i>
-               </div>
-            </div>
-
-            <!-- User Information -->
-            <div class="d-flex flex-column text-center gap-3 my-5">
-               <p>You have been our member since <span class="highlight-text" id="registerDate">March 17th, 2024</span></p>
-               <p>Achieved the highest score of <span class="highlight-text" id="highestScore">123456</span></p>
-               <p>Conquered <span class="highlight-text" id="levelsPassed">21</span> Sudoku puzzles, <span class="highlight-text" id="levelsPastWeek">3</span> from the past week</p>
-               <p>Spent <span class="highlight-text" id="avgTime">32 minutes</span> in average on each puzzle</p>
-            </div>
-
-            <!-- Suggestions -->
-            <div class="d-flex flex-column mt-auto text-center" id="suggestions">
-               <span>Getting bored? Start solving puzzles!</span>
-               <div class="d-flex flex-row">
-                  <a class="sectionLink">Daily Sudoku Puzzle</a>
-                  &ensp;Or&ensp;
-                  <a class="sectionLink">Select A Level</a>
-               </div>
-            </div>
-
-         </section>
-
-         <section class="flex-grow-1 d-flex gap-4" id="gamePane">
-            <div class="d-flex flex-column text-center gap-2" id="scoreTime-sm">
-               <h5><i class="fa-solid fa-award"></i>&ensp;Score: <span id="score">123456</span></h5>
-               <h6><i class="fa-regular fa-clock"></i>&ensp;Time: <span id="time">0:32:43</span></h6>
-            </div>   <!-- Will be hidden for lg screen size -->
-
-            <div class="order-lg-first" id="gamePaneOuterBorder">
-               <div class="card border-success">
-                  <div class="card-header bg-success-subtle text-center h6">Level <span id="gameLevel">3 - 1</span></div>
-                  <div class="card-body text-center d-flex flex-column align-items-center p-0" id="gamePaneGrid">
-                     
-                     <button class="btn btn-link" id="startGame"><i class="fa-regular fa-circle-play">&ensp;</i>Click To Start</button>
-                  </div>
-                  <div class="card-footer" id="stepInfo">
-                     <!-- Game operations fetched by JS will be appended here -->
-                     Switched to pencil.
-                  </div>
-               </div>
-            </div>
-
-            <div class="d-flex flex-column text-center gap-4">
-               <div class="d-flex flex-column text-center gap-2" id="scoreTime-lg">
-                  <h5><i class="fa-solid fa-medal"></i>&ensp;Score: <span id="score">123456</span></h5>
-                  <h6><i class="fa-regular fa-clock"></i>&ensp;Time: <span id="time">0:32:43</span></h6>
-               </div>
-
-               <div class="row justify-content-evenly" id="numberPanel">
-                  <!-- Numbers appended by JS -->
-               </div>
-
-               <div class="row align-items-end justify-content-between w-100" id="gameTools">
-                  <div class="col-2 col-lg-6">
-                     <button class="btn" id="revertLastStep"><i class="fa-solid fa-rotate-left"></i></button>
-                  </div>
-                  <div class="col-8 col-lg-12 order-lg-first d-flex flex-row justify-content-center p-0" id="penSwitch">
-                     <button class="btn active"><i class="fa-solid fa-pencil"></i>&ensp;Pencil</button>
-                     <button class="btn"><i class="fa-solid fa-pen-nib"></i>&ensp;Pen</button>
-                  </div>
-                  <div class="col-2 col-lg-6">
-                     <button class="btn" id="hint"><i class="fa-regular fa-lightbulb"></i></button>
-                  </div>
-               </div>
-            </div>
-            
-         </section>
-
-         <section class="flex-grow-1 d-flex flex-column gap-4 justify-content-center" id="selectLevel">
-            <div class="carousel carousel-dark slide w-100 text-center" id="levelsCarousel" >
-               <div class="carousel-indicators z-1">
-                  <button type="button" data-bs-target="#levelsCarousel" data-bs-slide-to="0" class="active"
-                     aria-current="true" aria-label="Difficulty: Easy"></button>
-                  <button type="button" data-bs-target="#levelsCarousel" data-bs-slide-to="1"
-                     aria-label="Difficulty: Medium"></button>
-                  <button type="button" data-bs-target="#levelsCarousel" data-bs-slide-to="2"
-                     aria-label="Difficulty: Hard"></button>
-               </div>
-               <div class="carousel-inner">
-                  <div class="carousel-item active">
-                     <h2 class="text-success mb-4"><i class="fa-solid fa-puzzle-piece"></i>&nbsp;Easy</h2>
-                     <div class="row bg-white levelsGrid" id="easyGrid">
-                        <!-- grid inserted by JS-->
-                     </div>
-                  </div>
-                  <div class="carousel-item">
-                     <h2 class="text-warning mb-4"><i class="fa-solid fa-puzzle-piece"></i>&nbsp;Medium</h2>
-                     <div class="row bg-white levelsGrid" id="mediumGrid">
-                        <!-- grid inserted by JS-->
-                     </div>
-                  </div>
-                  <div class="carousel-item">
-                     <h2 class="text-danger mb-4"><i class="fa-solid fa-puzzle-piece"></i>&nbsp;Hard</h2>
-                     <div class="row bg-white levelsGrid" id="hardGrid">
-                        <!-- grid inserted by JS-->
-                     </div>
-                  </div>
-               </div>
-               <button class="carousel-control-prev" type="button" data-bs-target="#levelsCarousel" data-bs-slide="prev">
-                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Previous</span>
-               </button>
-               <button class="carousel-control-next" type="button" data-bs-target="#levelsCarousel" data-bs-slide="next">
-                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Next</span>
-               </button>
-            </div>
-
-            <span class="text-secondary">Can't decide? Try <a class="text-success sectionLink">Daily Sudoku Puzzle</a></span>
-         </section>
-
-         <section class="flex-grow-1 d-flex flex-column gap-4" id="admin">
-            <div class="d-flex flex-column align-items-center gap-3" id="searchBar">
-               <label class="h3" for="searchUsername"><i class="fa-solid fa-magnifying-glass"></i>&ensp;Search For User</label>
-               <input type="text" name="searchUsername" class="border border-dark-subtle rounded" placeholder="Enter username">
-            </div>
-
-            <div class="collapse" id="searchResult">
-               <!-- collapse wrapper to prevent jumpy collapse animation -->
-               <div class="card">
-                  <div class="card-header h4">${username}</div>
-               
-                  <div class="card-body">
-                     <div class="card-title fw-bold">
-                        Role: Member<br>
-                        Last logged in: March 19th, 2024
-                     </div>
-               
-                     <div class="card-text fs-small">
-                        Registered since: March 19th, 2024<br>
-                        Highest score: 123456<br>
-                        Levels passed: 88<br>
-                        Levels passed past week: 13<br>
-                        Average time each puzzle: 1:28:37
-                     </div>
-                  </div>
-               
-                  <div class="card-footer">
-                     <div class="d-flex flex-row gap-2">
-                        <button class="btn btn-warning btn-md flex-fill" id="changeRole">Change Role</button>
-                        <button class="btn btn-primary btn-sm flex-fill" id="exportData">Export Data</button>
-                        <button class="btn btn-danger btn-sm flex-fill" id="deleteUser">Delete User</button>
-                     </div>
-                  </div>
-               </div>
-            </div>
-
-            <button class="btn btn-success btn-lg" id="toggleResult" data-bs-toggle="collapse" data-bs-target="#searchResult" aria-expanded="false" aria-controls="searchResult">
-               Display Result
-            </button>
-         </section>
+            <span class="text-secondary">Not sure if you will like it?&ensp;
+               <a class="sectionLink text-success" id="guestLogin">Continue As Guest</a>
+               <br>
+               <i class="mt-1">* NOTE: Your progress will not be saved if playing as guest. *</i>
+            </span>
+         </div>
 
          <footer class="text-center z-1">
             <hr>
-            <kbd class="bg-secondary">&copy;&nbsp;Copyright 2024. CPSC 2600 - Group #</kbd>
+            <kbd class="bg-secondary">&copy;Copyright 2024. CPSC 2600 - Group #</kbd>
          </footer>
+      </section>
 
-      </div>
-   </div>
-
-   <!-------------------------------------------------------------------------->
-
-   <!-- Full screen sections -->
-   <section class="d-flex flex-column gap-5 text-center" id="entry">
-      <div class="d-flex flex-column gap-3" id="entryTitle">
-         <i class="fa-solid fa-otter"></i>
-         <h1>Hello! Sudoku!</h1>
-      </div>
-
-      <p class="text-secondary">
-         A free Sudoku web application which allows you to enjoy Sudoku puzzle anywhere, anytime.
-      </p>
-
-      <div class="d-flex flex-column flex-grow-1 justify-content-center gap-3">
-         <button class="btn btn-lg btn-success sectionLink">
-            <i class="fa-solid fa-paper-plane"></i>
-            &ensp;Register Now
-         </button>
-         <span class="text-secondary">Already have an account?&ensp;
-            <a class="sectionLink text-success">Log in</a>
-         </span>
-      </div>
-
-      <footer class="text-center z-1">
-         <hr>
-         <kbd class="bg-secondary">&copy;Copyright 2024. CPSC 2600 - Group #</kbd>
-      </footer>
-   </section>
-
-   <section class="d-flex flex-column justify-content-center gap-4 text-center" id="login">
-      <div class="d-flex flex-column gap-1" id="loginTitle">
-         <i class="fa-solid fa-otter"></i>
-         <h1>Login To Hello! Sudoku!</h1>
-         <h6 class="text-secondary fw-light">Welcome back! Ready for another puzzle?</h6>
-      </div>
-
-      <form id="loginForm">
-
-         <div class="d-flex flex-column text-start gap-1">
-            <label for="username" class="mt-2 fw-normal">Username</label>
-            <input type="text" name="username" class="border border-dark-subtle rounded" placeholder="Enter your username">
-            <label for="password" class="mt-2 fw-normal">Password</label>
-            <input type="password" name="password" class="border border-dark-subtle rounded" placeholder="Enter your password">
-            <span class="text-danger" id="loginErr">${error msg}</span>
+      <section class="d-flex flex-column justify-content-center gap-4 text-center" id="login">
+         <div class="d-flex flex-column gap-1" id="loginTitle">
+            <i class="fa-solid fa-otter"></i>
+            <h1>Login To Hello! Sudoku!</h1>
+            <h6 class="text-secondary fw-light">Welcome back! Ready for another puzzle?</h6>
          </div>
 
-         <div class="row gy-3 mt-4">
-            <div class="col-6 text-start">
-               <input type="checkbox">&ensp;Remember Me
+         <form id="loginForm">
+
+            <div class="d-flex flex-column text-start gap-1">
+               <label for="username" class="mt-2 fw-normal">Username</label>
+               <input id="login-username" type="text" name="username" class="border border-dark-subtle rounded"
+                  placeholder="Enter your username">
+               <label for="password" class="mt-2 fw-normal">Password</label>
+               <input id="login-password" type="password" name="password" class="border border-dark-subtle rounded"
+                  placeholder="Enter your password">
+               <span class="text-danger" id="loginErr"></span>
             </div>
-            <div class="col-6 text-end">
-               <a href="#">Forgot Password</a>
+
+            <div class="row gy-3 mt-4">
+               <div class="col-6 text-start">
+                  <input id="rememberme" type="checkbox">&ensp;Remember Me
+               </div>
+               <div class="col-6 text-end">
+                  <a href="#">Forgot Password</a>
+               </div>
+               <div class="col-12">
+                  <button class="btn btn-success w-100" id="loginBtn">Sign in</button>
+               </div>
             </div>
-            <div class="col-12">
-               <button class="btn btn-success w-100" id="loginBtn">Sign in</button>
-            </div>
+         </form>
+
+         <span>Don't have an account?&emsp;<a class="sectionLink">Register Now</a></span>
+
+      </section>
+
+      <section class="d-flex flex-column justify-content-center gap-4 text-center" id="register">
+         <div class="d-flex flex-column gap-1" id="registerTitle">
+            <i class="fa-solid fa-otter"></i>
+            <h1>Create New Account</h1>
+            <h6 class="text-secondary fw-light">Join us for free Sudoku Puzzles!</h6>
          </div>
-      </form>
 
-      <span>Don't have an account?&emsp;<a class="sectionLink">Register Now</a></span>
-      
-   </section>
+         <form id="registerForm">
 
+            <div class="d-flex flex-column text-start gap-1">
+               <label class="mt-2 fw-normal">Username&nbsp;<span class="text-danger">*</span></label>
+               <input id="register-username" type="text" name="register-username"
+                  class="border border-dark-subtle rounded" placeholder="Enter your username" required>
+               <label class="mt-2 fw-normal">Password&nbsp;<span class="text-danger">*</span></label>
+               <input id="register-password" type="password" name="register-password"
+                  class="border border-dark-subtle rounded" placeholder="Enter your password" required>
+               <label class="mt-2 fw-normal">Repeat Password&nbsp;<span class="text-danger">*</span></label>
+               <input id="register-password-repeat" type="password" name="register-repeat"
+                  class="border border-dark-subtle rounded" placeholder="Repeat your password" required>
 
-   <section class="d-flex flex-column justify-content-center gap-4 text-center" id="register">
-      <div class="d-flex flex-column gap-1" id="registerTitle">
-         <i class="fa-solid fa-otter"></i>
-         <h1>Create New Account</h1>
-         <h6 class="text-secondary fw-light">Join us for free Sudoku Puzzles!</h6>
+               <span class="text-danger" id="registerErr"></span>
+            </div>
+
+            <div class="row gy-3 mt-4">
+               <div class="col-12">
+                  <button class="btn btn-success w-100" id="registerBtn" data-bs-toggle="modal"
+                     data-bs-target="#policy">
+                     Get Started
+                  </button>
+               </div>
+            </div>
+         </form>
+
+         <span>Already have an account?&emsp;<a class="sectionLink">Log in</a></span>
+
+      </section>
+
+      <!-------------------------------------------------------------------------->
+
+      <!-- Masks & Covers -->
+      <div class="collapse text-center z-4" id="paused">
+         <div class="d-flex flex-column justify-content-center gap-5" id="pauseToggleWrapper">
+            <!-- warning modal at top -->
+            <i class="fa-solid fa-pause"></i>
+            <h1>Your Game Has Paused</h1>
+            <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#paused" aria-controls="paused"
+               aria-expanded="false" aria-label="Continue Playing" id="continuePlaying">
+               <i class="fa-regular fa-circle-play">&ensp;</i>Continue
+            </button>
+         </div>
       </div>
-      
-      <form id="registerForm">
-      
-         <div class="d-flex flex-column text-start gap-1">
-            <label class="mt-2 fw-normal">Username&nbsp;<span class="text-danger">*</span></label>
-            <input type="text" name="register-username" class="border border-dark-subtle rounded" placeholder="Enter your username">
-            <label class="mt-2 fw-normal">Password&nbsp;<span class="text-danger">*</span></label>
-            <input type="password" name="register-password" class="border border-dark-subtle rounded"
-               placeholder="Enter your password">
-            <label class="mt-2 fw-normal">Repeat Password&nbsp;<span class="text-danger">*</span></label>
-            <input type="password" name="register-repeat" class="border border-dark-subtle rounded" placeholder="Repeat your password">
-            
-            <span class="text-danger" id="registerErr">${error msg}</span>
-         </div>
-      
-         <div class="row gy-3 mt-4">
-            <div class="col-12">
-               <button class="btn btn-success w-100" id="registerBtn" data-bs-toggle="modal" data-bs-target="#policy">
-                  Get Started
+
+      <div class="collapse text-center z-4" id="won">
+         <div class="d-flex flex-column justify-content-center gap-5" id="wonToggleWrapper">
+            <h1><i class="fa-solid fa-trophy text-warning">&ensp;</i>Congratulations!</h1>
+            <h4>Score: <span class="score">0</span></h4>
+            <h4>Time: <span class="time">00:00:00</span></h4>
+
+            <div class="d-flex justify-content-evenly gap-5">
+               <button class="btn btn-link" id="wonToDashboard">
+                  <i class="fa-solid fa-chevron-left">&ensp;</i>Back To Dashboard
+               </button>
+               <button class="btn btn-link" id="wonToSelect">
+                  Play Another Level&ensp;<i class="fa-solid fa-chevron-right"></i>
                </button>
             </div>
          </div>
-      </form>
-      
-      <span>Already have an account?&emsp;<a class="sectionLink">Log in</a></span>
-
-   </section>
-
-   <!-------------------------------------------------------------------------->
-
-   <!-- Masks & Covers -->
-   <div class="collapse text-center z-4" id="paused">
-      <div class="d-flex flex-column justify-content-center gap-5" id="pauseToggleWrapper">
-         <!-- warning modal at top -->
-         <i class="fa-solid fa-pause"></i>
-         <h1>Your Game Has Paused</h1>
-         <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#paused" aria-controls="paused" aria-expanded="false" aria-label="Continue Playing">
-            <i class="fa-regular fa-circle-play">&ensp;</i>Continue
-         </button>
       </div>
-   </div>
 
-   <div class="collapse text-center z-4" id="won">
-      <div class="d-flex flex-column justify-content-center gap-5" id="wonToggleWrapper">
-         <h1><i class="fa-solid fa-trophy text-warning">&ensp;</i>Congratulations!</h1>
-         <h4>Score: <span id="wonScore">123456</span></h4>
-         <h4>Time: <span id="wonTime">1:23:45</span></h4>
-
-         <div class="d-flex justify-content-evenly gap-5">
-            <button class="btn btn-link" id="wonToDashboard">
-               <i class="fa-solid fa-chevron-left">&ensp;</i>Back To Dashboard
-            </button>
-            <button class="btn btn-link" id="wonToSelect">
-               Play Another Level&ensp;<i class="fa-solid fa-chevron-right"></i>
-            </button>
-         </div>
+      <div class="d-flex flex-column justify-content-center gap-3 text-center" id="settingUp">
+         <i class="fa-solid fa-otter fa-spin"></i>
+         <span>Setting up your game board ...</span>
+         <span>Please wait ...</span>
       </div>
-   </div>
-
-   <div class="d-flex flex-column justify-content-center gap-3 text-center" id="settingUp">
-      <i class="fa-solid fa-otter fa-spin"></i>
-      <span>Setting up your game board ...</span>
-      <span>Please wait ...</span>
-   </div>
 
 
-</div>   <!-- End outer-most container -->
+   </div> <!-- End outer-most container -->
 
 </body>
+
+<!-- For testing purpose only -->
+<!-- <script>
+   setTimeout(() => {
+      let sections = document.querySelectorAll('section');
+      sections.forEach(section => {
+         section.setAttribute('style', 'display: none !important;');
+      });
+   }, 5e2);
+   let entry = document.querySelector('#entry');
+   entry.setAttribute('style', 'display: flex !important;');
+</script> -->
 
 </html>
