@@ -121,6 +121,10 @@ let currentGame = {
                displayUserStatistics();
             }
          } else {
+            // Logout the guest
+            localStorage.removeItem('userInfo');
+            localStorage.removeItem('target');
+            localStorage.removeItem('rememberMe');
             setTimeout(toSection, 2000, 'entry');
          }
       }
@@ -885,9 +889,13 @@ const setup = () => {
 window.onload = () => {
    setup();
    
-   const userInfo = localStorage.getItem('userInfo');
-   const rememberMe = localStorage.getItem('rememberMe');
+   let userInfo = localStorage.getItem('userInfo');
+   let rememberMe = localStorage.getItem('rememberMe');
    if (rememberMe && userInfo) {
+      // Auto login
+      userInfo = JSON.parse(userInfo);
+      login(userInfo.username, userInfo.password);
+      
       // Hide admin panel section link if not logged in as admin
       if (userInfo.role == "admin") {
          let toAdmin = document.querySelector('#toAdmin');
