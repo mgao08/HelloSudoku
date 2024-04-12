@@ -363,11 +363,11 @@ input[type='password'] {
 }
 
 #gamePaneGrid .gamePaneCol .correct  {
-   color: blue;
+   color: var(--success-highlight);
 }
 
 #gamePaneGrid .gamePaneCol .incorrect {
-   color: red;
+   color: var(--bs-danger);
 }
 
 .gamePaneCol:nth-of-type(3n) {

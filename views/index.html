@@ -74,7 +74,7 @@
          <div class="col-2 username">
             ${username}
          </div>
-         <div class="col-10">
+         <div class="col-10 sectionName">
             <i class="fa-solid fa-otter"></i>&nbsp;
             Hello! Sudoku!
          </div>
@@ -87,7 +87,7 @@
          <!-- Navbar -->
          <div class="col-lg-2 col-md-12 pe-0">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
-               <span class="navbar-brand">
+               <span class="navbar-brand sectionName">
                   <!-- TODO: Switch navbar brand when switching between sections -->
                   <i class="fa-solid fa-gauge-high"></i>&nbsp;
                   My Dashboard
@@ -193,7 +193,7 @@
 
                <div class="order-lg-first" id="gamePaneOuterBorder">
                   <div class="card border-success">
-                     <div class="card-header bg-success-subtle text-center h6">Level <span id="gameLevel">3 - 1</span>
+                     <div class="card-header bg-success-subtle text-center h6"><span id="gameLevel">Level&ensp;3 - 1</span>
                      </div>
                      <div class="card-body text-center d-flex flex-column align-items-center p-0" id="gamePaneGrid">
 
@@ -448,7 +448,7 @@
             <i class="fa-solid fa-pause"></i>
             <h1>Your Game Has Paused</h1>
             <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#paused" aria-controls="paused"
-               aria-expanded="false" aria-label="Continue Playing">
+               aria-expanded="false" aria-label="Continue Playing" id="continuePlaying">
                <i class="fa-regular fa-circle-play">&ensp;</i>Continue
             </button>
          </div>
