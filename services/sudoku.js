@@ -43,7 +43,6 @@ const initialize = async () => {
          }
       }
    }
-
 }
 
 const fetchPuzzleOfTheDay = async () => {
